@@ -1,0 +1,137 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.definancy</groupId>
+    <artifactId>definancy-sdk-java</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>definancy-sdk-java</name>
+    <description>Definancy SDK for Java — multi-module aggregator (core + demos).</description>
+    <url>https://github.com/definancy/definancy-sdk-java</url>
+
+    <scm>
+        <connection>scm:git:git@github.com:definancy/definancy-sdk-java.git</connection>
+        <developerConnection>scm:git:git@github.com:definancy/definancy-sdk-java.git</developerConnection>
+        <url>https://github.com/definancy/definancy-sdk-java</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://definancy.com/license/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Definancy</name>
+            <email>support@definancy.com</email>
+            <organization>Definancy</organization>
+            <organizationUrl>https://definancy.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>core</module>
+        <module>demos</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <commons-lang3-version>3.18.0</commons-lang3-version>
+        <jersey-version>2.26</jersey-version>
+        <jackson-version>2.17.1</jackson-version>
+        <jackson-databind-version>2.17.1</jackson-databind-version>
+        <jackson-databind-nullable-version>0.2.6</jackson-databind-nullable-version>
+        <beanvalidation-version>2.0.2</beanvalidation-version>
+        <junit-version>5.10.0</junit-version>
+        <spotless.version>2.21.0</spotless.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Shared compiler config. Children pick this up via the
+                     normal Maven plugin-inheritance rules; each child only
+                     needs to declare the plugin itself (no <configuration>)
+                     to opt in. The strict-java8-on-jdk9plus profile below
+                     overlays <release>8</release> on top when building on
+                     a newer JDK. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.10.1</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <fork>true</fork>
+                        <meminitial>128m</meminitial>
+                        <maxmem>512m</maxmem>
+                        <compilerArgs>
+                            <arg>-Xlint:all</arg>
+                            <arg>-J-Xss4m</arg><!-- Compiling the generated JSON.java file may require larger stack size. -->
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <!-- Strict Java 8 API enforcement on JDK 9+. The default
+                 maven-compiler-plugin config uses <source>/<target>=1.8,
+                 which produces Java 8 bytecode but allows Java 9+ APIs to
+                 leak through when building on a newer JDK (the rt.jar
+                 bootclasspath has them). On JDK 9+ we layer
+                 <release>8</release> over the default config, which
+                 validates against the Java 8 API signature set even on a
+                 newer JDK. The profile is gated on JDK [9,) because
+                 <release> was added in JDK 9 and breaks javac on JDK 8. -->
+            <id>strict-java8-on-jdk9plus</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <configuration>
+                                <release>8</release>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>sign-artifacts</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.definancy</groupId>
+        <artifactId>definancy-sdk-java</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>definancy-sdk-java-demos</artifactId>
+    <packaging>jar</packaging>
+
+    <name>definancy-sdk-java-demos</name>
+    <description>Runnable demo programs for the Definancy SDK. Each class
+        has a main() that exercises a real flow end-to-end against the
+        Definancy API. Built as a separate jar so it stays out of the
+        consumer-shipped core artifact.</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- compiler config inherited from parent's pluginManagement -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Core SDK provides com.definancy.api.*, com.definancy.model.*,
+             and the hand-written com.definancy.sdk.* surface that the
+             demos call into. -->
+        <dependency>
+            <groupId>com.definancy</groupId>
+            <artifactId>definancy-sdk-java-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- The Jersey + JAX-RS + BC stack core marks <provided> does
+             NOT transit to demos (provided is non-transitive). Demos
+             redeclare them at provided scope so they're on the IDE /
+             compile classpath; any task that runs a demo constructs
+             the runtime classpath from these scopes — same set the SDK
+             consumer needs to ship. -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.connectors</groupId>
+            <artifactId>jersey-apache-connector</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.78</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,33 @@
+# Hand-owned per languages/java/OVERRIDES.md (Hand-owned generator outputs).
+# The factory protects this file via sdk/.openapi-generator-ignore.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    name: Build Definancy API
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # JDK 8 is the production runtime (TIBCO BW5, WebSphere v9.5).
+        # JDK 17/21 catch behavior drift on newer JVMs and trigger the
+        # strict-java8-on-jdk9plus profile in pom.xml, which enforces
+        # the Java 8 API surface via <release>8</release>.
+        java: [ 8, 17, 21 ]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --no-transfer-progress --file pom.xml

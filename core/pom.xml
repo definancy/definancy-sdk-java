@@ -1,0 +1,454 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.definancy</groupId>
+        <artifactId>definancy-sdk-java</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>definancy-sdk-java-core</artifactId>
+    <packaging>jar</packaging>
+
+    <name>definancy-sdk-java-core</name>
+    <description>Definancy SDK — generated client (jersey2) + hand-written domain layer (auth, identity, crypto, amount math).</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>2.2.0</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <property>
+                            <name>loggerPath</name>
+                            <value>conf/log4j.properties</value>
+                        </property>
+                    </systemPropertyVariables>
+                    <argLine>-Xms512m -Xmx1500m</argLine>
+                    <parallel>methods</parallel>
+                    <threadCount>10</threadCount>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+            </plugin>
+            <!-- attach test jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>add_sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add_test_sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- compiler config inherited from parent's pluginManagement -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doclint>none</doclint>
+                    <source>${java.version}</source>
+                    <tags>
+                        <tag>
+                            <name>http.response.details</name>
+                            <placement>a</placement>
+                            <head>Http Response Details:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Use spotless plugin to automatically format code, remove unused import, etc
+                 To apply changes directly to the file, run `mvn spotless:apply`
+                 Ref: https://github.com/diffplug/spotless/tree/main/plugin-maven
+            -->
+            <plugin>
+              <groupId>com.diffplug.spotless</groupId>
+              <artifactId>spotless-maven-plugin</artifactId>
+              <version>${spotless.version}</version>
+              <configuration>
+                <formats>
+                  <format>
+                    <includes>
+                      <include>.gitignore</include>
+                    </includes>
+                    <trimTrailingWhitespace/>
+                    <endWithNewline/>
+                    <indent>
+                      <spaces>true</spaces>
+                      <spacesPerTab>4</spacesPerTab>
+                    </indent>
+                  </format>
+                </formats>
+                <java>
+                  <googleJavaFormat>
+                    <version>1.8</version>
+                    <style>AOSP</style>
+                    <reflowLongStrings>true</reflowLongStrings>
+                  </googleJavaFormat>
+                  <removeUnusedImports/>
+                  <importOrder/>
+                </java>
+              </configuration>
+            </plugin>
+            <plugin>
+              <!-- Shaded jar: bundle a small set of utility deps (Jackson,
+                   commons-lang3/codec, jackson-databind-nullable, jsr305,
+                   javax.annotation-api) under com.definancy.shaded.* so
+                   this SDK does not collide with consumer-classpath
+                   versions. The SDK's own com.definancy.* classes stay at
+                   canonical names.
+
+                   Anything provided by the deployment platform — JAX-RS
+                   API, Jersey impl, HK2, javassist, javax.inject,
+                   mimepull, httpclient4, BouncyCastle — is marked
+                   <scope>provided</scope> in the dependencies block AND
+                   absent from the artifactSet whitelist below. Both
+                   mechanisms together keep them out of the shaded jar.
+                   See OVERRIDES.md for the full consumer-install list.
+
+                   artifactSet uses a whitelist (groupId:artifactId, Ant
+                   globs). Adding a new compile-scope dep means also
+                   adding it here, otherwise it silently fails to bundle.
+                   Relocations use literal package prefixes (NOT regex)
+                   and must align with what the whitelist actually pulls. -->
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-shade-plugin</artifactId>
+              <version>3.6.1</version>
+              <executions>
+                <execution>
+                  <id>shaded-jar</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>shaded</shadedClassifierName>
+                    <filters>
+                      <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                          <!-- Strip JPMS module descriptors at every depth.
+                               The single-segment "module-info.class" only
+                               catches the root entry; modern deps (Jackson,
+                               commons-lang3) carry their real descriptor at
+                               META-INF/versions/*/module-info.class as part
+                               of a multi-release jar. After relocation, those
+                               descriptors export packages that no longer
+                               exist, which breaks the shaded jar on the
+                               module path. -->
+                          <exclude>module-info.class</exclude>
+                          <exclude>META-INF/versions/*/module-info.class</exclude>
+                          <!-- Drop signature files: repackaging invalidates
+                               the per-file digests, and a leftover *.SF
+                               causes SecurityException at first class load.
+                               ManifestResourceTransformer writes a fresh
+                               manifest, so the in-manifest digests go with
+                               it. -->
+                          <exclude>META-INF/*.SF</exclude>
+                          <exclude>META-INF/*.DSA</exclude>
+                          <exclude>META-INF/*.RSA</exclude>
+                          <!-- Stale jar index: a leftover INDEX.LIST from
+                               an input jar references its old class layout
+                               and prevents the JVM from finding relocated
+                               classes via the index. Defensive: rare in
+                               modern deps. -->
+                          <exclude>META-INF/INDEX.LIST</exclude>
+                          <!-- Per-dep Maven metadata. Harmless but bloats
+                               the jar with one pom.xml + pom.properties per
+                               shaded artifact. Drop for hygiene. -->
+                          <exclude>META-INF/maven/**</exclude>
+                        </excludes>
+                      </filter>
+                    </filters>
+                    <artifactSet>
+                      <includes>
+                        <!-- Jackson: JSON serialization, used by both
+                             generated and hand-written code. -->
+                        <include>com.fasterxml.jackson.core:jackson-core</include>
+                        <include>com.fasterxml.jackson.core:jackson-annotations</include>
+                        <include>com.fasterxml.jackson.core:jackson-databind</include>
+                        <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310</include>
+                        <!-- OpenAPI generator's @Nullable wrapper for
+                             JSON properties. -->
+                        <include>org.openapitools:jackson-databind-nullable</include>
+                        <!-- Apache Commons utilities used by generated
+                             helpers. -->
+                        <include>org.apache.commons:commons-lang3</include>
+                        <include>commons-codec:commons-codec</include>
+                        <!-- Annotations used by generated code (CLASS
+                             retention; bundled so static analyzers and
+                             reflection paths resolve them). -->
+                        <include>com.google.code.findbugs:jsr305</include>
+                        <include>javax.annotation:javax.annotation-api</include>
+                      </includes>
+                    </artifactSet>
+                    <relocations>
+                      <relocation>
+                        <pattern>com.fasterxml.jackson</pattern>
+                        <shadedPattern>com.definancy.shaded.com.fasterxml.jackson</shadedPattern>
+                      </relocation>
+                      <relocation>
+                        <pattern>org.apache.commons</pattern>
+                        <shadedPattern>com.definancy.shaded.org.apache.commons</shadedPattern>
+                      </relocation>
+                      <relocation>
+                        <pattern>org.openapitools.jackson.nullable</pattern>
+                        <shadedPattern>com.definancy.shaded.org.openapitools.jackson.nullable</shadedPattern>
+                      </relocation>
+                      <!-- javax.annotation (JSR305 nullability + Common
+                           Annotations @Generated) stays unrelocated. The
+                           classes are CLASS-retained, widely expected at
+                           canonical names by IDEs and static analyzers,
+                           and overlap with the JDK 8 platform copy of
+                           javax.annotation.* (parent classloader wins, no
+                           runtime conflict). -->
+                    </relocations>
+                    <transformers>
+                      <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                      <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"/>
+                      <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                      <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"/>
+                    </transformers>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+          <id>full-distribution</id>
+          <build>
+            <plugins>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                  <execution>
+                    <id>create-distribution-zip</id>
+                    <phase>package</phase>
+                    <goals>
+                      <goal>single</goal>
+                    </goals>
+                    <configuration>
+                      <descriptors>
+                        <descriptor>src/main/assembly/distribution.xml</descriptor>
+                      </descriptors>
+                      <finalName>${project.artifactId}-${project.version}-dist</finalName>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
+            </plugins>
+          </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!-- @Nullable annotation -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <!-- HTTP client: jersey-client. Provided-scope: TIBCO BW5 and
+             WebSphere v9.5 deployments install the Jersey stack (and the
+             JAX-RS API + javax.inject + javassist + httpclient4 + mimepull
+             transitives) alongside this SDK. The shaded jar therefore does
+             NOT bundle them — see the maven-shade-plugin block above. -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JSON processing: jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.connectors</groupId>
+            <artifactId>jersey-apache-connector</artifactId>
+            <version>${jersey-version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- custom dependencies -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.19.0</version>
+        </dependency>
+        <!-- BouncyCastle: provided-scope. CryptoProvider registers BC as
+             a JCE provider, which requires BC to load from its original
+             signed jar; bundling it (relocated or not) breaks that path.
+             Consumers ship BC alongside this SDK on the runtime classpath.
+
+             jdk18on is the JDK-1.8+-targeted artifact (vs jdk15to18, which
+             is compiled for JDK 1.5 source). Both ship identical package
+             names and APIs; the deployment targets (BW5, WebSphere v9.5)
+             are Java 8, so jdk18on is the canonical choice. -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.78</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <!-- Conformance vector loading (test scope) -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
