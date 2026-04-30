@@ -80,7 +80,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * Unique blockchain transaction hash or identifier as recorded on the  blockchain network. Used to track and verify transactions on the network.  This hash serves as the definitive reference for locating transactions  in blockchain explorers and verification systems.
+   * Unique blockchain transaction identifier or hash.
    * @return id
    */
   @javax.annotation.Nonnull
@@ -105,7 +105,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle.
+   * Timestamp when transaction was first detected or confirmed.
    * minimum: 0
    * @return ts
    */
@@ -131,7 +131,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations.
+   * Blockchain address that sent the funds for this transaction.
    * @return sender
    */
   @javax.annotation.Nonnull
@@ -156,7 +156,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations.
+   * Blockchain address that received the funds from this transaction.
    * @return receiver
    */
   @javax.annotation.Nonnull
@@ -181,7 +181,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * Get amount
+   * Precise amount transferred in this transaction with contract context.
    * @return amount
    */
   @javax.annotation.Nonnull
@@ -206,7 +206,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * Get status
+   * Current confirmation and processing status of this transaction.
    * @return status
    */
   @javax.annotation.Nonnull
@@ -231,7 +231,7 @@ public class BlockchainTransaction {
   }
 
   /**
-   * Get confirmationStats
+   * Detailed confirmation progress and timing information.
    * @return confirmationStats
    */
   @javax.annotation.Nonnull

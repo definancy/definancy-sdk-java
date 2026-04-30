@@ -28,7 +28,7 @@ import com.definancy.JSON;
 
 
 /**
- * AssetMediaMap
+ * MediaMap subtype scoped to assets, conventionally carrying logo variants (e.g. \&quot;logo-light\&quot;, \&quot;logo-dark\&quot;) for asset display in consumer wallets and dashboards.
  */
 @JsonPropertyOrder({
   AssetMediaMap.JSON_PROPERTY_LOGO_LIGHT,

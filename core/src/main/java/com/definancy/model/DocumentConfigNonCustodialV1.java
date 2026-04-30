@@ -29,7 +29,7 @@ import com.definancy.JSON;
 
 
 /**
- * DocumentConfigNonCustodialV1
+ * Document configuration carrying NonCustodialV1 data — declares a self-custody arrangement bound to a wallet address. &#x60;type&#x60; is fixed to \&quot;NonCustodialV1\&quot;.
  */
 @JsonPropertyOrder({
   DocumentConfigNonCustodialV1.JSON_PROPERTY_TYPE,

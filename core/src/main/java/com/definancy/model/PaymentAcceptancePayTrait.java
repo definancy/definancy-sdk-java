@@ -28,7 +28,7 @@ import com.definancy.JSON;
 
 
 /**
- * PaymentAcceptancePayTrait
+ * Trait declaring the pay-out range a payment-acceptance configuration is willing to receive — bounded by &#x60;min-amount&#x60; and &#x60;max-amount&#x60; Amount values.
  */
 @JsonPropertyOrder({
   PaymentAcceptancePayTrait.JSON_PROPERTY_MIN_AMOUNT,

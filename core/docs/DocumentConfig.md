@@ -2,6 +2,8 @@
 
 # DocumentConfig
 
+Discriminated union of compliance-document content variants (Person V1, Custodial V1, Non-Custodial V1). The `type` field selects which variant's data shape applies.
+
 ## oneOf schemas
 * [DocumentConfigCustodialV1](DocumentConfigCustodialV1.md)
 * [DocumentConfigNonCustodialV1](DocumentConfigNonCustodialV1.md)

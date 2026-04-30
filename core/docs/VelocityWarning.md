@@ -10,8 +10,8 @@ Emitted in the response of estimate/create endpoints when a warn-mode velocity l
 |------------ | ------------- | ------------- | -------------|
 |**scope** | **VelocityScope** |  |  |
 |**windowMinutes** | **Integer** |  |  |
-|**limit** | [**ContractAmount**](ContractAmount.md) |  |  |
-|**used** | [**Amount**](Amount.md) |  |  |
+|**limit** | [**ContractAmount**](ContractAmount.md) | The configured limit (in its original contract). |  |
+|**used** | [**Amount**](Amount.md) | Total exposure used so far, normalized to the account reference contract. |  |
 
 
 

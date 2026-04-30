@@ -53,7 +53,7 @@ public class VaultInfo {
   }
 
   /**
-   * UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle.
+   * Timestamp of vault archival (null if active).
    * minimum: 0
    * @return archivedAt
    */

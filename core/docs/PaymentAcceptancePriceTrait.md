@@ -2,6 +2,7 @@
 
 # PaymentAcceptancePriceTrait
 
+Trait declaring the price range a payment-acceptance configuration is willing to charge — bounded by `min-amount` and `max-amount` Amount values.
 
 ## Properties
 

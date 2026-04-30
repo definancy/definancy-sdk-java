@@ -83,7 +83,7 @@ public class Version {
   }
 
   /**
-   * UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle.
+   * Timestamp when this resource was initially created.
    * minimum: 0
    * @return createdAt
    */
@@ -109,7 +109,7 @@ public class Version {
   }
 
   /**
-   * UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle.
+   * Timestamp when this resource was last modified.
    * minimum: 0
    * @return updatedAt
    */

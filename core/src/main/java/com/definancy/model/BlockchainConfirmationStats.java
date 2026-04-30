@@ -57,7 +57,7 @@ public class BlockchainConfirmationStats {
   }
 
   /**
-   * Number of blockchain confirmations observed for a transaction, indicating the level of network consensus and security. Higher numbers provide greater confidence in transaction finality.
+   * Number of confirmations currently observed for this transaction.
    * minimum: 0
    * maximum: 65535
    * @return confirmed
@@ -84,7 +84,7 @@ public class BlockchainConfirmationStats {
   }
 
   /**
-   * Number of blockchain confirmations observed for a transaction, indicating the level of network consensus and security. Higher numbers provide greater confidence in transaction finality.
+   * Number of additional confirmations needed to reach required threshold.
    * minimum: 0
    * maximum: 65535
    * @return remaining
@@ -111,7 +111,7 @@ public class BlockchainConfirmationStats {
   }
 
   /**
-   * UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle.
+   * Estimated timestamp when the transaction will reach full confirmation based on network block time averages.
    * minimum: 0
    * @return eta
    */

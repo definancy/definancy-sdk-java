@@ -85,7 +85,7 @@ public class VelocityLimitFormat {
   }
 
   /**
-   * Get amount
+   * Limit amount, denominated in any contract.
    * @return amount
    */
   @javax.annotation.Nonnull

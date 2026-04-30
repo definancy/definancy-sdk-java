@@ -29,7 +29,7 @@ import com.definancy.JSON;
 
 
 /**
- * DocumentConfigCustodialV1
+ * Document configuration carrying CustodialV1 data — declares a custodial relationship with a regulated provider holding the asset. &#x60;type&#x60; is fixed to \&quot;CustodialV1\&quot;.
  */
 @JsonPropertyOrder({
   DocumentConfigCustodialV1.JSON_PROPERTY_TYPE,

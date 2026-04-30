@@ -78,7 +78,7 @@ public class DocumentInfo {
   }
 
   /**
-   * Get status
+   * Current validation status.
    * @return status
    */
   @javax.annotation.Nonnull

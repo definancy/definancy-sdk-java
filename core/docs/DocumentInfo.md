@@ -9,7 +9,7 @@ Document metadata and associations.
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**vault** | **String** | Unique vault identifier. |  |
-|**status** | [**DocumentStatus**](DocumentStatus.md) |  |  |
+|**status** | [**DocumentStatus**](DocumentStatus.md) | Current validation status. |  |
 
 
 

@@ -53,7 +53,7 @@ public class PaymentEstimateScenario {
   }
 
   /**
-   * Get price
+   * Requested payment obligation.
    * @return price
    */
   @javax.annotation.Nonnull
@@ -78,7 +78,7 @@ public class PaymentEstimateScenario {
   }
 
   /**
-   * Get pay
+   * Calculated payment requirement.
    * @return pay
    */
   @javax.annotation.Nonnull

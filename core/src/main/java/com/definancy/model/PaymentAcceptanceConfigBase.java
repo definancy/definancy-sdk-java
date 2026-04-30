@@ -56,7 +56,7 @@ public class PaymentAcceptanceConfigBase {
   }
 
   /**
-   * Get order
+   * Optional commercial order context providing business information  about the transaction being processed.
    * @return order
    */
   @javax.annotation.Nullable

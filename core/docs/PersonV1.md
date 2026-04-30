@@ -2,6 +2,8 @@
 
 # PersonV1
 
+Identity record discriminated between natural persons (PersonNaturalV1) and legal entities (PersonLegalV1). The V1 of Definancy's compliance person model.
+
 ## oneOf schemas
 * [PersonLegalV1](PersonLegalV1.md)
 * [PersonNaturalV1](PersonNaturalV1.md)

@@ -29,7 +29,7 @@ import com.definancy.JSON;
 
 
 /**
- * ContractTraits
+ * Traits subtype scoped to contracts. Layers well-known contract trait keys (&#x60;payment-acceptance-price-trait&#x60;, &#x60;payment-acceptance-pay-trait&#x60;) on top of the generic Traits open map.
  */
 @JsonPropertyOrder({
   ContractTraits.JSON_PROPERTY_PAYMENT_ACCEPTANCE_PRICE_TRAIT,

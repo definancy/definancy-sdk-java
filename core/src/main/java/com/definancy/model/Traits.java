@@ -26,7 +26,7 @@ import com.definancy.JSON;
 
 
 /**
- * Traits
+ * Map of named traits keyed by trait identifier (e.g. \&quot;payment-acceptance-price-trait\&quot;). Values are open property bags — see TraitProperties. Used as the extensibility surface for asset/contract/payment metadata.
  */
 @JsonPropertyOrder({
 })

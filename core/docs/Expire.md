@@ -2,13 +2,14 @@
 
 # Expire
 
+Expiration directive expressible either as an absolute timestamp (`at`) or as a relative duration in milliseconds (`in`). One of the two is set, never both.
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**at** | **Integer** | UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle. |  |
-|**in** | **Integer** | Time in milliseconds representing an amount of time. Used for expiration cut-offs, and other time-sensitive operations throughout  the payment lifecycle. |  |
+|**at** | **Integer** | Timestamp when this payment scenario expires and is no longer valid. |  |
+|**in** | **Integer** | Time remaining until this payment scenario expires and is no longer valid. |  |
 
 
 

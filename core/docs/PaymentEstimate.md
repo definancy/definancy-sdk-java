@@ -8,7 +8,7 @@ Comprehensive payment estimation result providing calculated scenarios and compl
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**ts** | **Integer** | UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle. |  |
+|**ts** | **Integer** | Estimation generation timestamp. |  |
 |**scenarios** | [**List&lt;PaymentEstimateScenario&gt;**](PaymentEstimateScenario.md) | Generated payment scenarios. |  |
 |**compliance** | [**Compliance**](Compliance.md) |  |  |
 |**warnings** | [**List&lt;VelocityWarning&gt;**](VelocityWarning.md) | Velocity warnings that fired during the estimate check. Present only when warn-mode limits were exceeded. |  [optional] |

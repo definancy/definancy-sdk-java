@@ -8,7 +8,7 @@ Vault lifecycle metadata.
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**archivedAt** | **Integer** | UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle. |  [optional] |
+|**archivedAt** | **Integer** | Timestamp of vault archival (null if active). |  [optional] |
 |**version** | [**Version**](Version.md) |  |  |
 
 

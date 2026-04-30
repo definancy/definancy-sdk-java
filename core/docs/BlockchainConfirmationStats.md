@@ -8,9 +8,9 @@ Confirmation progress information for transactions in the confirming state, prov
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**confirmed** | **Integer** | Number of blockchain confirmations observed for a transaction, indicating the level of network consensus and security. Higher numbers provide greater confidence in transaction finality. |  |
-|**remaining** | **Integer** | Number of blockchain confirmations observed for a transaction, indicating the level of network consensus and security. Higher numbers provide greater confidence in transaction finality. |  |
-|**eta** | **Integer** | UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle. |  |
+|**confirmed** | **Integer** | Number of confirmations currently observed for this transaction. |  |
+|**remaining** | **Integer** | Number of additional confirmations needed to reach required threshold. |  |
+|**eta** | **Integer** | Estimated timestamp when the transaction will reach full confirmation based on network block time averages. |  |
 
 
 

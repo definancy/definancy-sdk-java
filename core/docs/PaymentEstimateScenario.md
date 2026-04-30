@@ -8,8 +8,8 @@ Individual payment calculation scenario showing the relationship between request
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**price** | [**ContractAmount**](ContractAmount.md) |  |  |
-|**pay** | [**ContractAmount**](ContractAmount.md) |  |  |
+|**price** | [**ContractAmount**](ContractAmount.md) | Requested payment obligation. |  |
+|**pay** | [**ContractAmount**](ContractAmount.md) | Calculated payment requirement. |  |
 
 
 

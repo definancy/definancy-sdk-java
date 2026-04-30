@@ -8,13 +8,13 @@ Complete blockchain transaction record including addresses, amounts, timestamps,
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **String** | Unique blockchain transaction hash or identifier as recorded on the  blockchain network. Used to track and verify transactions on the network.  This hash serves as the definitive reference for locating transactions  in blockchain explorers and verification systems. |  |
-|**ts** | **Integer** | UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle. |  |
-|**sender** | **String** | Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations. |  |
-|**receiver** | **String** | Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations. |  |
-|**amount** | [**ContractAmount**](ContractAmount.md) |  |  |
-|**status** | **BlockchainTransactionStatus** |  |  |
-|**confirmationStats** | [**BlockchainConfirmationStats**](BlockchainConfirmationStats.md) |  |  |
+|**id** | **String** | Unique blockchain transaction identifier or hash. |  |
+|**ts** | **Integer** | Timestamp when transaction was first detected or confirmed. |  |
+|**sender** | **String** | Blockchain address that sent the funds for this transaction. |  |
+|**receiver** | **String** | Blockchain address that received the funds from this transaction. |  |
+|**amount** | [**ContractAmount**](ContractAmount.md) | Precise amount transferred in this transaction with contract context. |  |
+|**status** | **BlockchainTransactionStatus** | Current confirmation and processing status of this transaction. |  |
+|**confirmationStats** | [**BlockchainConfirmationStats**](BlockchainConfirmationStats.md) | Detailed confirmation progress and timing information. |  |
 
 
 

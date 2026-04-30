@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets MediaType
+ * Content category of a media reference. Currently only &#x60;image&#x60; is supported.
  */
 public enum MediaType {
   

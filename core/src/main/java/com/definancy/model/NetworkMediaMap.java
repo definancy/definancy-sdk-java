@@ -28,7 +28,7 @@ import com.definancy.JSON;
 
 
 /**
- * NetworkMediaMap
+ * MediaMap subtype scoped to networks, conventionally carrying logo variants (e.g. \&quot;logo-light\&quot;, \&quot;logo-dark\&quot;) for network display in consumer wallets and dashboards.
  */
 @JsonPropertyOrder({
   NetworkMediaMap.JSON_PROPERTY_LOGO_LIGHT,

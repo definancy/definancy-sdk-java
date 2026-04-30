@@ -8,7 +8,7 @@ Configuration parameters that control network behavior and availability. Current
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**enabled** | **Boolean** | Boolean flag indicating whether a resource is active and operational. When true, the resource can be used for new operations. When false, the resource is disabled but historical data is preserved. |  [optional] |
+|**enabled** | **Boolean** | Controls whether this network is available for new payment processing. Defaults to true when not specified. |  [optional] |
 
 
 

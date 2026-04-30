@@ -57,7 +57,7 @@ public class PersonLegalIncorporation {
   }
 
   /**
-   * Calendar date in ISO 8601 format (YYYY-MM-DD) without time information. Used for birth dates, incorporation dates, and other date-only fields in compliance documentation and identity verification.
+   * Date of business incorporation or formation in ISO 8601 format (YYYY-MM-DD).
    * @return date
    */
   @javax.annotation.Nonnull
@@ -82,7 +82,7 @@ public class PersonLegalIncorporation {
   }
 
   /**
-   * Administrative subdivision such as state, province, prefecture, or region. Used in address information for compliance documents and geographic identification in identity verification processes.
+   * State, province, or administrative region where business was incorporated.
    * @return region
    */
   @javax.annotation.Nonnull
@@ -107,7 +107,7 @@ public class PersonLegalIncorporation {
   }
 
   /**
-   * Country name or ISO 3166-1 alpha-2 country code for geographic identification. Used in address information, birth records, and incorporation details for compliance and identity verification purposes.
+   * Country where business was incorporated or formed.
    * @return country
    */
   @javax.annotation.Nonnull

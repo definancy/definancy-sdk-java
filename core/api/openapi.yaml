@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   contact:
     email: support@definancy.com
@@ -103,14 +103,7 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       security: []
       summary: Health Check
       tags:
@@ -135,14 +128,7 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       security: []
       summary: Ready Check
       tags:
@@ -172,7 +158,6 @@ paths:
         name: definancyId
         required: true
         schema:
-          example: ZKKXG4KA5PTZ526QA4URHSNOTYGHDON2GGTS3L6GCVDN6QUVIZNIMZ7K64
           pattern: "^[A-Z2-7]{58}$"
           type: string
         style: simple
@@ -184,51 +169,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "409":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request could not be completed because the target resource already exists.
-            This typically occurs when attempting to create a resource that duplicates an
-            existing one, such as a duplicate identifier or a resource that violates
-            uniqueness constraints.
+          $ref: "#/components/responses/ConflictResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Register a Definancy ID
       tags:
       - Auth
@@ -253,32 +202,11 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: List Networks
       tags:
       - Network
@@ -291,17 +219,7 @@ paths:
         \ which is essential for managing and maintaining networks for \npayment processing."
       operationId: GetNetwork
       parameters:
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/NetworkIdParam"
       responses:
         "200":
           content:
@@ -313,41 +231,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Network
       tags:
       - Network
@@ -359,17 +249,7 @@ paths:
         \ is essential for managing and maintaining networks for \npayment processing."
       operationId: ConfigNetwork
       parameters:
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/NetworkIdParam"
       requestBody:
         content:
           application/json:
@@ -392,50 +272,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Configure Network
       tags:
       - Network
@@ -450,17 +295,7 @@ paths:
         \ the native token of a network."
       operationId: GetNetworkNativeAsset
       parameters:
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/NetworkIdParam"
       responses:
         "200":
           content:
@@ -473,41 +308,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Network Native Asset
       tags:
       - Network
@@ -520,17 +327,7 @@ paths:
         Templates use {value} as a placeholder for the address or transaction ID.
       operationId: GetNetworkExplorer
       parameters:
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/NetworkIdParam"
       responses:
         "200":
           content:
@@ -542,41 +339,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       security: []
       summary: Get Network Explorer
       tags:
@@ -603,32 +372,11 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: List Assets
       tags:
       - Asset
@@ -642,17 +390,7 @@ paths:
         which is essential for managing and handling various assets in payment operations.
       operationId: GetAsset
       parameters:
-      - description: |-
-          Ticker symbol for a digital asset (e.g., 'EUR', 'USDC', 'ETH', 'BTC').
-          Used to identify the specific asset for contract operations, payment
-          processing, and vault management. Must match an existing configured asset.
-        explode: false
-        in: path
-        name: assetUnit
-        required: true
-        schema:
-          $ref: "#/components/schemas/AssetUnit"
-        style: simple
+      - $ref: "#/components/parameters/AssetUnitParam"
       responses:
         "200":
           content:
@@ -664,41 +402,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Asset
       tags:
       - Asset
@@ -711,17 +421,7 @@ paths:
         \ operations."
       operationId: ConfigAsset
       parameters:
-      - description: |-
-          Ticker symbol for a digital asset (e.g., 'EUR', 'USDC', 'ETH', 'BTC').
-          Used to identify the specific asset for contract operations, payment
-          processing, and vault management. Must match an existing configured asset.
-        explode: false
-        in: path
-        name: assetUnit
-        required: true
-        schema:
-          $ref: "#/components/schemas/AssetUnit"
-        style: simple
+      - $ref: "#/components/parameters/AssetUnitParam"
       requestBody:
         content:
           application/json:
@@ -743,50 +443,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Configure Asset
       tags:
       - Asset
@@ -813,32 +478,11 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: List Contracts
       tags:
       - Contract
@@ -852,28 +496,8 @@ paths:
         which is essential for executing and validating payments on networks.
       operationId: GetContract
       parameters:
-      - description: |-
-          Ticker symbol for a digital asset (e.g., 'EUR', 'USDC', 'ETH', 'BTC').
-          Used to identify the specific asset for contract operations, payment
-          processing, and vault management. Must match an existing configured asset.
-        explode: false
-        in: path
-        name: assetUnit
-        required: true
-        schema:
-          $ref: "#/components/schemas/AssetUnit"
-        style: simple
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/AssetUnitParam"
+      - $ref: "#/components/parameters/NetworkIdParam"
       responses:
         "200":
           content:
@@ -885,41 +509,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Contract
       tags:
       - Contract
@@ -932,28 +528,8 @@ paths:
         which is essential for executing and validating payments on networks.
       operationId: ConfigContract
       parameters:
-      - description: |-
-          Ticker symbol for a digital asset (e.g., 'EUR', 'USDC', 'ETH', 'BTC').
-          Used to identify the specific asset for contract operations, payment
-          processing, and vault management. Must match an existing configured asset.
-        explode: false
-        in: path
-        name: assetUnit
-        required: true
-        schema:
-          $ref: "#/components/schemas/AssetUnit"
-        style: simple
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/AssetUnitParam"
+      - $ref: "#/components/parameters/NetworkIdParam"
       requestBody:
         content:
           application/json:
@@ -976,50 +552,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Configure Contract
       tags:
       - Contract
@@ -1046,32 +587,11 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: List Vaults
       tags:
       - Vault
@@ -1082,17 +602,7 @@ paths:
       description: Deactivates a vault while preserving historical data.
       operationId: ArchiveVault
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       responses:
         "200":
           content:
@@ -1104,41 +614,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Archive Vault
       tags:
       - Vault
@@ -1151,17 +633,7 @@ paths:
         which is essential for organizing and processing payments while maintaining compliance.
       operationId: GetVault
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       responses:
         "200":
           content:
@@ -1173,41 +645,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Vault
       tags:
       - Vault
@@ -1218,17 +662,7 @@ paths:
         Only provided properties will be modified.\nReturns the updated vault configuration."
       operationId: ConfigVault
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       requestBody:
         content:
           application/json:
@@ -1252,50 +686,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Partially Update Vault Configuration
       tags:
       - Vault
@@ -1308,17 +707,7 @@ paths:
         \ exists, or create\na new vault if it does not."
       operationId: SetVault
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       requestBody:
         content:
           application/json:
@@ -1340,50 +729,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Create or Update Vault
       tags:
       - Vault
@@ -1395,39 +749,9 @@ paths:
       description: Removes association between a contract and vault.
       operationId: VaultUnsubscribeContract
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Ticker symbol for a digital asset (e.g., 'EUR', 'USDC', 'ETH', 'BTC').
-          Used to identify the specific asset for contract operations, payment
-          processing, and vault management. Must match an existing configured asset.
-        explode: false
-        in: path
-        name: assetUnit
-        required: true
-        schema:
-          $ref: "#/components/schemas/AssetUnit"
-        style: simple
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/AssetUnitParam"
+      - $ref: "#/components/parameters/NetworkIdParam"
       responses:
         "200":
           content:
@@ -1439,41 +763,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Unsubscribe Contract from Vault
       tags:
       - Vault - Contract Subscription
@@ -1483,39 +779,9 @@ paths:
       description: Associates a smart contract with a vault.
       operationId: VaultSubscribeContract
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Ticker symbol for a digital asset (e.g., 'EUR', 'USDC', 'ETH', 'BTC').
-          Used to identify the specific asset for contract operations, payment
-          processing, and vault management. Must match an existing configured asset.
-        explode: false
-        in: path
-        name: assetUnit
-        required: true
-        schema:
-          $ref: "#/components/schemas/AssetUnit"
-        style: simple
-      - description: |-
-          Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand').
-          Used to target operations on a particular network when managing contracts,
-          assets, or vault subscriptions. Must match an existing configured network.
-        explode: false
-        in: path
-        name: networkId
-        required: true
-        schema:
-          $ref: "#/components/schemas/NetworkId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/AssetUnitParam"
+      - $ref: "#/components/parameters/NetworkIdParam"
       responses:
         "200":
           content:
@@ -1527,41 +793,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Subscribe Contract to Vault
       tags:
       - Vault - Contract Subscription
@@ -1574,17 +812,7 @@ paths:
         Requires at least one contract-amount pair in the request body.
       operationId: VaultGetPaymentEstimate
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       requestBody:
         content:
           application/json:
@@ -1609,50 +837,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Generate Payment Estimate
       tags:
       - Vault - Payment
@@ -1664,17 +857,7 @@ paths:
       description: Initiates a new payment acceptance process.
       operationId: CreatePaymentAcceptance
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       requestBody:
         content:
           application/json:
@@ -1704,50 +887,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Create Payment Acceptance
       tags:
       - Vault - Payment
@@ -1759,28 +907,8 @@ paths:
       description: Deactivates a payment acceptance while preserving historical records.
       operationId: ArchivePaymentAcceptance
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a payment acceptance within a vault. Used to track
-          specific payment requests, monitor transaction status, manage associated
-          documents, and retrieve payment history and compliance information.
-        explode: false
-        in: path
-        name: paymentAcceptanceId
-        required: true
-        schema:
-          $ref: "#/components/schemas/PaymentAcceptanceId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/PaymentAcceptanceIdParam"
       responses:
         "200":
           content:
@@ -1792,41 +920,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Archive Payment Acceptance
       tags:
       - Vault - Payment
@@ -1836,28 +936,8 @@ paths:
       description: Retrieves details of an existing payment acceptance.
       operationId: GetPaymentAcceptance
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a payment acceptance within a vault. Used to track
-          specific payment requests, monitor transaction status, manage associated
-          documents, and retrieve payment history and compliance information.
-        explode: false
-        in: path
-        name: paymentAcceptanceId
-        required: true
-        schema:
-          $ref: "#/components/schemas/PaymentAcceptanceId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/PaymentAcceptanceIdParam"
       responses:
         "200":
           content:
@@ -1869,41 +949,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Payment Acceptance
       tags:
       - Vault - Payment
@@ -1913,28 +965,8 @@ paths:
       description: Modifies configuration of an existing payment acceptance.
       operationId: UpdatePaymentAcceptance
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a payment acceptance within a vault. Used to track
-          specific payment requests, monitor transaction status, manage associated
-          documents, and retrieve payment history and compliance information.
-        explode: false
-        in: path
-        name: paymentAcceptanceId
-        required: true
-        schema:
-          $ref: "#/components/schemas/PaymentAcceptanceId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/PaymentAcceptanceIdParam"
       requestBody:
         content:
           application/json:
@@ -1956,50 +988,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Update Payment Acceptance
       tags:
       - Vault - Payment
@@ -2013,39 +1010,9 @@ paths:
         while retaining it for audit purposes.
       operationId: UnlinkPaymentAcceptanceDocument
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a payment acceptance within a vault. Used to track
-          specific payment requests, monitor transaction status, manage associated
-          documents, and retrieve payment history and compliance information.
-        explode: false
-        in: path
-        name: paymentAcceptanceId
-        required: true
-        schema:
-          $ref: "#/components/schemas/PaymentAcceptanceId"
-        style: simple
-      - description: |-
-          Unique identifier for a compliance document within a vault. Used for
-          document retrieval, status checking, linking to payment acceptance,
-          and managing the document verification lifecycle.
-        explode: false
-        in: path
-        name: documentId
-        required: true
-        schema:
-          $ref: "#/components/schemas/DocumentId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/PaymentAcceptanceIdParam"
+      - $ref: "#/components/parameters/DocumentIdParam"
       responses:
         "200":
           content:
@@ -2057,50 +1024,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Unlink Document from Payment Acceptance
       tags:
       - Vault - Payment
@@ -2112,39 +1044,9 @@ paths:
         \ data."
       operationId: LinkPaymentAcceptanceDocument
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a payment acceptance within a vault. Used to track
-          specific payment requests, monitor transaction status, manage associated
-          documents, and retrieve payment history and compliance information.
-        explode: false
-        in: path
-        name: paymentAcceptanceId
-        required: true
-        schema:
-          $ref: "#/components/schemas/PaymentAcceptanceId"
-        style: simple
-      - description: |-
-          Unique identifier for a compliance document within a vault. Used for
-          document retrieval, status checking, linking to payment acceptance,
-          and managing the document verification lifecycle.
-        explode: false
-        in: path
-        name: documentId
-        required: true
-        schema:
-          $ref: "#/components/schemas/DocumentId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/PaymentAcceptanceIdParam"
+      - $ref: "#/components/parameters/DocumentIdParam"
       responses:
         "200":
           content:
@@ -2156,50 +1058,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Link Document to Payment Acceptance
       tags:
       - Vault - Payment
@@ -2211,17 +1078,7 @@ paths:
         \ identification, entity documentation, \nwallet verification data."
       operationId: SubmitDocument
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       requestBody:
         content:
           application/json:
@@ -2250,50 +1107,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Submit Document
       tags:
       - Vault - Document
@@ -2306,28 +1128,8 @@ paths:
         \ it for audit purposes."
       operationId: ArchiveDocument
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a compliance document within a vault. Used for
-          document retrieval, status checking, linking to payment acceptance,
-          and managing the document verification lifecycle.
-        explode: false
-        in: path
-        name: documentId
-        required: true
-        schema:
-          $ref: "#/components/schemas/DocumentId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/DocumentIdParam"
       responses:
         "200":
           content:
@@ -2339,41 +1141,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Archive Document
       tags:
       - Vault - Document
@@ -2384,28 +1158,8 @@ paths:
         \ status and reviewer comments."
       operationId: GetDocument
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Unique identifier for a compliance document within a vault. Used for
-          document retrieval, status checking, linking to payment acceptance,
-          and managing the document verification lifecycle.
-        explode: false
-        in: path
-        name: documentId
-        required: true
-        schema:
-          $ref: "#/components/schemas/DocumentId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/DocumentIdParam"
       responses:
         "200":
           content:
@@ -2417,41 +1171,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Get Document
       tags:
       - Vault - Document
@@ -2476,32 +1202,11 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: List Account Velocity Limits
       tags:
       - Velocity
@@ -2529,41 +1234,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Create or Update Account Velocity Limit
       tags:
       - Velocity
@@ -2577,17 +1254,7 @@ paths:
         returns 204 even if the limit does not exist.
       operationId: DeleteAccountVelocityLimit
       parameters:
-      - description: |-
-          Rolling window length in minutes used as the unique key for a velocity limit
-          within its scope. Use 0 for "single payment cap" (no time aggregation).
-        explode: false
-        in: path
-        name: windowMinutes
-        required: true
-        schema:
-          minimum: 0
-          type: integer
-        style: simple
+      - $ref: "#/components/parameters/VelocityWindowMinutesParam"
       responses:
         "204":
           description: Velocity limit removed (or absent).
@@ -2595,32 +1262,11 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Delete Account Velocity Limit
       tags:
       - Velocity
@@ -2633,17 +1279,7 @@ paths:
         by window in ascending order.
       operationId: GetVaultVelocityLimits
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       responses:
         "200":
           content:
@@ -2657,41 +1293,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: List Vault Velocity Limits
       tags:
       - Velocity
@@ -2703,17 +1311,7 @@ paths:
         Setting `windowMinutes` to 0 means "single payment cap" — no time aggregation.
       operationId: SetVaultVelocityLimit
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
       requestBody:
         content:
           application/json:
@@ -2731,50 +1329,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Create or Update Vault Velocity Limit
       tags:
       - Velocity
@@ -2788,28 +1351,8 @@ paths:
         returns 204 even if the limit does not exist.
       operationId: DeleteVaultVelocityLimit
       parameters:
-      - description: |-
-          Unique identifier for a vault container that manages payment acceptance,
-          documents, and contract subscriptions. Used across all vault-related operations
-          including payment processing, document management, and configuration updates.
-        explode: false
-        in: path
-        name: vaultId
-        required: true
-        schema:
-          $ref: "#/components/schemas/VaultId"
-        style: simple
-      - description: |-
-          Rolling window length in minutes used as the unique key for a velocity limit
-          within its scope. Use 0 for "single payment cap" (no time aggregation).
-        explode: false
-        in: path
-        name: windowMinutes
-        required: true
-        schema:
-          minimum: 0
-          type: integer
-        style: simple
+      - $ref: "#/components/parameters/VaultIdParam"
+      - $ref: "#/components/parameters/VelocityWindowMinutesParam"
       responses:
         "204":
           description: Velocity limit removed (or absent).
@@ -2817,41 +1360,13 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Delete Vault Velocity Limit
       tags:
       - Velocity
@@ -2886,50 +1401,15 @@ paths:
             Cache-Control:
               $ref: "#/components/headers/CacheControlHeader"
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The request contains malformed data, invalid parameters, or violates API constraints.
-            This includes validation errors, incorrect data types, missing required fields,
-            or values outside acceptable ranges. Check the error details for specific issues.
+          $ref: "#/components/responses/InvalidRequestResponse"
         "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            Authentication credentials are missing, invalid, or expired. The request lacks
-            proper authorization headers or tokens. Clients should verify their authentication
-            setup and ensure valid credentials are provided in subsequent requests.
+          $ref: "#/components/responses/MissingAuthorizationResponse"
         "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The authenticated user lacks sufficient permissions to perform this operation.
-            While authentication was successful, the user's role or access level does not
-            permit the requested action. Contact an administrator for access rights.
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            The requested resource does not exist or has been removed. This may indicate
-            an incorrect ID, a resource that was deleted, or a path that doesn't match
-            any configured endpoints. Verify the resource identifier and try again.
+          $ref: "#/components/responses/NotFoundResponse"
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorList"
-          description: |-
-            An unexpected server error occurred while processing the request. This indicates
-            an internal system issue that prevented successful completion. The error details
-            may provide additional context for debugging and support purposes.
+          $ref: "#/components/responses/DefaultResponse"
       summary: Generate QR-Codes for wallets
       tags:
       - QR-Code
@@ -3125,10 +1605,9 @@ components:
         \ decimal precision\ninformation. This structure ensures accurate handling\
         \ of token amounts across \ndifferent assets with varying decimal places."
       example:
-        decimals: 6
-        raw: raw
-        value: value
-      type: object
+        decimals: ""
+        raw: ""
+        value: ""
     AmountFormat:
       anyOf:
       - $ref: "#/components/schemas/AmountValue"
@@ -3138,47 +1617,40 @@ components:
         information. This structure ensures accurate handling of token amounts across
         different assets with varying decimal places.
         Accepts value only, raw+decimals only, or both (validated for consistency).
-      type: object
     AmountValue:
+      description: |-
+        Decimal-string wire form of an amount, expressed in the asset's
+        primary unit (e.g. "1.5" for 1.5 BTC). Counterpart to AmountRaw —
+        on the wire, use one form, not both, unless intentionally pairing
+        them (see AmountFormat).
       example:
-        value: value
+        value: ""
       properties:
         value:
-          description: "String representation of a decimal number used for precise\
-            \ handling of large \nnumbers without floating-point precision issues.\n\
-            Supports values up to 78 digits to accommodate various asset denominations\n\
-            and high-precision calculations."
-          maxLength: 79
-          minLength: 1
-          pattern: "^[0-9]+(?:\\.[0-9]+)?$"
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/Number"
+          description: "Amount value in the unit of the asset (e.g., btc)."
       required:
       - value
-      type: object
     AmountRaw:
+      description: |-
+        Smallest-denomination integer form of an amount paired with the
+        asset's decimal precision (e.g. raw="150000000", decimals=8 for
+        1.5 BTC). The integer-precise counterpart to AmountValue.
       properties:
         raw:
-          description: |-
-            String representation of a non-negative integer used for precise handling
-            of large numbers without floating-point precision issues.
-            Supports values up to 78 digits to accommodate various asset denominations
-            and high-precision calculations.
-          maxLength: 78
-          minLength: 1
-          pattern: "^[0-9]+$"
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/UnsignedInteger"
+          description: "Raw amount value in the smallest unit of the asset (e.g.,\
+            \ satoshi for btc)."
         decimals:
-          description: |-
-            Number of decimal places used for displaying amounts.
-            For example, USDC typically uses 6 decimals, while Ethereum uses 18.
-            This determines how the raw value should be formatted for user presentation.
-          maximum: 77
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Decimals"
+          description: Number of decimal places to apply when displaying the amount
+            to users.
       required:
       - decimals
       - raw
-      type: object
     Decimals:
       description: |-
         Number of decimal places used for displaying amounts.
@@ -3201,27 +1673,27 @@ components:
       minimum: 0
       type: integer
     Expire:
+      description: |-
+        Expiration directive expressible either as an absolute timestamp
+        (`at`) or as a relative duration in milliseconds (`in`). One of
+        the two is set, never both.
       example:
-        at: 0
-        in: 0
+        at: ""
+        in: ""
       properties:
         at:
-          description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
+          description: Timestamp when this payment scenario expires and is no longer
+            valid.
         in:
-          description: "Time in milliseconds representing an amount of time.\nUsed\
-            \ for expiration cut-offs, and other time-sensitive operations throughout\
-            \ \nthe payment lifecycle."
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Time"
+          description: Time remaining until this payment scenario expires and is no
+            longer valid.
       required:
       - at
       - in
-      type: object
     Enabled:
       description: |-
         Boolean flag indicating whether a resource is active and operational.
@@ -3243,8 +1715,8 @@ components:
         to support optimistic locking and change tracking.
       example:
         sequence: 0
-        updated-at: 0
-        created-at: 0
+        updated-at: ""
+        created-at: ""
       properties:
         sequence:
           description: |-
@@ -3253,24 +1725,17 @@ components:
           minimum: 0
           type: integer
         created-at:
-          description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
+          description: Timestamp when this resource was initially created.
         updated-at:
-          description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
+          description: Timestamp when this resource was last modified.
       required:
       - created-at
       - sequence
       - updated-at
-      type: object
     UUID:
       description: |-
         Universally unique identifier used for resources
@@ -3332,8 +1797,14 @@ components:
     MediaMap:
       additionalProperties:
         $ref: "#/components/schemas/Media"
-      type: object
+      description: |-
+        Map of media references keyed by an arbitrary string label
+        (purpose-specific in subtypes — e.g. "logo-light"/"logo-dark"
+        on AssetMediaMap). Values are Media descriptors.
     Media:
+      description: |-
+        Single media reference with its content type, retrievable URL,
+        and optional descriptive metadata.
       example:
         metadata: "{}"
         type: image
@@ -3350,16 +1821,26 @@ components:
           pattern: ^https?://.+$
           type: string
         metadata:
+          description: |-
+            Free-form metadata bag carried alongside a Media reference
+            (dimensions, alt text, source attribution, etc.). Concrete
+            fields are subtype-specific and may evolve.
           type: object
       required:
       - type
       - url
-      type: object
     MediaType:
+      description: |-
+        Content category of a media reference. Currently only `image`
+        is supported.
       enum:
       - image
       type: string
     MediaMetadata:
+      description: |-
+        Free-form metadata bag carried alongside a Media reference
+        (dimensions, alt text, source attribution, etc.). Concrete
+        fields are subtype-specific and may evolve.
       type: object
     QrCodeTransactionRequest:
       description: |-
@@ -3369,7 +1850,7 @@ components:
         wallet applications.
       example:
         amount:
-          value: value
+          value: ""
         address: address
         contract-id:
           asset-unit: asset-unit
@@ -3392,7 +1873,6 @@ components:
       - address
       - amount
       - contract-id
-      type: object
     QrCode:
       description: |-
         QR code representation for facilitating blockchain transactions.
@@ -3420,7 +1900,6 @@ components:
       - content
       - encoding
       - type
-      type: object
     QrCodeType:
       description: |-
         Categorization of QR codes based on their payment functionality:
@@ -3443,49 +1922,64 @@ components:
     Traits:
       additionalProperties:
         $ref: "#/components/schemas/TraitProperties"
-      type: object
+      description: |-
+        Map of named traits keyed by trait identifier (e.g.
+        "payment-acceptance-price-trait"). Values are open property
+        bags — see TraitProperties. Used as the extensibility surface
+        for asset/contract/payment metadata.
     TraitProperties:
       additionalProperties: true
+      description: |-
+        Free-form property bag for a single trait. Keys and value types
+        are trait-specific by design — see Traits and concrete trait
+        schemas (e.g. PaymentAcceptancePriceTrait) for the actual
+        shapes carried per trait identifier.
       type: object
     PaymentAcceptancePriceTrait:
+      description: |-
+        Trait declaring the price range a payment-acceptance configuration
+        is willing to charge — bounded by `min-amount` and `max-amount`
+        Amount values.
       example:
         max-amount:
-          decimals: 6
-          raw: raw
-          value: value
+          decimals: ""
+          raw: ""
+          value: ""
         min-amount:
-          decimals: 6
-          raw: raw
-          value: value
+          decimals: ""
+          raw: ""
+          value: ""
       properties:
         min-amount:
           $ref: "#/components/schemas/Amount"
         max-amount:
           $ref: "#/components/schemas/Amount"
-      type: object
     PaymentAcceptancePayTrait:
+      description: |-
+        Trait declaring the pay-out range a payment-acceptance configuration
+        is willing to receive — bounded by `min-amount` and `max-amount`
+        Amount values.
       example:
         max-amount:
-          decimals: 6
-          raw: raw
-          value: value
+          decimals: ""
+          raw: ""
+          value: ""
         min-amount:
-          decimals: 6
-          raw: raw
-          value: value
+          decimals: ""
+          raw: ""
+          value: ""
       properties:
         min-amount:
           $ref: "#/components/schemas/Amount"
         max-amount:
           $ref: "#/components/schemas/Amount"
-      type: object
     Status:
       description: |-
         Simple service status response used by health and readiness endpoints
         to indicate operational state. Provides a standardized way to communicate
         service availability to monitoring systems and load balancers.
       example:
-        status: ok
+        status: status
       properties:
         status:
           description: |-
@@ -3496,15 +1990,14 @@ components:
           type: string
       required:
       - status
-      type: object
     Error:
       description: |-
         Standardized error response structure providing categorized error codes
         and human-readable messages. Used consistently across all API endpoints
         to help clients understand and handle different types of failures.
       example:
-        code: AUT-401
-        message: Missing authorization token
+        code: code
+        message: message
       properties:
         code:
           description: |-
@@ -3526,7 +2019,6 @@ components:
       required:
       - code
       - message
-      type: object
     ErrorList:
       description: Collection of error responses.
       items:
@@ -3553,7 +2045,10 @@ components:
         required:
         - logo-dark
         - logo-light
-        type: object
+      description: |-
+        MediaMap subtype scoped to networks, conventionally carrying logo
+        variants (e.g. "logo-light", "logo-dark") for network display in
+        consumer wallets and dashboards.
       example:
         logo-light:
           metadata: "{}"
@@ -3563,7 +2058,6 @@ components:
           metadata: "{}"
           type: image
           url: https://openapi-generator.tech
-      type: object
     NetworkStatus:
       description: |-
         Operational status of a blockchain network indicating its availability
@@ -3584,7 +2078,7 @@ components:
         - null
         - null
         name: name
-        time-to-settle: 0
+        time-to-settle: ""
         media:
           logo-light:
             metadata: "{}"
@@ -3596,8 +2090,8 @@ components:
             url: https://openapi-generator.tech
         version:
           sequence: 0
-          updated-at: 0
-          created-at: 0
+          updated-at: ""
+          created-at: ""
         status: active
       properties:
         name:
@@ -3626,11 +2120,11 @@ components:
             $ref: "#/components/schemas/AssetUnit"
           type: array
         time-to-settle:
-          description: "Time in milliseconds representing an amount of time.\nUsed\
-            \ for expiration cut-offs, and other time-sensitive operations throughout\
-            \ \nthe payment lifecycle."
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Time"
+          description: |-
+            The duration from transaction initiation to its complete and successful
+            execution, including the final, irreversible recording of its outcome.
         version:
           $ref: "#/components/schemas/Version"
       required:
@@ -3641,22 +2135,20 @@ components:
       - time-to-settle
       - version
       - website
-      type: object
     NetworkConfig:
       description: |-
         Configuration parameters that control network behavior and availability.
         Currently supports enabling/disabling the network for new payment processing
         while preserving existing data and configurations.
       example:
-        enabled: true
+        enabled: ""
       properties:
         enabled:
+          allOf:
+          - $ref: "#/components/schemas/Enabled"
           description: |-
-            Boolean flag indicating whether a resource is active and operational.
-            When true, the resource can be used for new operations. When false,
-            the resource is disabled but historical data is preserved.
-          type: boolean
-      type: object
+            Controls whether this network is available for new payment processing.
+            Defaults to true when not specified.
     Network:
       description: |-
         Complete network definition combining identification, metadata, and
@@ -3664,14 +2156,14 @@ components:
       example:
         id: id
         config:
-          enabled: true
+          enabled: ""
         info:
           website: https://openapi-generator.tech
           assets:
           - null
           - null
           name: name
-          time-to-settle: 0
+          time-to-settle: ""
           media:
             logo-light:
               metadata: "{}"
@@ -3683,8 +2175,8 @@ components:
               url: https://openapi-generator.tech
           version:
             sequence: 0
-            updated-at: 0
-            created-at: 0
+            updated-at: ""
+            created-at: ""
           status: active
       properties:
         id:
@@ -3704,7 +2196,6 @@ components:
       - config
       - id
       - info
-      type: object
     NetworkExplorer:
       description: |-
         URL templates for a network's block explorer.
@@ -3724,7 +2215,6 @@ components:
       required:
       - address-url
       - transaction-url
-      type: object
     AssetUnit:
       description: Ticker symbol for digital asset.
       maxLength: 8
@@ -3742,7 +2232,10 @@ components:
         required:
         - logo-dark
         - logo-light
-        type: object
+      description: |-
+        MediaMap subtype scoped to assets, conventionally carrying logo
+        variants (e.g. "logo-light", "logo-dark") for asset display in
+        consumer wallets and dashboards.
       example:
         logo-light:
           metadata: "{}"
@@ -3752,7 +2245,6 @@ components:
           metadata: "{}"
           type: image
           url: https://openapi-generator.tech
-      type: object
     AssetStatus:
       description: Operational status of digital asset.
       enum:
@@ -3779,8 +2271,8 @@ components:
         - null
         version:
           sequence: 0
-          updated-at: 0
-          created-at: 0
+          updated-at: ""
+          created-at: ""
         status: active
       properties:
         name:
@@ -3817,7 +2309,6 @@ components:
       - status
       - version
       - website
-      type: object
     AssetConfig:
       description: Asset configuration parameters.
       example:
@@ -3829,7 +2320,6 @@ components:
             When true, the resource can be used for new operations. When false,
             the resource is disabled but historical data is preserved.
           type: boolean
-      type: object
     Asset:
       description: "Complete digital asset definition combining identification, metadata,\
         \ and \nconfiguration. Represents a supported asset that can be used in payment\
@@ -3855,8 +2345,8 @@ components:
           - null
           version:
             sequence: 0
-            updated-at: 0
-            created-at: 0
+            updated-at: ""
+            created-at: ""
           status: active
       properties:
         unit:
@@ -3873,7 +2363,6 @@ components:
       - config
       - info
       - unit
-      type: object
     ContractId:
       description: |-
         Composite identifier uniquely identifying a contract by combining
@@ -3902,7 +2391,6 @@ components:
       required:
       - asset-unit
       - network-id
-      type: object
     ContractTraits:
       allOf:
       - $ref: "#/components/schemas/Traits"
@@ -3911,27 +2399,30 @@ components:
             $ref: "#/components/schemas/PaymentAcceptancePriceTrait"
           payment-acceptance-pay-trait:
             $ref: "#/components/schemas/PaymentAcceptancePayTrait"
-        type: object
+      description: |-
+        Traits subtype scoped to contracts. Layers well-known contract
+        trait keys (`payment-acceptance-price-trait`,
+        `payment-acceptance-pay-trait`) on top of the generic Traits
+        open map.
       example:
         payment-acceptance-pay-trait:
           max-amount:
-            decimals: 6
-            raw: raw
-            value: value
+            decimals: ""
+            raw: ""
+            value: ""
           min-amount:
-            decimals: 6
-            raw: raw
-            value: value
+            decimals: ""
+            raw: ""
+            value: ""
         payment-acceptance-price-trait:
           max-amount:
-            decimals: 6
-            raw: raw
-            value: value
+            decimals: ""
+            raw: ""
+            value: ""
           min-amount:
-            decimals: 6
-            raw: raw
-            value: value
-      type: object
+            decimals: ""
+            raw: ""
+            value: ""
     ContractMediaMap:
       allOf:
       - $ref: "#/components/schemas/MediaMap"
@@ -3943,7 +2434,10 @@ components:
         required:
         - logo-dark
         - logo-light
-        type: object
+      description: |-
+        MediaMap subtype scoped to contracts, conventionally carrying
+        logo variants for contract display in consumer wallets and
+        dashboards.
       example:
         logo-light:
           metadata: "{}"
@@ -3953,7 +2447,6 @@ components:
           metadata: "{}"
           type: image
           url: https://openapi-generator.tech
-      type: object
     ContractStatus:
       description: |-
         Operational status of a contract indicating its availability
@@ -3974,29 +2467,29 @@ components:
         traits:
           payment-acceptance-pay-trait:
             max-amount:
-              decimals: 6
-              raw: raw
-              value: value
+              decimals: ""
+              raw: ""
+              value: ""
             min-amount:
-              decimals: 6
-              raw: raw
-              value: value
+              decimals: ""
+              raw: ""
+              value: ""
           payment-acceptance-price-trait:
             max-amount:
-              decimals: 6
-              raw: raw
-              value: value
+              decimals: ""
+              raw: ""
+              value: ""
             min-amount:
-              decimals: 6
-              raw: raw
-              value: value
+              decimals: ""
+              raw: ""
+              value: ""
         vaults:
         - null
         - null
         minor-unit:
-          decimals: 6
-          raw: raw
-          value: value
+          decimals: ""
+          raw: ""
+          value: ""
         media:
           logo-light:
             metadata: "{}"
@@ -4008,8 +2501,8 @@ components:
             url: https://openapi-generator.tech
         version:
           sequence: 0
-          updated-at: 0
-          created-at: 0
+          updated-at: ""
+          created-at: ""
         status: active
       properties:
         vaults:
@@ -4053,7 +2546,6 @@ components:
       - traits
       - vaults
       - version
-      type: object
     ContractConfig:
       description: |-
         Configuration parameters that control contract behavior and availability.
@@ -4068,7 +2560,6 @@ components:
             When true, the resource can be used for new operations. When false,
             the resource is disabled but historical data is preserved.
           type: boolean
-      type: object
     Contract:
       description: |-
         Complete contract definition combining identification, metadata,
@@ -4086,29 +2577,29 @@ components:
           traits:
             payment-acceptance-pay-trait:
               max-amount:
-                decimals: 6
-                raw: raw
-                value: value
+                decimals: ""
+                raw: ""
+                value: ""
               min-amount:
-                decimals: 6
-                raw: raw
-                value: value
+                decimals: ""
+                raw: ""
+                value: ""
             payment-acceptance-price-trait:
               max-amount:
-                decimals: 6
-                raw: raw
-                value: value
+                decimals: ""
+                raw: ""
+                value: ""
               min-amount:
-                decimals: 6
-                raw: raw
-                value: value
+                decimals: ""
+                raw: ""
+                value: ""
           vaults:
           - null
           - null
           minor-unit:
-            decimals: 6
-            raw: raw
-            value: value
+            decimals: ""
+            raw: ""
+            value: ""
           media:
             logo-light:
               metadata: "{}"
@@ -4120,8 +2611,8 @@ components:
               url: https://openapi-generator.tech
           version:
             sequence: 0
-            updated-at: 0
-            created-at: 0
+            updated-at: ""
+            created-at: ""
           status: active
       properties:
         id:
@@ -4134,7 +2625,6 @@ components:
       - config
       - id
       - info
-      type: object
     ContractAmount:
       description: |-
         Pairing of a specific contract with a precise amount value.
@@ -4142,9 +2632,9 @@ components:
         both display value and raw precision data.
       example:
         amount:
-          decimals: 6
-          raw: raw
-          value: value
+          decimals: ""
+          raw: ""
+          value: ""
         contract-id:
           asset-unit: asset-unit
           network-id: network-id
@@ -4156,7 +2646,6 @@ components:
       required:
       - amount
       - contract-id
-      type: object
     ContractAmountFormat:
       description: |-
         Pairing of a specific contract with a precise amount value.
@@ -4164,7 +2653,7 @@ components:
         allowing callers to provide either display value or raw precision data.
       example:
         amount:
-          value: value
+          value: ""
         contract-id:
           asset-unit: asset-unit
           network-id: network-id
@@ -4176,7 +2665,6 @@ components:
       required:
       - amount
       - contract-id
-      type: object
     VaultId:
       description: Unique vault identifier.
       maxLength: 36
@@ -4186,24 +2674,20 @@ components:
     VaultInfo:
       description: Vault lifecycle metadata.
       example:
-        archived-at: 0
+        archived-at: ""
         version:
           sequence: 0
-          updated-at: 0
-          created-at: 0
+          updated-at: ""
+          created-at: ""
       properties:
         archived-at:
-          description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
+          description: Timestamp of vault archival (null if active).
         version:
           $ref: "#/components/schemas/Version"
       required:
       - version
-      type: object
     VaultConfig:
       description: Vault configuration parameters.
       example:
@@ -4212,7 +2696,7 @@ components:
           network-id: network-id
         - asset-unit: asset-unit
           network-id: network-id
-        enabled: true
+        enabled: ""
       properties:
         contract-ids:
           description: Subscribed contracts (required for new vaults).
@@ -4220,12 +2704,9 @@ components:
             $ref: "#/components/schemas/ContractId"
           type: array
         enabled:
-          description: |-
-            Boolean flag indicating whether a resource is active and operational.
-            When true, the resource can be used for new operations. When false,
-            the resource is disabled but historical data is preserved.
-          type: boolean
-      type: object
+          allOf:
+          - $ref: "#/components/schemas/Enabled"
+          description: "Vault activation status (default: true)."
     Vault:
       description: Financial operations container
       example:
@@ -4236,13 +2717,13 @@ components:
             network-id: network-id
           - asset-unit: asset-unit
             network-id: network-id
-          enabled: true
+          enabled: ""
         info:
-          archived-at: 0
+          archived-at: ""
           version:
             sequence: 0
-            updated-at: 0
-            created-at: 0
+            updated-at: ""
+            created-at: ""
       properties:
         id:
           description: Unique vault identifier.
@@ -4258,7 +2739,6 @@ components:
       - config
       - id
       - info
-      type: object
     Document:
       description: Compliance document with validation lifecycle.
       example:
@@ -4283,12 +2763,7 @@ components:
           type: PersonV1
         info:
           vault: vault
-          status:
-            expire:
-              at: 0
-              in: 0
-            details: details
-            id: pending
+          status: ""
       properties:
         id:
           description: |-
@@ -4308,19 +2783,13 @@ components:
       - config
       - id
       - info
-      type: object
     DocumentId:
       $ref: "#/components/schemas/UUID"
     DocumentInfo:
       description: Document metadata and associations.
       example:
         vault: vault
-        status:
-          expire:
-            at: 0
-            in: 0
-          details: details
-          id: pending
+        status: ""
       properties:
         vault:
           description: Unique vault identifier.
@@ -4329,11 +2798,12 @@ components:
           pattern: "^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$"
           type: string
         status:
-          $ref: "#/components/schemas/DocumentStatus"
+          allOf:
+          - $ref: "#/components/schemas/DocumentStatus"
+          description: Current validation status.
       required:
       - status
       - vault
-      type: object
     DocumentType:
       description: Compliance document classification.
       enum:
@@ -4342,6 +2812,10 @@ components:
       - NonCustodialV1
       type: string
     DocumentConfig:
+      description: |-
+        Discriminated union of compliance-document content variants
+        (Person V1, Custodial V1, Non-Custodial V1). The `type` field
+        selects which variant's data shape applies.
       discriminator:
         mapping:
           PersonV1: "#/components/schemas/DocumentConfigPersonV1"
@@ -4359,7 +2833,6 @@ components:
           $ref: "#/components/schemas/DocumentType"
       required:
       - type
-      type: object
     DocumentConfigPersonV1:
       allOf:
       - $ref: "#/components/schemas/DocumentConfigBase"
@@ -4368,7 +2841,9 @@ components:
             $ref: "#/components/schemas/PersonV1"
         required:
         - data
-        type: object
+      description: |-
+        Document configuration carrying PersonV1 identity data (natural
+        or legal person). `type` is fixed to "PersonV1".
       example:
         data:
           address:
@@ -4387,7 +2862,6 @@ components:
             issuer: issuer
           type: PersonNaturalV1
         type: PersonV1
-      type: object
     DocumentConfigCustodialV1:
       allOf:
       - $ref: "#/components/schemas/DocumentConfigBase"
@@ -4396,8 +2870,10 @@ components:
             $ref: "#/components/schemas/CustodialV1"
         required:
         - data
-        type: object
-      type: object
+      description: |-
+        Document configuration carrying CustodialV1 data — declares a
+        custodial relationship with a regulated provider holding the
+        asset. `type` is fixed to "CustodialV1".
     DocumentConfigNonCustodialV1:
       allOf:
       - $ref: "#/components/schemas/DocumentConfigBase"
@@ -4406,16 +2882,12 @@ components:
             $ref: "#/components/schemas/NonCustodialV1"
         required:
         - data
-        type: object
-      type: object
+      description: |-
+        Document configuration carrying NonCustodialV1 data — declares
+        a self-custody arrangement bound to a wallet address. `type` is
+        fixed to "NonCustodialV1".
     DocumentStatus:
       description: Document validation state.
-      example:
-        expire:
-          at: 0
-          in: 0
-        details: details
-        id: pending
       properties:
         id:
           $ref: "#/components/schemas/DocumentStatusId"
@@ -4429,7 +2901,6 @@ components:
       required:
       - details
       - id
-      type: object
     DocumentStatusId:
       description: Document validation status category.
       enum:
@@ -4445,6 +2916,10 @@ components:
       minLength: 1
       type: string
     PersonV1:
+      description: |-
+        Identity record discriminated between natural persons
+        (PersonNaturalV1) and legal entities (PersonLegalV1). The V1
+        of Definancy's compliance person model.
       discriminator:
         mapping:
           PersonNaturalV1: "#/components/schemas/PersonNaturalV1"
@@ -4475,7 +2950,6 @@ components:
       - address
       - name
       - type
-      type: object
     PersonType:
       description: Person entity classification.
       enum:
@@ -4535,7 +3009,6 @@ components:
       - postal-code
       - region
       - street
-      type: object
     PersonNaturalV1:
       allOf:
       - $ref: "#/components/schemas/PersonBase"
@@ -4547,7 +3020,6 @@ components:
         required:
         - birth
         - id
-        type: object
       description: Natural person (individual) details.
       example:
         address:
@@ -4590,7 +3062,6 @@ components:
       - issuer
       - number
       - type
-      type: object
     PersonNaturalIdNumber:
       description: Identification document number.
       maxLength: 120
@@ -4643,7 +3114,6 @@ components:
       - country
       - date
       - region
-      type: object
     PersonLegalV1:
       allOf:
       - $ref: "#/components/schemas/PersonBase"
@@ -4655,7 +3125,6 @@ components:
         required:
         - id
         - incorporation
-        type: object
       description: Legal entity (organization) details.
     PersonLegalId:
       description: "Business registration and identification information for legal\
@@ -4663,26 +3132,21 @@ components:
         \ \nand compliance with business identification regulations."
       properties:
         number:
-          description: "Official business registration number, tax identification\
-            \ number, or \nother government-issued entity identifier exactly as it\
-            \ appears on \nofficial documentation."
-          maxLength: 120
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/PersonLegalIdNumber"
+          description: Official business registration or tax identification number.
         type:
-          $ref: "#/components/schemas/PersonLegalIdType"
+          allOf:
+          - $ref: "#/components/schemas/PersonLegalIdType"
+          description: Type of business identification document or registration.
         issuer:
-          description: "Government authority, tax agency, or business registration\
-            \ office \nthat issued the legal entity identification. Used for verification\
-            \ \nand authenticity validation purposes."
-          maxLength: 40
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/PersonLegalIdIssuer"
+          description: Government authority or agency that issued the business registration.
       required:
       - issuer
       - number
       - type
-      type: object
     PersonLegalIdNumber:
       description: "Official business registration number, tax identification number,\
         \ or \nother government-issued entity identifier exactly as it appears on\
@@ -4710,66 +3174,45 @@ components:
         \ \ndocuments and corporate filings."
       properties:
         date:
-          description: |-
-            Calendar date in ISO 8601 format (YYYY-MM-DD) without time information.
-            Used for birth dates, incorporation dates, and other date-only fields
-            in compliance documentation and identity verification.
-          maxLength: 10
-          minLength: 10
-          pattern: "^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2][0-9]|3[0-1])$"
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/Date"
+          description: Date of business incorporation or formation in ISO 8601 format
+            (YYYY-MM-DD).
         region:
-          description: |-
-            Administrative subdivision such as state, province, prefecture, or region.
-            Used in address information for compliance documents and geographic
-            identification in identity verification processes.
-          maxLength: 40
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/Region"
+          description: "State, province, or administrative region where business was\
+            \ incorporated."
         country:
-          description: |-
-            Country name or ISO 3166-1 alpha-2 country code for geographic identification.
-            Used in address information, birth records, and incorporation details
-            for compliance and identity verification purposes.
-          maxLength: 2
-          minLength: 2
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/Country"
+          description: Country where business was incorporated or formed.
       required:
       - country
       - date
       - region
-      type: object
     CustodialV1:
       description: "Compliance document for custodial wallet services where a third-party\
         \ \nprovider manages private keys and wallet operations on behalf of users.\
         \ \nContains provider identification for regulatory compliance and risk assessment."
       properties:
         provider:
-          description: |-
-            Human-readable resource identifier that follows standard naming conventions
-            for display purposes. Used for network names, asset names, and other user-facing
-            identifiers that need to be presentable in user interfaces and documentation.
-          maxLength: 32
-          minLength: 1
-          type: string
-      type: object
+          allOf:
+          - $ref: "#/components/schemas/FormalName"
+          description: "Name of the custodial wallet service provider. Must be a recognized\
+            \ \nand regulated financial service provider."
     NonCustodialV1:
       description: "Compliance document for non-custodial (self-custody) wallets where\
         \ users \ncontrol their own private keys. Contains wallet address information\
         \ for \ntransaction verification and compliance monitoring."
       properties:
         address:
-          description: |-
-            Blockchain-specific address format used for cryptocurrency transactions.
-            The exact format varies by network (e.g., Ethereum uses hexadecimal addresses
-            starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses,
-            wallet addresses, and payment destinations.
-          maxLength: 64
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/NetworkAddress"
+          description: "Blockchain address of the non-custodial wallet. Used for transaction\
+            \ \nverification and compliance monitoring purposes."
       required:
       - address
-      type: object
     Compliance:
       description: "Comprehensive compliance status and requirements for payment acceptance.\
         \ \nTracks document submission requirements and validation status across \n\
@@ -4779,23 +3222,19 @@ components:
         - submitted:
           - null
           - null
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
+          contract-id: ""
           required:
           - PersonV1
           - PersonV1
-          status: pending
+          status: ""
         - submitted:
           - null
           - null
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
+          contract-id: ""
           required:
           - PersonV1
           - PersonV1
-          status: pending
+          status: ""
       properties:
         scenarios:
           description: "Contract-specific compliance requirements and current status\
@@ -4805,7 +3244,6 @@ components:
           type: array
       required:
       - scenarios
-      type: object
     ComplianceScenario:
       description: "Compliance requirements and status for a specific contract within\
         \ a \npayment acceptance. Tracks required document types, submitted documents,\
@@ -4814,16 +3252,16 @@ components:
         submitted:
         - null
         - null
-        contract-id:
-          asset-unit: asset-unit
-          network-id: network-id
+        contract-id: ""
         required:
         - PersonV1
         - PersonV1
-        status: pending
+        status: ""
       properties:
         contract-id:
-          $ref: "#/components/schemas/ContractId"
+          allOf:
+          - $ref: "#/components/schemas/ContractId"
+          description: Contract reference for which compliance requirements apply.
         required:
           description: "List of document types that must be submitted and validated\
             \ \nfor compliance with this contract's requirements."
@@ -4837,12 +3275,13 @@ components:
             $ref: "#/components/schemas/DocumentId"
           type: array
         status:
-          $ref: "#/components/schemas/ComplianceScenarioStatus"
+          allOf:
+          - $ref: "#/components/schemas/ComplianceScenarioStatus"
+          description: Current compliance fulfillment status for this contract scenario.
       required:
       - contract-id
       - required
       - status
-      type: object
     ComplianceScenarioStatus:
       description: |-
         Compliance requirement fulfillment status indicating whether all
@@ -4863,94 +3302,39 @@ components:
           - submitted:
             - null
             - null
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
+            contract-id: ""
             required:
             - PersonV1
             - PersonV1
-            status: pending
+            status: ""
           - submitted:
             - null
             - null
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
+            contract-id: ""
             required:
             - PersonV1
             - PersonV1
-            status: pending
+            status: ""
         warnings:
         - window-minutes: 0
           scope: account
-          limit:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          used:
-            decimals: 6
-            raw: raw
-            value: value
+          limit: ""
+          used: ""
         - window-minutes: 0
           scope: account
-          limit:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          used:
-            decimals: 6
-            raw: raw
-            value: value
+          limit: ""
+          used: ""
         scenarios:
-        - price:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          pay:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-        - price:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          pay:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-        ts: 0
+        - price: ""
+          pay: ""
+        - price: ""
+          pay: ""
+        ts: ""
       properties:
         ts:
-          description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
+          description: Estimation generation timestamp.
         scenarios:
           description: Generated payment scenarios.
           items:
@@ -4969,38 +3353,26 @@ components:
       - compliance
       - scenarios
       - ts
-      type: object
     PaymentEstimateScenario:
       description: |-
         Individual payment calculation scenario showing the relationship between
         requested amounts and actual payment requirements including fees,
         conversions, and network-specific adjustments.
       example:
-        price:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
-        pay:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
+        price: ""
+        pay: ""
       properties:
         price:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: Requested payment obligation.
         pay:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: Calculated payment requirement.
       required:
       - pay
       - price
-      type: object
     PaymentAcceptanceId:
       $ref: "#/components/schemas/UUID"
     PaymentAcceptanceOrder:
@@ -5008,13 +3380,6 @@ components:
         \ acceptance. \nProvides business context for payment processing including\
         \ order details, \ndescriptions, and structured metadata for integration with\
         \ external systems."
-      example:
-        schema:
-          key: ""
-        data:
-          key: ""
-        description: description
-        id: id
       properties:
         id:
           description: "External order reference identifier from the originating system\
@@ -5036,204 +3401,80 @@ components:
             Order-specific data payload containing business information relevant
             to the commercial transaction.
           type: object
-      type: object
     PaymentAcceptanceInfo:
       description: "Payment acceptance operational state and lifecycle information.\
         \ Contains \ncurrent processing status, payment scenarios, compliance state,\
         \ and \nversion tracking for audit and monitoring purposes."
       example:
-        compliance:
-          scenarios:
-          - submitted:
-            - null
-            - null
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-            required:
-            - PersonV1
-            - PersonV1
-            status: pending
-          - submitted:
-            - null
-            - null
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-            required:
-            - PersonV1
-            - PersonV1
-            status: pending
+        compliance: ""
         warnings:
         - window-minutes: 0
           scope: account
-          limit:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          used:
-            decimals: 6
-            raw: raw
-            value: value
+          limit: ""
+          used: ""
         - window-minutes: 0
           scope: account
-          limit:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          used:
-            decimals: 6
-            raw: raw
-            value: value
+          limit: ""
+          used: ""
         scenarios:
-        - address: address
-          price:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
+        - address: ""
+          price: ""
           expire:
-            at: 0
-            in: 0
-          pay:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          received:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
+            at: ""
+            in: ""
+          pay: ""
+          received: ""
           transaction-list:
-          - amount:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            confirmation-stats:
-              eta: 0
-              confirmed: 39072
-              remaining: 36944
-            receiver: receiver
-            sender: sender
-            id: id
-            ts: 0
-            status: compliance
-          - amount:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            confirmation-stats:
-              eta: 0
-              confirmed: 39072
-              remaining: 36944
-            receiver: receiver
-            sender: sender
-            id: id
-            ts: 0
-            status: compliance
-          status: compliance
-        - address: address
-          price:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
+          - amount: ""
+            confirmation-stats: ""
+            receiver: ""
+            sender: ""
+            id: ""
+            ts: ""
+            status: ""
+          - amount: ""
+            confirmation-stats: ""
+            receiver: ""
+            sender: ""
+            id: ""
+            ts: ""
+            status: ""
+          status: ""
+        - address: ""
+          price: ""
           expire:
-            at: 0
-            in: 0
-          pay:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          received:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
+            at: ""
+            in: ""
+          pay: ""
+          received: ""
           transaction-list:
-          - amount:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            confirmation-stats:
-              eta: 0
-              confirmed: 39072
-              remaining: 36944
-            receiver: receiver
-            sender: sender
-            id: id
-            ts: 0
-            status: compliance
-          - amount:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            confirmation-stats:
-              eta: 0
-              confirmed: 39072
-              remaining: 36944
-            receiver: receiver
-            sender: sender
-            id: id
-            ts: 0
-            status: compliance
-          status: compliance
-        version:
-          sequence: 0
-          updated-at: 0
-          created-at: 0
-        status:
-          details: details
-          id: compliance
+          - amount: ""
+            confirmation-stats: ""
+            receiver: ""
+            sender: ""
+            id: ""
+            ts: ""
+            status: ""
+          - amount: ""
+            confirmation-stats: ""
+            receiver: ""
+            sender: ""
+            id: ""
+            ts: ""
+            status: ""
+          status: ""
+        version: ""
+        status: ""
       properties:
         status:
-          $ref: "#/components/schemas/PaymentAcceptanceStatus"
+          allOf:
+          - $ref: "#/components/schemas/PaymentAcceptanceStatus"
+          description: Current processing state of the payment acceptance.
         version:
-          $ref: "#/components/schemas/Version"
+          allOf:
+          - $ref: "#/components/schemas/Version"
+          description: Version tracking information for audit and synchronization
+            purposes.
         scenarios:
           description: "Active payment execution scenarios with blockchain addresses,\
             \ \namounts, and transaction tracking information."
@@ -5241,7 +3482,11 @@ components:
             $ref: "#/components/schemas/PaymentAcceptanceScenario"
           type: array
         compliance:
-          $ref: "#/components/schemas/Compliance"
+          allOf:
+          - $ref: "#/components/schemas/Compliance"
+          description: |-
+            Current compliance status and requirements for all contracts
+            in this payment acceptance.
         warnings:
           description: |-
             Velocity warnings that fired during the payment creation check.
@@ -5254,7 +3499,6 @@ components:
       - scenarios
       - status
       - version
-      type: object
     PaymentAcceptanceConfigBase:
       description: |-
         Base configuration for payment acceptance operations containing optional
@@ -5262,14 +3506,16 @@ components:
         both request and response payment acceptance structures.
       properties:
         order:
-          $ref: "#/components/schemas/PaymentAcceptanceOrder"
+          allOf:
+          - $ref: "#/components/schemas/PaymentAcceptanceOrder"
+          description: "Optional commercial order context providing business information\
+            \ \nabout the transaction being processed."
         documents:
           description: "Optional list of document IDs to associate with this payment\
             \ \nacceptance for compliance purposes."
           items:
             $ref: "#/components/schemas/DocumentId"
           type: array
-      type: object
     PaymentAcceptanceConfig:
       allOf:
       - $ref: "#/components/schemas/PaymentAcceptanceConfigBase"
@@ -5280,7 +3526,6 @@ components:
             items:
               $ref: "#/components/schemas/ContractAmount"
             type: array
-        type: object
       description: |-
         Complete payment acceptance configuration used in API responses. Provides
         full amount information with both display values and raw precision data
@@ -5288,30 +3533,23 @@ components:
       example:
         price-scenarios:
         - amount:
-            decimals: 6
-            raw: raw
-            value: value
+            decimals: ""
+            raw: ""
+            value: ""
           contract-id:
             asset-unit: asset-unit
             network-id: network-id
         - amount:
-            decimals: 6
-            raw: raw
-            value: value
+            decimals: ""
+            raw: ""
+            value: ""
           contract-id:
             asset-unit: asset-unit
             network-id: network-id
         documents:
         - null
         - null
-        order:
-          schema:
-            key: ""
-          data:
-            key: ""
-          description: description
-          id: id
-      type: object
+        order: ""
     PaymentAcceptanceConfigFormat:
       allOf:
       - $ref: "#/components/schemas/PaymentAcceptanceConfigBase"
@@ -5322,7 +3560,6 @@ components:
             items:
               $ref: "#/components/schemas/ContractAmountFormat"
             type: array
-        type: object
       description: |-
         Payment acceptance configuration for API requests. Accepts amount data
         in flexible formats, allowing callers to provide either display values
@@ -5330,26 +3567,19 @@ components:
       example:
         price-scenarios:
         - amount:
-            value: value
+            value: ""
           contract-id:
             asset-unit: asset-unit
             network-id: network-id
         - amount:
-            value: value
+            value: ""
           contract-id:
             asset-unit: asset-unit
             network-id: network-id
         documents:
         - null
         - null
-        order:
-          schema:
-            key: ""
-          data:
-            key: ""
-          description: description
-          id: id
-      type: object
+        order: ""
     PaymentAcceptance:
       description: "Complete payment acceptance record managing the full lifecycle\
         \ of payment \nprocessing from initiation through completion. Combines configuration,\
@@ -5359,217 +3589,83 @@ components:
         config:
           price-scenarios:
           - amount:
-              decimals: 6
-              raw: raw
-              value: value
+              decimals: ""
+              raw: ""
+              value: ""
             contract-id:
               asset-unit: asset-unit
               network-id: network-id
           - amount:
-              decimals: 6
-              raw: raw
-              value: value
+              decimals: ""
+              raw: ""
+              value: ""
             contract-id:
               asset-unit: asset-unit
               network-id: network-id
           documents:
           - null
           - null
-          order:
-            schema:
-              key: ""
-            data:
-              key: ""
-            description: description
-            id: id
+          order: ""
         info:
-          compliance:
-            scenarios:
-            - submitted:
-              - null
-              - null
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-              required:
-              - PersonV1
-              - PersonV1
-              status: pending
-            - submitted:
-              - null
-              - null
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-              required:
-              - PersonV1
-              - PersonV1
-              status: pending
+          compliance: ""
           warnings:
           - window-minutes: 0
             scope: account
-            limit:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            used:
-              decimals: 6
-              raw: raw
-              value: value
+            limit: ""
+            used: ""
           - window-minutes: 0
             scope: account
-            limit:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            used:
-              decimals: 6
-              raw: raw
-              value: value
+            limit: ""
+            used: ""
           scenarios:
-          - address: address
-            price:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
+          - address: ""
+            price: ""
             expire:
-              at: 0
-              in: 0
-            pay:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            received:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
+              at: ""
+              in: ""
+            pay: ""
+            received: ""
             transaction-list:
-            - amount:
-                amount:
-                  decimals: 6
-                  raw: raw
-                  value: value
-                contract-id:
-                  asset-unit: asset-unit
-                  network-id: network-id
-              confirmation-stats:
-                eta: 0
-                confirmed: 39072
-                remaining: 36944
-              receiver: receiver
-              sender: sender
-              id: id
-              ts: 0
-              status: compliance
-            - amount:
-                amount:
-                  decimals: 6
-                  raw: raw
-                  value: value
-                contract-id:
-                  asset-unit: asset-unit
-                  network-id: network-id
-              confirmation-stats:
-                eta: 0
-                confirmed: 39072
-                remaining: 36944
-              receiver: receiver
-              sender: sender
-              id: id
-              ts: 0
-              status: compliance
-            status: compliance
-          - address: address
-            price:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
+            - amount: ""
+              confirmation-stats: ""
+              receiver: ""
+              sender: ""
+              id: ""
+              ts: ""
+              status: ""
+            - amount: ""
+              confirmation-stats: ""
+              receiver: ""
+              sender: ""
+              id: ""
+              ts: ""
+              status: ""
+            status: ""
+          - address: ""
+            price: ""
             expire:
-              at: 0
-              in: 0
-            pay:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
-            received:
-              amount:
-                decimals: 6
-                raw: raw
-                value: value
-              contract-id:
-                asset-unit: asset-unit
-                network-id: network-id
+              at: ""
+              in: ""
+            pay: ""
+            received: ""
             transaction-list:
-            - amount:
-                amount:
-                  decimals: 6
-                  raw: raw
-                  value: value
-                contract-id:
-                  asset-unit: asset-unit
-                  network-id: network-id
-              confirmation-stats:
-                eta: 0
-                confirmed: 39072
-                remaining: 36944
-              receiver: receiver
-              sender: sender
-              id: id
-              ts: 0
-              status: compliance
-            - amount:
-                amount:
-                  decimals: 6
-                  raw: raw
-                  value: value
-                contract-id:
-                  asset-unit: asset-unit
-                  network-id: network-id
-              confirmation-stats:
-                eta: 0
-                confirmed: 39072
-                remaining: 36944
-              receiver: receiver
-              sender: sender
-              id: id
-              ts: 0
-              status: compliance
-            status: compliance
-          version:
-            sequence: 0
-            updated-at: 0
-            created-at: 0
-          status:
-            details: details
-            id: compliance
+            - amount: ""
+              confirmation-stats: ""
+              receiver: ""
+              sender: ""
+              id: ""
+              ts: ""
+              status: ""
+            - amount: ""
+              confirmation-stats: ""
+              receiver: ""
+              sender: ""
+              id: ""
+              ts: ""
+              status: ""
+            status: ""
+          version: ""
+          status: ""
       properties:
         id:
           description: |-
@@ -5589,28 +3685,23 @@ components:
       - config
       - id
       - info
-      type: object
     PaymentAcceptanceStatus:
       description: "Payment acceptance lifecycle state combining status classification\
         \ with \ndetailed information about current processing stage. Provides visibility\
         \ \ninto payment progress and any issues requiring attention."
-      example:
-        details: details
-        id: compliance
       properties:
         id:
-          $ref: "#/components/schemas/PaymentAcceptanceStatusId"
+          allOf:
+          - $ref: "#/components/schemas/PaymentAcceptanceStatusId"
+          description: Current processing state category.
         details:
-          description: "Detailed human-readable explanation of payment acceptance\
-            \ status \nincluding progress updates, error descriptions, completion\
-            \ confirmation, \nor other relevant processing information."
-          maxLength: 400
-          minLength: 0
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/PaymentAcceptanceStatusDetails"
+          description: "Detailed human-readable information about current status including\
+            \ \nprogress updates, error messages, or completion confirmation."
       required:
       - details
       - id
-      type: object
     PaymentAcceptanceStatusId:
       description: "Payment acceptance processing state categories representing different\
         \ \nstages in the payment lifecycle from compliance verification through \n\
@@ -5635,90 +3726,53 @@ components:
         \ \nContains all information needed for payment processing including amounts,\
         \ \nblockchain addresses, expiration times, and transaction tracking."
       example:
-        address: address
-        price:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
+        address: ""
+        price: ""
         expire:
-          at: 0
-          in: 0
-        pay:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
-        received:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
+          at: ""
+          in: ""
+        pay: ""
+        received: ""
         transaction-list:
-        - amount:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          confirmation-stats:
-            eta: 0
-            confirmed: 39072
-            remaining: 36944
-          receiver: receiver
-          sender: sender
-          id: id
-          ts: 0
-          status: compliance
-        - amount:
-            amount:
-              decimals: 6
-              raw: raw
-              value: value
-            contract-id:
-              asset-unit: asset-unit
-              network-id: network-id
-          confirmation-stats:
-            eta: 0
-            confirmed: 39072
-            remaining: 36944
-          receiver: receiver
-          sender: sender
-          id: id
-          ts: 0
-          status: compliance
-        status: compliance
+        - amount: ""
+          confirmation-stats: ""
+          receiver: ""
+          sender: ""
+          id: ""
+          ts: ""
+          status: ""
+        - amount: ""
+          confirmation-stats: ""
+          receiver: ""
+          sender: ""
+          id: ""
+          ts: ""
+          status: ""
+        status: ""
       properties:
         price:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: Original requested payment amount as specified in the payment
+            acceptance.
         pay:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: Calculated required payment amount including fees and adjustments.
         address:
-          description: |-
-            Blockchain-specific address format used for cryptocurrency transactions.
-            The exact format varies by network (e.g., Ethereum uses hexadecimal addresses
-            starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses,
-            wallet addresses, and payment destinations.
-          maxLength: 64
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/NetworkAddress"
+          description: Blockchain address where payment should be sent for this scenario.
         expire:
           $ref: "#/components/schemas/Expire"
         status:
-          $ref: "#/components/schemas/PaymentAcceptanceScenarioStatus"
+          allOf:
+          - $ref: "#/components/schemas/PaymentAcceptanceScenarioStatus"
+          description: Current execution state of this payment scenario.
         received:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: Amount currently received for this payment scenario.
         transaction-list:
           description: List of blockchain transactions detected for this payment scenario.
           items:
@@ -5732,7 +3786,6 @@ components:
       - received
       - status
       - transaction-list
-      type: object
     PaymentAcceptanceScenarioStatus:
       description: "Payment scenario execution state indicating current processing\
         \ stage \nfrom compliance verification through transaction confirmation or\
@@ -5774,100 +3827,69 @@ components:
       description: |-
         Confirmation progress information for transactions in the confirming state,
         providing current status and estimated completion time for full confirmation.
-      example:
-        eta: 0
-        confirmed: 39072
-        remaining: 36944
       properties:
         confirmed:
-          description: |-
-            Number of blockchain confirmations observed for a transaction, indicating
-            the level of network consensus and security. Higher numbers provide
-            greater confidence in transaction finality.
-          maximum: 65535
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/BlockchainConfirmations"
+          description: Number of confirmations currently observed for this transaction.
         remaining:
-          description: |-
-            Number of blockchain confirmations observed for a transaction, indicating
-            the level of network consensus and security. Higher numbers provide
-            greater confidence in transaction finality.
-          maximum: 65535
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/BlockchainConfirmations"
+          description: Number of additional confirmations needed to reach required
+            threshold.
         eta:
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
           description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+            Estimated timestamp when the transaction will reach full confirmation
+            based on network block time averages.
       required:
       - confirmed
       - eta
       - remaining
-      type: object
     BlockchainTransaction:
       description: |-
         Complete blockchain transaction record including addresses, amounts,
         timestamps, and confirmation status for comprehensive payment tracking
         and verification throughout the transaction lifecycle.
       example:
-        amount:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
-        confirmation-stats:
-          eta: 0
-          confirmed: 39072
-          remaining: 36944
-        receiver: receiver
-        sender: sender
-        id: id
-        ts: 0
-        status: compliance
+        amount: ""
+        confirmation-stats: ""
+        receiver: ""
+        sender: ""
+        id: ""
+        ts: ""
+        status: ""
       properties:
         id:
-          description: "Unique blockchain transaction hash or identifier as recorded\
-            \ on the \nblockchain network. Used to track and verify transactions on\
-            \ the network. \nThis hash serves as the definitive reference for locating\
-            \ transactions \nin blockchain explorers and verification systems."
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/BlockchainTransactionId"
+          description: Unique blockchain transaction identifier or hash.
         ts:
-          description: |-
-            UNIX timestamp in milliseconds representing a specific point in time.
-            Used for tracking creation dates, expiration times, transaction timestamps,
-            and other time-sensitive operations throughout the payment lifecycle.
-          minimum: 0
-          type: integer
+          allOf:
+          - $ref: "#/components/schemas/Timestamp"
+          description: Timestamp when transaction was first detected or confirmed.
         sender:
-          description: |-
-            Blockchain-specific address format used for cryptocurrency transactions.
-            The exact format varies by network (e.g., Ethereum uses hexadecimal addresses
-            starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses,
-            wallet addresses, and payment destinations.
-          maxLength: 64
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/NetworkAddress"
+          description: Blockchain address that sent the funds for this transaction.
         receiver:
-          description: |-
-            Blockchain-specific address format used for cryptocurrency transactions.
-            The exact format varies by network (e.g., Ethereum uses hexadecimal addresses
-            starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses,
-            wallet addresses, and payment destinations.
-          maxLength: 64
-          minLength: 1
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/NetworkAddress"
+          description: Blockchain address that received the funds from this transaction.
         amount:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: Precise amount transferred in this transaction with contract
+            context.
         status:
-          $ref: "#/components/schemas/BlockchainTransactionStatus"
+          allOf:
+          - $ref: "#/components/schemas/BlockchainTransactionStatus"
+          description: Current confirmation and processing status of this transaction.
         confirmation-stats:
-          $ref: "#/components/schemas/BlockchainConfirmationStats"
+          allOf:
+          - $ref: "#/components/schemas/BlockchainConfirmationStats"
+          description: Detailed confirmation progress and timing information.
       required:
       - amount
       - confirmation-stats
@@ -5876,7 +3898,6 @@ components:
       - sender
       - status
       - ts
-      type: object
     VelocityMode:
       description: |-
         Behavior when a velocity limit is exceeded. `reject` blocks the payment with
@@ -5900,12 +3921,7 @@ components:
         is converted to the account's velocity reference contract via a market quote.
       example:
         mode: reject
-        amount:
-          amount:
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
+        amount: ""
         window-minutes: 0
       properties:
         window-minutes:
@@ -5913,14 +3929,15 @@ components:
           minimum: 0
           type: integer
         amount:
-          $ref: "#/components/schemas/ContractAmountFormat"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmountFormat"
+          description: "Limit amount, denominated in any contract."
         mode:
           $ref: "#/components/schemas/VelocityMode"
       required:
       - amount
       - mode
       - window-minutes
-      type: object
     VelocityWarning:
       description: |-
         Emitted in the response of estimate/create endpoints when a warn-mode
@@ -5928,18 +3945,8 @@ components:
       example:
         window-minutes: 0
         scope: account
-        limit:
-          amount:
-            decimals: 6
-            raw: raw
-            value: value
-          contract-id:
-            asset-unit: asset-unit
-            network-id: network-id
-        used:
-          decimals: 6
-          raw: raw
-          value: value
+        limit: ""
+        used: ""
       properties:
         scope:
           $ref: "#/components/schemas/VelocityScope"
@@ -5947,15 +3954,19 @@ components:
           minimum: 0
           type: integer
         limit:
-          $ref: "#/components/schemas/ContractAmount"
+          allOf:
+          - $ref: "#/components/schemas/ContractAmount"
+          description: The configured limit (in its original contract).
         used:
-          $ref: "#/components/schemas/Amount"
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+          description: "Total exposure used so far, normalized to the account reference\
+            \ contract."
       required:
       - limit
       - scope
       - used
       - window-minutes
-      type: object
   securitySchemes:
     dpop-auth:
       description: |-

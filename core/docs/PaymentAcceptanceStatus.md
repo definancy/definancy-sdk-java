@@ -8,8 +8,8 @@ Payment acceptance lifecycle state combining status classification with  detaile
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **PaymentAcceptanceStatusId** |  |  |
-|**details** | **String** | Detailed human-readable explanation of payment acceptance status  including progress updates, error descriptions, completion confirmation,  or other relevant processing information. |  |
+|**id** | **PaymentAcceptanceStatusId** | Current processing state category. |  |
+|**details** | **String** | Detailed human-readable information about current status including  progress updates, error messages, or completion confirmation. |  |
 
 
 

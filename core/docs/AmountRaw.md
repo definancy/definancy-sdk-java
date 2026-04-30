@@ -2,13 +2,14 @@
 
 # AmountRaw
 
+Smallest-denomination integer form of an amount paired with the asset's decimal precision (e.g. raw=\"150000000\", decimals=8 for 1.5 BTC). The integer-precise counterpart to AmountValue.
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**raw** | **String** | String representation of a non-negative integer used for precise handling of large numbers without floating-point precision issues. Supports values up to 78 digits to accommodate various asset denominations and high-precision calculations. |  |
-|**decimals** | **Integer** | Number of decimal places used for displaying amounts. For example, USDC typically uses 6 decimals, while Ethereum uses 18. This determines how the raw value should be formatted for user presentation. |  |
+|**raw** | **String** | Raw amount value in the smallest unit of the asset (e.g., satoshi for btc). |  |
+|**decimals** | **Integer** | Number of decimal places to apply when displaying the amount to users. |  |
 
 
 

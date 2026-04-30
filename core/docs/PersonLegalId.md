@@ -8,9 +8,9 @@ Business registration and identification information for legal entities.  Contai
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**number** | **String** | Official business registration number, tax identification number, or  other government-issued entity identifier exactly as it appears on  official documentation. |  |
-|**type** | **PersonLegalIdType** |  |  |
-|**issuer** | **String** | Government authority, tax agency, or business registration office  that issued the legal entity identification. Used for verification  and authenticity validation purposes. |  |
+|**number** | **String** | Official business registration or tax identification number. |  |
+|**type** | **PersonLegalIdType** | Type of business identification document or registration. |  |
+|**issuer** | **String** | Government authority or agency that issued the business registration. |  |
 
 
 

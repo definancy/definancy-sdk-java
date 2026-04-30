@@ -216,7 +216,7 @@ public class NetworkInfo {
   }
 
   /**
-   * Time in milliseconds representing an amount of time. Used for expiration cut-offs, and other time-sensitive operations throughout  the payment lifecycle.
+   * The duration from transaction initiation to its complete and successful execution, including the final, irreversible recording of its outcome.
    * minimum: 0
    * @return timeToSettle
    */

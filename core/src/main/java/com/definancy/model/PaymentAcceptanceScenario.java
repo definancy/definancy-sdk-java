@@ -83,7 +83,7 @@ public class PaymentAcceptanceScenario {
   }
 
   /**
-   * Get price
+   * Original requested payment amount as specified in the payment acceptance.
    * @return price
    */
   @javax.annotation.Nonnull
@@ -108,7 +108,7 @@ public class PaymentAcceptanceScenario {
   }
 
   /**
-   * Get pay
+   * Calculated required payment amount including fees and adjustments.
    * @return pay
    */
   @javax.annotation.Nonnull
@@ -133,7 +133,7 @@ public class PaymentAcceptanceScenario {
   }
 
   /**
-   * Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations.
+   * Blockchain address where payment should be sent for this scenario.
    * @return address
    */
   @javax.annotation.Nonnull
@@ -183,7 +183,7 @@ public class PaymentAcceptanceScenario {
   }
 
   /**
-   * Get status
+   * Current execution state of this payment scenario.
    * @return status
    */
   @javax.annotation.Nonnull
@@ -208,7 +208,7 @@ public class PaymentAcceptanceScenario {
   }
 
   /**
-   * Get received
+   * Amount currently received for this payment scenario.
    * @return received
    */
   @javax.annotation.Nonnull

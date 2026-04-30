@@ -47,7 +47,7 @@ public class CustodialV1 {
   }
 
   /**
-   * Human-readable resource identifier that follows standard naming conventions for display purposes. Used for network names, asset names, and other user-facing identifiers that need to be presentable in user interfaces and documentation.
+   * Name of the custodial wallet service provider. Must be a recognized  and regulated financial service provider.
    * @return provider
    */
   @javax.annotation.Nullable

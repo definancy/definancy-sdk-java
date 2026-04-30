@@ -68,7 +68,7 @@ public class ComplianceScenario {
   }
 
   /**
-   * Get contractId
+   * Contract reference for which compliance requirements apply.
    * @return contractId
    */
   @javax.annotation.Nonnull
@@ -159,7 +159,7 @@ public class ComplianceScenario {
   }
 
   /**
-   * Get status
+   * Current compliance fulfillment status for this contract scenario.
    * @return status
    */
   @javax.annotation.Nonnull

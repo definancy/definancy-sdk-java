@@ -9,7 +9,7 @@ Velocity limit configuration. The unique key per scope is `windowMinutes`. Set `
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**windowMinutes** | **Integer** | Rolling window length in minutes. 0 means single payment cap. |  |
-|**amount** | [**ContractAmountFormat**](ContractAmountFormat.md) |  |  |
+|**amount** | [**ContractAmountFormat**](ContractAmountFormat.md) | Limit amount, denominated in any contract. |  |
 |**mode** | **VelocityMode** |  |  |
 
 

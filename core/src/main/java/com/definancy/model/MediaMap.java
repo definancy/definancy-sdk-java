@@ -26,7 +26,7 @@ import com.definancy.JSON;
 
 
 /**
- * MediaMap
+ * Map of media references keyed by an arbitrary string label (purpose-specific in subtypes — e.g. \&quot;logo-light\&quot;/\&quot;logo-dark\&quot; on AssetMediaMap). Values are Media descriptors.
  */
 @JsonPropertyOrder({
 })

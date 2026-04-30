@@ -29,7 +29,7 @@ import com.definancy.JSON;
 
 
 /**
- * Media
+ * Single media reference with its content type, retrievable URL, and optional descriptive metadata.
  */
 @JsonPropertyOrder({
   Media.JSON_PROPERTY_TYPE,
@@ -109,7 +109,7 @@ public class Media {
   }
 
   /**
-   * Get metadata
+   * Free-form metadata bag carried alongside a Media reference (dimensions, alt text, source attribution, etc.). Concrete fields are subtype-specific and may evolve.
    * @return metadata
    */
   @javax.annotation.Nullable

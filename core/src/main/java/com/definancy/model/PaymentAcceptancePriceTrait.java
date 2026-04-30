@@ -28,7 +28,7 @@ import com.definancy.JSON;
 
 
 /**
- * PaymentAcceptancePriceTrait
+ * Trait declaring the price range a payment-acceptance configuration is willing to charge — bounded by &#x60;min-amount&#x60; and &#x60;max-amount&#x60; Amount values.
  */
 @JsonPropertyOrder({
   PaymentAcceptancePriceTrait.JSON_PROPERTY_MIN_AMOUNT,

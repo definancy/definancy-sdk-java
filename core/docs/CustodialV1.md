@@ -8,7 +8,7 @@ Compliance document for custodial wallet services where a third-party  provider 
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**provider** | **String** | Human-readable resource identifier that follows standard naming conventions for display purposes. Used for network names, asset names, and other user-facing identifiers that need to be presentable in user interfaces and documentation. |  [optional] |
+|**provider** | **String** | Name of the custodial wallet service provider. Must be a recognized  and regulated financial service provider. |  [optional] |
 
 
 

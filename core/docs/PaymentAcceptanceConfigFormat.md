@@ -8,7 +8,7 @@ Payment acceptance configuration for API requests. Accepts amount data in flexib
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**order** | [**PaymentAcceptanceOrder**](PaymentAcceptanceOrder.md) |  |  [optional] |
+|**order** | [**PaymentAcceptanceOrder**](PaymentAcceptanceOrder.md) | Optional commercial order context providing business information  about the transaction being processed. |  [optional] |
 |**documents** | **List&lt;UUID&gt;** | Optional list of document IDs to associate with this payment  acceptance for compliance purposes. |  [optional] |
 |**priceScenarios** | [**List&lt;ContractAmountFormat&gt;**](ContractAmountFormat.md) | Required payment obligations as contract-amount pairs. Must contain  at least one scenario when creating new payment acceptance. |  [optional] |
 

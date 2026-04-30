@@ -116,7 +116,7 @@ public class VelocityWarning {
   }
 
   /**
-   * Get limit
+   * The configured limit (in its original contract).
    * @return limit
    */
   @javax.annotation.Nonnull
@@ -141,7 +141,7 @@ public class VelocityWarning {
   }
 
   /**
-   * Get used
+   * Total exposure used so far, normalized to the account reference contract.
    * @return used
    */
   @javax.annotation.Nonnull

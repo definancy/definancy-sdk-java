@@ -8,12 +8,12 @@ Individual payment execution scenario within a payment acceptance.  Contains all
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**price** | [**ContractAmount**](ContractAmount.md) |  |  |
-|**pay** | [**ContractAmount**](ContractAmount.md) |  |  |
-|**address** | **String** | Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations. |  |
+|**price** | [**ContractAmount**](ContractAmount.md) | Original requested payment amount as specified in the payment acceptance. |  |
+|**pay** | [**ContractAmount**](ContractAmount.md) | Calculated required payment amount including fees and adjustments. |  |
+|**address** | **String** | Blockchain address where payment should be sent for this scenario. |  |
 |**expire** | [**Expire**](Expire.md) |  |  |
-|**status** | **PaymentAcceptanceScenarioStatus** |  |  |
-|**received** | [**ContractAmount**](ContractAmount.md) |  |  |
+|**status** | **PaymentAcceptanceScenarioStatus** | Current execution state of this payment scenario. |  |
+|**received** | [**ContractAmount**](ContractAmount.md) | Amount currently received for this payment scenario. |  |
 |**transactionList** | [**List&lt;BlockchainTransaction&gt;**](BlockchainTransaction.md) | List of blockchain transactions detected for this payment scenario. |  |
 
 

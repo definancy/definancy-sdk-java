@@ -74,7 +74,7 @@ public class PaymentAcceptanceInfo {
   }
 
   /**
-   * Get status
+   * Current processing state of the payment acceptance.
    * @return status
    */
   @javax.annotation.Nonnull
@@ -99,7 +99,7 @@ public class PaymentAcceptanceInfo {
   }
 
   /**
-   * Get version
+   * Version tracking information for audit and synchronization purposes.
    * @return version
    */
   @javax.annotation.Nonnull
@@ -157,7 +157,7 @@ public class PaymentAcceptanceInfo {
   }
 
   /**
-   * Get compliance
+   * Current compliance status and requirements for all contracts in this payment acceptance.
    * @return compliance
    */
   @javax.annotation.Nonnull

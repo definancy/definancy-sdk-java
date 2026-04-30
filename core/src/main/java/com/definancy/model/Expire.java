@@ -27,7 +27,7 @@ import com.definancy.JSON;
 
 
 /**
- * Expire
+ * Expiration directive expressible either as an absolute timestamp (&#x60;at&#x60;) or as a relative duration in milliseconds (&#x60;in&#x60;). One of the two is set, never both.
  */
 @JsonPropertyOrder({
   Expire.JSON_PROPERTY_AT,
@@ -52,7 +52,7 @@ public class Expire {
   }
 
   /**
-   * UNIX timestamp in milliseconds representing a specific point in time. Used for tracking creation dates, expiration times, transaction timestamps, and other time-sensitive operations throughout the payment lifecycle.
+   * Timestamp when this payment scenario expires and is no longer valid.
    * minimum: 0
    * @return at
    */
@@ -78,7 +78,7 @@ public class Expire {
   }
 
   /**
-   * Time in milliseconds representing an amount of time. Used for expiration cut-offs, and other time-sensitive operations throughout  the payment lifecycle.
+   * Time remaining until this payment scenario expires and is no longer valid.
    * minimum: 0
    * @return in
    */

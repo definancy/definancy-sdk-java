@@ -28,7 +28,7 @@ import com.definancy.JSON;
 
 
 /**
- * ContractMediaMap
+ * MediaMap subtype scoped to contracts, conventionally carrying logo variants for contract display in consumer wallets and dashboards.
  */
 @JsonPropertyOrder({
   ContractMediaMap.JSON_PROPERTY_LOGO_LIGHT,

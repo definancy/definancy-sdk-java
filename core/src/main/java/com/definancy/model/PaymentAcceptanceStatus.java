@@ -53,7 +53,7 @@ public class PaymentAcceptanceStatus {
   }
 
   /**
-   * Get id
+   * Current processing state category.
    * @return id
    */
   @javax.annotation.Nonnull
@@ -78,7 +78,7 @@ public class PaymentAcceptanceStatus {
   }
 
   /**
-   * Detailed human-readable explanation of payment acceptance status  including progress updates, error descriptions, completion confirmation,  or other relevant processing information.
+   * Detailed human-readable information about current status including  progress updates, error messages, or completion confirmation.
    * @return details
    */
   @javax.annotation.Nonnull

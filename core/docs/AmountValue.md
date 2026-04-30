@@ -2,12 +2,13 @@
 
 # AmountValue
 
+Decimal-string wire form of an amount, expressed in the asset's primary unit (e.g. \"1.5\" for 1.5 BTC). Counterpart to AmountRaw — on the wire, use one form, not both, unless intentionally pairing them (see AmountFormat).
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**value** | **String** | String representation of a decimal number used for precise handling of large  numbers without floating-point precision issues. Supports values up to 78 digits to accommodate various asset denominations and high-precision calculations. |  |
+|**value** | **String** | Amount value in the unit of the asset (e.g., btc). |  |
 
 
 

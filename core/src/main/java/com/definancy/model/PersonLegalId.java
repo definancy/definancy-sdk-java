@@ -58,7 +58,7 @@ public class PersonLegalId {
   }
 
   /**
-   * Official business registration number, tax identification number, or  other government-issued entity identifier exactly as it appears on  official documentation.
+   * Official business registration or tax identification number.
    * @return number
    */
   @javax.annotation.Nonnull
@@ -83,7 +83,7 @@ public class PersonLegalId {
   }
 
   /**
-   * Get type
+   * Type of business identification document or registration.
    * @return type
    */
   @javax.annotation.Nonnull
@@ -108,7 +108,7 @@ public class PersonLegalId {
   }
 
   /**
-   * Government authority, tax agency, or business registration office  that issued the legal entity identification. Used for verification  and authenticity validation purposes.
+   * Government authority or agency that issued the business registration.
    * @return issuer
    */
   @javax.annotation.Nonnull

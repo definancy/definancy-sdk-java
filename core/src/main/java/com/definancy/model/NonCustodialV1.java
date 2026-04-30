@@ -47,7 +47,7 @@ public class NonCustodialV1 {
   }
 
   /**
-   * Blockchain-specific address format used for cryptocurrency transactions. The exact format varies by network (e.g., Ethereum uses hexadecimal addresses starting with 0x, Bitcoin uses base58 encoding). Used for contract addresses, wallet addresses, and payment destinations.
+   * Blockchain address of the non-custodial wallet. Used for transaction  verification and compliance monitoring purposes.
    * @return address
    */
   @javax.annotation.Nonnull

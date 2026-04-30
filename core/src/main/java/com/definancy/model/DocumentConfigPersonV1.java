@@ -29,7 +29,7 @@ import com.definancy.JSON;
 
 
 /**
- * DocumentConfigPersonV1
+ * Document configuration carrying PersonV1 identity data (natural or legal person). &#x60;type&#x60; is fixed to \&quot;PersonV1\&quot;.
  */
 @JsonPropertyOrder({
   DocumentConfigPersonV1.JSON_PROPERTY_TYPE,
