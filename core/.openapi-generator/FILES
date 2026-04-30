@@ -1,8 +1,6 @@
 .gitignore
 README.md
 api/openapi.yaml
-docs/AcceptancePaymentTrait.md
-docs/AcceptancePriceTrait.md
 docs/Amount.md
 docs/AmountFormat.md
 docs/AmountRaw.md
@@ -13,6 +11,7 @@ docs/AssetConfig.md
 docs/AssetInfo.md
 docs/AssetMediaMap.md
 docs/AssetStatus.md
+docs/AuthApi.md
 docs/BlockchainConfirmationStats.md
 docs/BlockchainTransaction.md
 docs/BlockchainTransactionStatus.md
@@ -42,7 +41,6 @@ docs/DocumentStatusId.md
 docs/DocumentType.md
 docs/Error.md
 docs/ErrorList.md
-docs/ExperimentalApi.md
 docs/Expire.md
 docs/Media.md
 docs/MediaMap.md
@@ -50,6 +48,7 @@ docs/MediaType.md
 docs/Network.md
 docs/NetworkApi.md
 docs/NetworkConfig.md
+docs/NetworkExplorer.md
 docs/NetworkInfo.md
 docs/NetworkMediaMap.md
 docs/NetworkStatus.md
@@ -60,6 +59,8 @@ docs/PaymentAcceptanceConfigBase.md
 docs/PaymentAcceptanceConfigFormat.md
 docs/PaymentAcceptanceInfo.md
 docs/PaymentAcceptanceOrder.md
+docs/PaymentAcceptancePayTrait.md
+docs/PaymentAcceptancePriceTrait.md
 docs/PaymentAcceptanceScenario.md
 docs/PaymentAcceptanceScenarioStatus.md
 docs/PaymentAcceptanceStatus.md
@@ -94,6 +95,11 @@ docs/VaultContractSubscriptionApi.md
 docs/VaultDocumentApi.md
 docs/VaultInfo.md
 docs/VaultPaymentApi.md
+docs/VelocityApi.md
+docs/VelocityLimitFormat.md
+docs/VelocityMode.md
+docs/VelocityScope.md
+docs/VelocityWarning.md
 docs/Version.md
 src/main/AndroidManifest.xml
 src/main/java/com/definancy/ApiClient.java
@@ -110,8 +116,8 @@ src/main/java/com/definancy/ServerConfiguration.java
 src/main/java/com/definancy/ServerVariable.java
 src/main/java/com/definancy/StringUtil.java
 src/main/java/com/definancy/api/AssetApi.java
+src/main/java/com/definancy/api/AuthApi.java
 src/main/java/com/definancy/api/ContractApi.java
-src/main/java/com/definancy/api/ExperimentalApi.java
 src/main/java/com/definancy/api/NetworkApi.java
 src/main/java/com/definancy/api/ProbeApi.java
 src/main/java/com/definancy/api/QrCodeApi.java
@@ -119,13 +125,12 @@ src/main/java/com/definancy/api/VaultApi.java
 src/main/java/com/definancy/api/VaultContractSubscriptionApi.java
 src/main/java/com/definancy/api/VaultDocumentApi.java
 src/main/java/com/definancy/api/VaultPaymentApi.java
+src/main/java/com/definancy/api/VelocityApi.java
 src/main/java/com/definancy/auth/ApiKeyAuth.java
 src/main/java/com/definancy/auth/Authentication.java
 src/main/java/com/definancy/auth/HttpBasicAuth.java
 src/main/java/com/definancy/auth/HttpBearerAuth.java
 src/main/java/com/definancy/model/AbstractOpenApiSchema.java
-src/main/java/com/definancy/model/AcceptancePaymentTrait.java
-src/main/java/com/definancy/model/AcceptancePriceTrait.java
 src/main/java/com/definancy/model/Amount.java
 src/main/java/com/definancy/model/AmountFormat.java
 src/main/java/com/definancy/model/AmountRaw.java
@@ -169,6 +174,7 @@ src/main/java/com/definancy/model/MediaMap.java
 src/main/java/com/definancy/model/MediaType.java
 src/main/java/com/definancy/model/Network.java
 src/main/java/com/definancy/model/NetworkConfig.java
+src/main/java/com/definancy/model/NetworkExplorer.java
 src/main/java/com/definancy/model/NetworkInfo.java
 src/main/java/com/definancy/model/NetworkMediaMap.java
 src/main/java/com/definancy/model/NetworkStatus.java
@@ -179,6 +185,8 @@ src/main/java/com/definancy/model/PaymentAcceptanceConfigBase.java
 src/main/java/com/definancy/model/PaymentAcceptanceConfigFormat.java
 src/main/java/com/definancy/model/PaymentAcceptanceInfo.java
 src/main/java/com/definancy/model/PaymentAcceptanceOrder.java
+src/main/java/com/definancy/model/PaymentAcceptancePayTrait.java
+src/main/java/com/definancy/model/PaymentAcceptancePriceTrait.java
 src/main/java/com/definancy/model/PaymentAcceptanceScenario.java
 src/main/java/com/definancy/model/PaymentAcceptanceScenarioStatus.java
 src/main/java/com/definancy/model/PaymentAcceptanceStatus.java
@@ -207,4 +215,8 @@ src/main/java/com/definancy/model/Traits.java
 src/main/java/com/definancy/model/Vault.java
 src/main/java/com/definancy/model/VaultConfig.java
 src/main/java/com/definancy/model/VaultInfo.java
+src/main/java/com/definancy/model/VelocityLimitFormat.java
+src/main/java/com/definancy/model/VelocityMode.java
+src/main/java/com/definancy/model/VelocityScope.java
+src/main/java/com/definancy/model/VelocityWarning.java
 src/main/java/com/definancy/model/Version.java

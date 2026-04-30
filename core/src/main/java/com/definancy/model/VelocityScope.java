@@ -24,19 +24,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Compliance requirement fulfillment status indicating whether all necessary documents have been submitted and validated for a specific contract scenario.
+ * Hierarchy level at which a velocity limit applies (or was evaluated).
  */
-public enum ComplianceScenarioStatus {
+public enum VelocityScope {
   
-  PENDING("pending"),
+  ACCOUNT("account"),
   
-  ACCEPTED("accepted"),
+  VAULT("vault"),
   
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private String value;
 
-  ComplianceScenarioStatus(String value) {
+  VelocityScope(String value) {
     this.value = value;
   }
 
@@ -51,8 +51,8 @@ public enum ComplianceScenarioStatus {
   }
 
   @JsonCreator
-  public static ComplianceScenarioStatus fromValue(String value) {
-    for (ComplianceScenarioStatus b : ComplianceScenarioStatus.values()) {
+  public static VelocityScope fromValue(String value) {
+    for (VelocityScope b : VelocityScope.values()) {
       if (b.value.equals(value)) {
         return b;
       }

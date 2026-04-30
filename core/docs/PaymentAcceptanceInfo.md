@@ -12,6 +12,7 @@ Payment acceptance operational state and lifecycle information. Contains  curren
 |**version** | [**Version**](Version.md) |  |  |
 |**scenarios** | [**List&lt;PaymentAcceptanceScenario&gt;**](PaymentAcceptanceScenario.md) | Active payment execution scenarios with blockchain addresses,  amounts, and transaction tracking information. |  |
 |**compliance** | [**Compliance**](Compliance.md) |  |  |
+|**warnings** | [**List&lt;VelocityWarning&gt;**](VelocityWarning.md) | Velocity warnings that fired during the payment creation check. Present only when warn-mode limits were exceeded. |  [optional] |
 
 
 

@@ -122,7 +122,7 @@ public class PaymentAcceptanceOrder {
   }
 
   /**
-   * Metadata schema definition describing the structure and validation  rules for the order data payload.
+   * Metadata schema definition describing the structure and validation rules for the order data payload.
    * @return schema
    */
   @javax.annotation.Nullable
@@ -155,7 +155,7 @@ public class PaymentAcceptanceOrder {
   }
 
   /**
-   * Order-specific data payload containing business information relevant  to the commercial transaction.
+   * Order-specific data payload containing business information relevant to the commercial transaction.
    * @return data
    */
   @javax.annotation.Nullable

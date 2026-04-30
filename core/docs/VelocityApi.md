@@ -1,27 +1,26 @@
-# NetworkApi
+# VelocityApi
 
 All URIs are relative to *https://stub.definancy.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**configNetwork**](NetworkApi.md#configNetwork) | **PATCH** /v1/network/{networkId} | Configure Network |
-| [**getNetwork**](NetworkApi.md#getNetwork) | **GET** /v1/network/{networkId} | Get Network |
-| [**getNetworkExplorer**](NetworkApi.md#getNetworkExplorer) | **GET** /v1/network/{networkId}/explorer | Get Network Explorer |
-| [**getNetworkNativeAsset**](NetworkApi.md#getNetworkNativeAsset) | **GET** /v1/network/{networkId}/native | Get Network Native Asset |
-| [**getNetworks**](NetworkApi.md#getNetworks) | **GET** /v1/network | List Networks |
+| [**deleteAccountVelocityLimit**](VelocityApi.md#deleteAccountVelocityLimit) | **DELETE** /v1/account/velocity-limits/{windowMinutes} | Delete Account Velocity Limit |
+| [**deleteVaultVelocityLimit**](VelocityApi.md#deleteVaultVelocityLimit) | **DELETE** /v1/vault/{vaultId}/velocity-limits/{windowMinutes} | Delete Vault Velocity Limit |
+| [**getAccountVelocityLimits**](VelocityApi.md#getAccountVelocityLimits) | **GET** /v1/account/velocity-limits | List Account Velocity Limits |
+| [**getVaultVelocityLimits**](VelocityApi.md#getVaultVelocityLimits) | **GET** /v1/vault/{vaultId}/velocity-limits | List Vault Velocity Limits |
+| [**setAccountVelocityLimit**](VelocityApi.md#setAccountVelocityLimit) | **POST** /v1/account/velocity-limits | Create or Update Account Velocity Limit |
+| [**setVaultVelocityLimit**](VelocityApi.md#setVaultVelocityLimit) | **POST** /v1/vault/{vaultId}/velocity-limits | Create or Update Vault Velocity Limit |
 
 
 
-## configNetwork
+## deleteAccountVelocityLimit
 
-> Network configNetwork(networkId, networkConfig)
+> deleteAccountVelocityLimit(windowMinutes)
 
-Configure Network
+Delete Account Velocity Limit
 
-Updates configuration parameters for a network.
-This endpoint allows you to update configuration parameters for a specific
-network, which is essential for managing and maintaining networks for 
-payment processing.
+Removes the account velocity limit for the given window. Idempotent —
+returns 204 even if the limit does not exist.
 
 ### Example
 
@@ -32,7 +31,7 @@ import com.definancy.ApiException;
 import com.definancy.Configuration;
 import com.definancy.auth.*;
 import com.definancy.model.*;
-import com.definancy.api.NetworkApi;
+import com.definancy.api.VelocityApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -51,14 +50,12 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //dpop-proof.setApiKeyPrefix("Token");
 
-        NetworkApi apiInstance = new NetworkApi(defaultClient);
-        String networkId = "networkId_example"; // String | Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand'). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network.
-        NetworkConfig networkConfig = new NetworkConfig(); // NetworkConfig | Network configuration parameters to update. Currently supports only the 'enabled'  field for controlling network availability. When setting 'enabled' to false, the  network will be disabled for payment processing while preserving all existing  contracts and historical transaction data.
+        VelocityApi apiInstance = new VelocityApi(defaultClient);
+        Integer windowMinutes = 56; // Integer | Rolling window length in minutes used as the unique key for a velocity limit within its scope. Use 0 for \"single payment cap\" (no time aggregation).
         try {
-            Network result = apiInstance.configNetwork(networkId, networkConfig);
-            System.out.println(result);
+            apiInstance.deleteAccountVelocityLimit(windowMinutes);
         } catch (ApiException e) {
-            System.err.println("Exception when calling NetworkApi#configNetwork");
+            System.err.println("Exception when calling VelocityApi#deleteAccountVelocityLimit");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -73,98 +70,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **networkId** | **String**| Unique identifier for a specific blockchain network (e.g., &#39;ethereum&#39;, &#39;algorand&#39;). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network. | |
-| **networkConfig** | [**NetworkConfig**](NetworkConfig.md)| Network configuration parameters to update. Currently supports only the &#39;enabled&#39;  field for controlling network availability. When setting &#39;enabled&#39; to false, the  network will be disabled for payment processing while preserving all existing  contracts and historical transaction data. | |
+| **windowMinutes** | **Integer**| Rolling window length in minutes used as the unique key for a velocity limit within its scope. Use 0 for \&quot;single payment cap\&quot; (no time aggregation). | |
 
 ### Return type
 
-[**Network**](Network.md)
-
-### Authorization
-
-[dpop-auth](../README.md#dpop-auth), [dpop-proof](../README.md#dpop-proof)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Network configuration updated successfully. |  * Cache-Control -  <br>  |
-| **400** | The request contains malformed data, invalid parameters, or violates API constraints. This includes validation errors, incorrect data types, missing required fields, or values outside acceptable ranges. Check the error details for specific issues. |  -  |
-| **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
-| **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
-| **404** | The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. |  -  |
-| **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
-
-
-## getNetwork
-
-> Network getNetwork(networkId)
-
-Get Network
-
-Retrieves configuration details for a specific network.
-This endpoint returns detailed configuration information for a specific
-network, which is essential for managing and maintaining networks for 
-payment processing.
-
-### Example
-
-```java
-// Import classes:
-import com.definancy.ApiClient;
-import com.definancy.ApiException;
-import com.definancy.Configuration;
-import com.definancy.auth.*;
-import com.definancy.model.*;
-import com.definancy.api.NetworkApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://stub.definancy.com");
-        
-        // Configure API key authorization: dpop-auth
-        ApiKeyAuth dpop-auth = (ApiKeyAuth) defaultClient.getAuthentication("dpop-auth");
-        dpop-auth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //dpop-auth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: dpop-proof
-        ApiKeyAuth dpop-proof = (ApiKeyAuth) defaultClient.getAuthentication("dpop-proof");
-        dpop-proof.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //dpop-proof.setApiKeyPrefix("Token");
-
-        NetworkApi apiInstance = new NetworkApi(defaultClient);
-        String networkId = "networkId_example"; // String | Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand'). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network.
-        try {
-            Network result = apiInstance.getNetwork(networkId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling NetworkApi#getNetwork");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **networkId** | **String**| Unique identifier for a specific blockchain network (e.g., &#39;ethereum&#39;, &#39;algorand&#39;). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network. | |
-
-### Return type
-
-[**Network**](Network.md)
+null (empty response body)
 
 ### Authorization
 
@@ -178,92 +88,17 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Network details retrieved successfully. |  * Cache-Control -  <br>  |
+| **204** | Velocity limit removed (or absent). |  * Cache-Control -  <br>  |
 | **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
 | **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
-| **404** | The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. |  -  |
 | **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
 
 
-## getNetworkExplorer
+## deleteVaultVelocityLimit
 
-> NetworkExplorer getNetworkExplorer(networkId)
+> deleteVaultVelocityLimit(vaultId, windowMinutes)
 
-Get Network Explorer
-
-Returns URL templates for the network's block explorer.
-Templates use {value} as a placeholder for the address or transaction ID.
-
-### Example
-
-```java
-// Import classes:
-import com.definancy.ApiClient;
-import com.definancy.ApiException;
-import com.definancy.Configuration;
-import com.definancy.model.*;
-import com.definancy.api.NetworkApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://stub.definancy.com");
-
-        NetworkApi apiInstance = new NetworkApi(defaultClient);
-        String networkId = "networkId_example"; // String | Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand'). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network.
-        try {
-            NetworkExplorer result = apiInstance.getNetworkExplorer(networkId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling NetworkApi#getNetworkExplorer");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **networkId** | **String**| Unique identifier for a specific blockchain network (e.g., &#39;ethereum&#39;, &#39;algorand&#39;). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network. | |
-
-### Return type
-
-[**NetworkExplorer**](NetworkExplorer.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Explorer URL templates retrieved successfully. |  * Cache-Control -  <br>  |
-| **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
-| **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
-| **404** | The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. |  -  |
-| **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
-
-
-## getNetworkNativeAsset
-
-> Contract getNetworkNativeAsset(networkId)
-
-Get Network Native Asset
-
-Retrieves the native asset of a specific network in a form of a contract.
-This endpoint returns the native asset of a specific network in the form of a contract, 
-which is essential for understanding and managing the native token of a network.
+Delete Vault Velocity Limit
 
 ### Example
 
@@ -274,7 +109,7 @@ import com.definancy.ApiException;
 import com.definancy.Configuration;
 import com.definancy.auth.*;
 import com.definancy.model.*;
-import com.definancy.api.NetworkApi;
+import com.definancy.api.VelocityApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -293,13 +128,13 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //dpop-proof.setApiKeyPrefix("Token");
 
-        NetworkApi apiInstance = new NetworkApi(defaultClient);
-        String networkId = "networkId_example"; // String | Unique identifier for a specific blockchain network (e.g., 'ethereum', 'algorand'). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network.
+        VelocityApi apiInstance = new VelocityApi(defaultClient);
+        String vaultId = "vaultId_example"; // String | Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates.
+        Integer windowMinutes = 56; // Integer | Rolling window length in minutes used as the unique key for a velocity limit within its scope. Use 0 for \"single payment cap\" (no time aggregation).
         try {
-            Contract result = apiInstance.getNetworkNativeAsset(networkId);
-            System.out.println(result);
+            apiInstance.deleteVaultVelocityLimit(vaultId, windowMinutes);
         } catch (ApiException e) {
-            System.err.println("Exception when calling NetworkApi#getNetworkNativeAsset");
+            System.err.println("Exception when calling VelocityApi#deleteVaultVelocityLimit");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -314,11 +149,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **networkId** | **String**| Unique identifier for a specific blockchain network (e.g., &#39;ethereum&#39;, &#39;algorand&#39;). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network. | |
+| **vaultId** | **String**| Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. | |
+| **windowMinutes** | **Integer**| Rolling window length in minutes used as the unique key for a velocity limit within its scope. Use 0 for \&quot;single payment cap\&quot; (no time aggregation). | |
 
 ### Return type
 
-[**Contract**](Contract.md)
+null (empty response body)
 
 ### Authorization
 
@@ -332,22 +168,21 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The contract with the network&#39;s native asset details is retrieved successfully. |  * Cache-Control -  <br>  |
+| **204** | Velocity limit removed (or absent). |  * Cache-Control -  <br>  |
 | **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
 | **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
 | **404** | The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. |  -  |
 | **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
 
 
-## getNetworks
+## getAccountVelocityLimits
 
-> List&lt;Network&gt; getNetworks()
+> List&lt;VelocityLimitFormat&gt; getAccountVelocityLimits()
 
-List Networks
+List Account Velocity Limits
 
-Retrieves all configured networks.
-This endpoint returns a list of all configured networks, which are essential for 
-setting up and maintaining networks for payment processing.
+Returns all velocity limits configured at the account scope, ordered by
+window in ascending order.
 
 ### Example
 
@@ -358,7 +193,7 @@ import com.definancy.ApiException;
 import com.definancy.Configuration;
 import com.definancy.auth.*;
 import com.definancy.model.*;
-import com.definancy.api.NetworkApi;
+import com.definancy.api.VelocityApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -377,12 +212,12 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //dpop-proof.setApiKeyPrefix("Token");
 
-        NetworkApi apiInstance = new NetworkApi(defaultClient);
+        VelocityApi apiInstance = new VelocityApi(defaultClient);
         try {
-            List<Network> result = apiInstance.getNetworks();
+            List<VelocityLimitFormat> result = apiInstance.getAccountVelocityLimits();
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling NetworkApi#getNetworks");
+            System.err.println("Exception when calling VelocityApi#getAccountVelocityLimits");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -398,7 +233,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List&lt;Network&gt;**](Network.md)
+[**List&lt;VelocityLimitFormat&gt;**](VelocityLimitFormat.md)
 
 ### Authorization
 
@@ -412,8 +247,254 @@ This endpoint does not need any parameter.
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Successful retrieval of network configurations. |  * Cache-Control -  <br>  |
+| **200** | Velocity limits retrieved successfully. |  * Cache-Control -  <br>  |
 | **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
 | **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
+| **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
+
+
+## getVaultVelocityLimits
+
+> List&lt;VelocityLimitFormat&gt; getVaultVelocityLimits(vaultId)
+
+List Vault Velocity Limits
+
+### Example
+
+```java
+// Import classes:
+import com.definancy.ApiClient;
+import com.definancy.ApiException;
+import com.definancy.Configuration;
+import com.definancy.auth.*;
+import com.definancy.model.*;
+import com.definancy.api.VelocityApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://stub.definancy.com");
+        
+        // Configure API key authorization: dpop-auth
+        ApiKeyAuth dpop-auth = (ApiKeyAuth) defaultClient.getAuthentication("dpop-auth");
+        dpop-auth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //dpop-auth.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: dpop-proof
+        ApiKeyAuth dpop-proof = (ApiKeyAuth) defaultClient.getAuthentication("dpop-proof");
+        dpop-proof.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //dpop-proof.setApiKeyPrefix("Token");
+
+        VelocityApi apiInstance = new VelocityApi(defaultClient);
+        String vaultId = "vaultId_example"; // String | Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates.
+        try {
+            List<VelocityLimitFormat> result = apiInstance.getVaultVelocityLimits(vaultId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling VelocityApi#getVaultVelocityLimits");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **vaultId** | **String**| Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. | |
+
+### Return type
+
+[**List&lt;VelocityLimitFormat&gt;**](VelocityLimitFormat.md)
+
+### Authorization
+
+[dpop-auth](../README.md#dpop-auth), [dpop-proof](../README.md#dpop-proof)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Velocity limits retrieved successfully. |  * Cache-Control -  <br>  |
+| **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
+| **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
+| **404** | The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. |  -  |
+| **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
+
+
+## setAccountVelocityLimit
+
+> VelocityLimitFormat setAccountVelocityLimit(velocityLimitFormat)
+
+Create or Update Account Velocity Limit
+
+Upserts a velocity limit at the account scope, keyed by `windowMinutes`.
+Setting `windowMinutes` to 0 means "single payment cap" — no time aggregation.
+
+### Example
+
+```java
+// Import classes:
+import com.definancy.ApiClient;
+import com.definancy.ApiException;
+import com.definancy.Configuration;
+import com.definancy.auth.*;
+import com.definancy.model.*;
+import com.definancy.api.VelocityApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://stub.definancy.com");
+        
+        // Configure API key authorization: dpop-auth
+        ApiKeyAuth dpop-auth = (ApiKeyAuth) defaultClient.getAuthentication("dpop-auth");
+        dpop-auth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //dpop-auth.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: dpop-proof
+        ApiKeyAuth dpop-proof = (ApiKeyAuth) defaultClient.getAuthentication("dpop-proof");
+        dpop-proof.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //dpop-proof.setApiKeyPrefix("Token");
+
+        VelocityApi apiInstance = new VelocityApi(defaultClient);
+        VelocityLimitFormat velocityLimitFormat = new VelocityLimitFormat(); // VelocityLimitFormat | 
+        try {
+            VelocityLimitFormat result = apiInstance.setAccountVelocityLimit(velocityLimitFormat);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling VelocityApi#setAccountVelocityLimit");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **velocityLimitFormat** | [**VelocityLimitFormat**](VelocityLimitFormat.md)|  | |
+
+### Return type
+
+[**VelocityLimitFormat**](VelocityLimitFormat.md)
+
+### Authorization
+
+[dpop-auth](../README.md#dpop-auth), [dpop-proof](../README.md#dpop-proof)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Velocity limit upserted successfully. |  * Cache-Control -  <br>  |
+| **400** | The request contains malformed data, invalid parameters, or violates API constraints. This includes validation errors, incorrect data types, missing required fields, or values outside acceptable ranges. Check the error details for specific issues. |  -  |
+| **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
+| **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
+| **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
+
+
+## setVaultVelocityLimit
+
+> VelocityLimitFormat setVaultVelocityLimit(vaultId, velocityLimitFormat)
+
+Create or Update Vault Velocity Limit
+
+### Example
+
+```java
+// Import classes:
+import com.definancy.ApiClient;
+import com.definancy.ApiException;
+import com.definancy.Configuration;
+import com.definancy.auth.*;
+import com.definancy.model.*;
+import com.definancy.api.VelocityApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://stub.definancy.com");
+        
+        // Configure API key authorization: dpop-auth
+        ApiKeyAuth dpop-auth = (ApiKeyAuth) defaultClient.getAuthentication("dpop-auth");
+        dpop-auth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //dpop-auth.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: dpop-proof
+        ApiKeyAuth dpop-proof = (ApiKeyAuth) defaultClient.getAuthentication("dpop-proof");
+        dpop-proof.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //dpop-proof.setApiKeyPrefix("Token");
+
+        VelocityApi apiInstance = new VelocityApi(defaultClient);
+        String vaultId = "vaultId_example"; // String | Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates.
+        VelocityLimitFormat velocityLimitFormat = new VelocityLimitFormat(); // VelocityLimitFormat | 
+        try {
+            VelocityLimitFormat result = apiInstance.setVaultVelocityLimit(vaultId, velocityLimitFormat);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling VelocityApi#setVaultVelocityLimit");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **vaultId** | **String**| Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. | |
+| **velocityLimitFormat** | [**VelocityLimitFormat**](VelocityLimitFormat.md)|  | |
+
+### Return type
+
+[**VelocityLimitFormat**](VelocityLimitFormat.md)
+
+### Authorization
+
+[dpop-auth](../README.md#dpop-auth), [dpop-proof](../README.md#dpop-proof)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Velocity limit upserted successfully. |  * Cache-Control -  <br>  |
+| **400** | The request contains malformed data, invalid parameters, or violates API constraints. This includes validation errors, incorrect data types, missing required fields, or values outside acceptable ranges. Check the error details for specific issues. |  -  |
+| **401** | Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. |  -  |
+| **403** | The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. |  -  |
+| **404** | The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. |  -  |
 | **0** | An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. |  -  |
 

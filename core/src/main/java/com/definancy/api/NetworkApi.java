@@ -12,6 +12,7 @@ import com.definancy.model.Contract;
 import com.definancy.model.ErrorList;
 import com.definancy.model.Network;
 import com.definancy.model.NetworkConfig;
+import com.definancy.model.NetworkExplorer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,6 +168,61 @@ public class NetworkApi {
     return apiClient.invokeAPI("NetworkApi.getNetwork", localVarPath, "GET", new ArrayList<>(), null,
                                new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
                                localVarAuthNames, localVarReturnType, false);
+  }
+  /**
+   * Get Network Explorer
+   * Returns URL templates for the network&#39;s block explorer. Templates use {value} as a placeholder for the address or transaction ID.
+   * @param networkId Unique identifier for a specific blockchain network (e.g., &#39;ethereum&#39;, &#39;algorand&#39;). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network. (required)
+   * @return NetworkExplorer
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> Explorer URL templates retrieved successfully. </td><td>  * Cache-Control -  <br>  </td></tr>
+       <tr><td> 401 </td><td> Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. </td><td>  -  </td></tr>
+       <tr><td> 0 </td><td> An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. </td><td>  -  </td></tr>
+     </table>
+   */
+  public NetworkExplorer getNetworkExplorer(@javax.annotation.Nonnull String networkId) throws ApiException {
+    return getNetworkExplorerWithHttpInfo(networkId).getData();
+  }
+
+  /**
+   * Get Network Explorer
+   * Returns URL templates for the network&#39;s block explorer. Templates use {value} as a placeholder for the address or transaction ID.
+   * @param networkId Unique identifier for a specific blockchain network (e.g., &#39;ethereum&#39;, &#39;algorand&#39;). Used to target operations on a particular network when managing contracts, assets, or vault subscriptions. Must match an existing configured network. (required)
+   * @return ApiResponse&lt;NetworkExplorer&gt;
+   * @throws ApiException if fails to make API call
+   * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+       <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <tr><td> 200 </td><td> Explorer URL templates retrieved successfully. </td><td>  * Cache-Control -  <br>  </td></tr>
+       <tr><td> 401 </td><td> Authentication credentials are missing, invalid, or expired. The request lacks proper authorization headers or tokens. Clients should verify their authentication setup and ensure valid credentials are provided in subsequent requests. </td><td>  -  </td></tr>
+       <tr><td> 403 </td><td> The authenticated user lacks sufficient permissions to perform this operation. While authentication was successful, the user&#39;s role or access level does not permit the requested action. Contact an administrator for access rights. </td><td>  -  </td></tr>
+       <tr><td> 404 </td><td> The requested resource does not exist or has been removed. This may indicate an incorrect ID, a resource that was deleted, or a path that doesn&#39;t match any configured endpoints. Verify the resource identifier and try again. </td><td>  -  </td></tr>
+       <tr><td> 0 </td><td> An unexpected server error occurred while processing the request. This indicates an internal system issue that prevented successful completion. The error details may provide additional context for debugging and support purposes. </td><td>  -  </td></tr>
+     </table>
+   */
+  public ApiResponse<NetworkExplorer> getNetworkExplorerWithHttpInfo(@javax.annotation.Nonnull String networkId) throws ApiException {
+    // Check required parameters
+    if (networkId == null) {
+      throw new ApiException(400, "Missing the required parameter 'networkId' when calling getNetworkExplorer");
+    }
+
+    // Path parameters
+    String localVarPath = "/v1/network/{networkId}/explorer"
+            .replaceAll("\\{networkId}", apiClient.escapeString(networkId.toString()));
+
+    String localVarAccept = apiClient.selectHeaderAccept("application/json");
+    String localVarContentType = apiClient.selectHeaderContentType();
+    GenericType<NetworkExplorer> localVarReturnType = new GenericType<NetworkExplorer>() {};
+    return apiClient.invokeAPI("NetworkApi.getNetworkExplorer", localVarPath, "GET", new ArrayList<>(), null,
+                               new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>(), localVarAccept, localVarContentType,
+                               null, localVarReturnType, false);
   }
   /**
    * Get Network Native Asset

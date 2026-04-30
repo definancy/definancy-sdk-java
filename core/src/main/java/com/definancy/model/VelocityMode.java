@@ -24,19 +24,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Compliance requirement fulfillment status indicating whether all necessary documents have been submitted and validated for a specific contract scenario.
+ * Behavior when a velocity limit is exceeded. &#x60;reject&#x60; blocks the payment with a 400 BIZ-010 error; &#x60;warn&#x60; allows it but emits a warning in the response.
  */
-public enum ComplianceScenarioStatus {
+public enum VelocityMode {
   
-  PENDING("pending"),
+  REJECT("reject"),
   
-  ACCEPTED("accepted"),
+  WARN("warn"),
   
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private String value;
 
-  ComplianceScenarioStatus(String value) {
+  VelocityMode(String value) {
     this.value = value;
   }
 
@@ -51,8 +51,8 @@ public enum ComplianceScenarioStatus {
   }
 
   @JsonCreator
-  public static ComplianceScenarioStatus fromValue(String value) {
-    for (ComplianceScenarioStatus b : ComplianceScenarioStatus.values()) {
+  public static VelocityMode fromValue(String value) {
+    for (VelocityMode b : VelocityMode.values()) {
       if (b.value.equals(value)) {
         return b;
       }

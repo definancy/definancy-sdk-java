@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.HashMap;
 import com.definancy.model.Compliance;
 import com.definancy.model.PaymentEstimateScenario;
+import com.definancy.model.VelocityWarning;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +37,8 @@ import com.definancy.JSON;
 @JsonPropertyOrder({
   PaymentEstimate.JSON_PROPERTY_TS,
   PaymentEstimate.JSON_PROPERTY_SCENARIOS,
-  PaymentEstimate.JSON_PROPERTY_COMPLIANCE
+  PaymentEstimate.JSON_PROPERTY_COMPLIANCE,
+  PaymentEstimate.JSON_PROPERTY_WARNINGS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0")
 public class PaymentEstimate {
@@ -51,6 +53,10 @@ public class PaymentEstimate {
   public static final String JSON_PROPERTY_COMPLIANCE = "compliance";
   @javax.annotation.Nonnull
   private Compliance compliance;
+
+  public static final String JSON_PROPERTY_WARNINGS = "warnings";
+  @javax.annotation.Nullable
+  private List<VelocityWarning> warnings;
 
   public PaymentEstimate() { 
   }
@@ -139,6 +145,39 @@ public class PaymentEstimate {
   }
 
 
+  public PaymentEstimate warnings(@javax.annotation.Nullable List<VelocityWarning> warnings) {
+    this.warnings = warnings;
+    return this;
+  }
+
+  public PaymentEstimate addWarningsItem(VelocityWarning warningsItem) {
+    if (this.warnings == null) {
+      this.warnings = new ArrayList<>();
+    }
+    this.warnings.add(warningsItem);
+    return this;
+  }
+
+  /**
+   * Velocity warnings that fired during the estimate check. Present only when warn-mode limits were exceeded.
+   * @return warnings
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_WARNINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<VelocityWarning> getWarnings() {
+    return warnings;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_WARNINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWarnings(@javax.annotation.Nullable List<VelocityWarning> warnings) {
+    this.warnings = warnings;
+  }
+
+
   /**
    * Return true if this PaymentEstimate object is equal to o.
    */
@@ -153,12 +192,13 @@ public class PaymentEstimate {
     PaymentEstimate paymentEstimate = (PaymentEstimate) o;
     return Objects.equals(this.ts, paymentEstimate.ts) &&
         Objects.equals(this.scenarios, paymentEstimate.scenarios) &&
-        Objects.equals(this.compliance, paymentEstimate.compliance);
+        Objects.equals(this.compliance, paymentEstimate.compliance) &&
+        Objects.equals(this.warnings, paymentEstimate.warnings);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ts, scenarios, compliance);
+    return Objects.hash(ts, scenarios, compliance, warnings);
   }
 
   @Override
@@ -168,6 +208,7 @@ public class PaymentEstimate {
     sb.append("    ts: ").append(toIndentedString(ts)).append("\n");
     sb.append("    scenarios: ").append(toIndentedString(scenarios)).append("\n");
     sb.append("    compliance: ").append(toIndentedString(compliance)).append("\n");
+    sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
     sb.append("}");
     return sb.toString();
   }

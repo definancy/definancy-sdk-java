@@ -160,12 +160,13 @@ Class | Method | HTTP request | Description
 *AssetApi* | [**configAsset**](docs/AssetApi.md#configAsset) | **PATCH** /v1/asset/{assetUnit} | Configure Asset
 *AssetApi* | [**getAsset**](docs/AssetApi.md#getAsset) | **GET** /v1/asset/{assetUnit} | Get Asset
 *AssetApi* | [**getAssets**](docs/AssetApi.md#getAssets) | **GET** /v1/asset | List Assets
+*AuthApi* | [**registerAuth**](docs/AuthApi.md#registerAuth) | **PUT** /v1/auth/{definancyId} | Register a Definancy ID
 *ContractApi* | [**configContract**](docs/ContractApi.md#configContract) | **PATCH** /v1/contract/{assetUnit}/{networkId} | Configure Contract
 *ContractApi* | [**getContract**](docs/ContractApi.md#getContract) | **GET** /v1/contract/{assetUnit}/{networkId} | Get Contract
 *ContractApi* | [**getContracts**](docs/ContractApi.md#getContracts) | **GET** /v1/contract | List Contracts
-*ExperimentalApi* | [**registerDid**](docs/ExperimentalApi.md#registerDid) | **PUT** /v1/did/{definancyId} | Register a Definancy DID
 *NetworkApi* | [**configNetwork**](docs/NetworkApi.md#configNetwork) | **PATCH** /v1/network/{networkId} | Configure Network
 *NetworkApi* | [**getNetwork**](docs/NetworkApi.md#getNetwork) | **GET** /v1/network/{networkId} | Get Network
+*NetworkApi* | [**getNetworkExplorer**](docs/NetworkApi.md#getNetworkExplorer) | **GET** /v1/network/{networkId}/explorer | Get Network Explorer
 *NetworkApi* | [**getNetworkNativeAsset**](docs/NetworkApi.md#getNetworkNativeAsset) | **GET** /v1/network/{networkId}/native | Get Network Native Asset
 *NetworkApi* | [**getNetworks**](docs/NetworkApi.md#getNetworks) | **GET** /v1/network | List Networks
 *ProbeApi* | [**healthyCheck**](docs/ProbeApi.md#healthyCheck) | **GET** /v1/healthy | Health Check
@@ -188,12 +189,16 @@ Class | Method | HTTP request | Description
 *VaultPaymentApi* | [**unlinkPaymentAcceptanceDocument**](docs/VaultPaymentApi.md#unlinkPaymentAcceptanceDocument) | **DELETE** /v1/vault/{vaultId}/payment/acceptance/{paymentAcceptanceId}/document/{documentId} | Unlink Document from Payment Acceptance
 *VaultPaymentApi* | [**updatePaymentAcceptance**](docs/VaultPaymentApi.md#updatePaymentAcceptance) | **PATCH** /v1/vault/{vaultId}/payment/acceptance/{paymentAcceptanceId} | Update Payment Acceptance
 *VaultPaymentApi* | [**vaultGetPaymentEstimate**](docs/VaultPaymentApi.md#vaultGetPaymentEstimate) | **POST** /v1/vault/{vaultId}/payment/estimate | Generate Payment Estimate
+*VelocityApi* | [**deleteAccountVelocityLimit**](docs/VelocityApi.md#deleteAccountVelocityLimit) | **DELETE** /v1/account/velocity-limits/{windowMinutes} | Delete Account Velocity Limit
+*VelocityApi* | [**deleteVaultVelocityLimit**](docs/VelocityApi.md#deleteVaultVelocityLimit) | **DELETE** /v1/vault/{vaultId}/velocity-limits/{windowMinutes} | Delete Vault Velocity Limit
+*VelocityApi* | [**getAccountVelocityLimits**](docs/VelocityApi.md#getAccountVelocityLimits) | **GET** /v1/account/velocity-limits | List Account Velocity Limits
+*VelocityApi* | [**getVaultVelocityLimits**](docs/VelocityApi.md#getVaultVelocityLimits) | **GET** /v1/vault/{vaultId}/velocity-limits | List Vault Velocity Limits
+*VelocityApi* | [**setAccountVelocityLimit**](docs/VelocityApi.md#setAccountVelocityLimit) | **POST** /v1/account/velocity-limits | Create or Update Account Velocity Limit
+*VelocityApi* | [**setVaultVelocityLimit**](docs/VelocityApi.md#setVaultVelocityLimit) | **POST** /v1/vault/{vaultId}/velocity-limits | Create or Update Vault Velocity Limit
 
 
 ## Documentation for Models
 
- - [AcceptancePaymentTrait](docs/AcceptancePaymentTrait.md)
- - [AcceptancePriceTrait](docs/AcceptancePriceTrait.md)
  - [Amount](docs/Amount.md)
  - [AmountFormat](docs/AmountFormat.md)
  - [AmountRaw](docs/AmountRaw.md)
@@ -237,6 +242,7 @@ Class | Method | HTTP request | Description
  - [MediaType](docs/MediaType.md)
  - [Network](docs/Network.md)
  - [NetworkConfig](docs/NetworkConfig.md)
+ - [NetworkExplorer](docs/NetworkExplorer.md)
  - [NetworkInfo](docs/NetworkInfo.md)
  - [NetworkMediaMap](docs/NetworkMediaMap.md)
  - [NetworkStatus](docs/NetworkStatus.md)
@@ -247,6 +253,8 @@ Class | Method | HTTP request | Description
  - [PaymentAcceptanceConfigFormat](docs/PaymentAcceptanceConfigFormat.md)
  - [PaymentAcceptanceInfo](docs/PaymentAcceptanceInfo.md)
  - [PaymentAcceptanceOrder](docs/PaymentAcceptanceOrder.md)
+ - [PaymentAcceptancePayTrait](docs/PaymentAcceptancePayTrait.md)
+ - [PaymentAcceptancePriceTrait](docs/PaymentAcceptancePriceTrait.md)
  - [PaymentAcceptanceScenario](docs/PaymentAcceptanceScenario.md)
  - [PaymentAcceptanceScenarioStatus](docs/PaymentAcceptanceScenarioStatus.md)
  - [PaymentAcceptanceStatus](docs/PaymentAcceptanceStatus.md)
@@ -275,6 +283,10 @@ Class | Method | HTTP request | Description
  - [Vault](docs/Vault.md)
  - [VaultConfig](docs/VaultConfig.md)
  - [VaultInfo](docs/VaultInfo.md)
+ - [VelocityLimitFormat](docs/VelocityLimitFormat.md)
+ - [VelocityMode](docs/VelocityMode.md)
+ - [VelocityScope](docs/VelocityScope.md)
+ - [VelocityWarning](docs/VelocityWarning.md)
  - [Version](docs/Version.md)
 
 

@@ -27,7 +27,6 @@ import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.definancy.JSON;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
@@ -41,12 +40,10 @@ import java.util.HashSet;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -55,7 +52,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.definancy.JSON;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0")
-@JsonDeserialize(using = AmountFormat.AmountFormatDeserializer.class)
+@JsonDeserialize(using=AmountFormat.AmountFormatDeserializer.class)
 @JsonSerialize(using = AmountFormat.AmountFormatSerializer.class)
 public class AmountFormat extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(AmountFormat.class.getName());
@@ -87,48 +84,31 @@ public class AmountFormat extends AbstractOpenApiSchema {
         @Override
         public AmountFormat deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
             JsonNode tree = jp.readValueAsTree();
+
             Object deserialized = null;
-            boolean typeCoercion = ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS);
-            int match = 0;
-            JsonToken token = tree.traverse(jp.getCodec()).nextToken();
             // deserialize AmountValue
             try {
-                boolean attemptParsing = true;
-                if (attemptParsing) {
-                    deserialized = tree.traverse(jp.getCodec()).readValueAs(AmountValue.class);
-                    // TODO: there is no validation against JSON schema constraints
-                    // (min, max, enum, pattern...), this does not perform a strict JSON
-                    // validation, which means the 'match' count may be higher than it should be.
-                    match++;
-                    log.log(Level.FINER, "Input data matches schema 'AmountValue'");
-                }
+                deserialized = tree.traverse(jp.getCodec()).readValueAs(AmountValue.class);
+                AmountFormat ret = new AmountFormat();
+                ret.setActualInstance(deserialized);
+                return ret;
             } catch (Exception e) {
-                // deserialization failed, continue
-                log.log(Level.FINER, "Input data does not match schema 'AmountValue'", e);
+                // deserialization failed, continue, log to help debugging
+                log.log(Level.FINER, "Input data does not match 'AmountFormat'", e);
             }
 
             // deserialize AmountRaw
             try {
-                boolean attemptParsing = true;
-                if (attemptParsing) {
-                    deserialized = tree.traverse(jp.getCodec()).readValueAs(AmountRaw.class);
-                    // TODO: there is no validation against JSON schema constraints
-                    // (min, max, enum, pattern...), this does not perform a strict JSON
-                    // validation, which means the 'match' count may be higher than it should be.
-                    match++;
-                    log.log(Level.FINER, "Input data matches schema 'AmountRaw'");
-                }
-            } catch (Exception e) {
-                // deserialization failed, continue
-                log.log(Level.FINER, "Input data does not match schema 'AmountRaw'", e);
-            }
-
-            if (match == 1) {
+                deserialized = tree.traverse(jp.getCodec()).readValueAs(AmountRaw.class);
                 AmountFormat ret = new AmountFormat();
                 ret.setActualInstance(deserialized);
                 return ret;
+            } catch (Exception e) {
+                // deserialization failed, continue, log to help debugging
+                log.log(Level.FINER, "Input data does not match 'AmountFormat'", e);
             }
-            throw new IOException(String.format(java.util.Locale.ROOT, "Failed deserialization for AmountFormat: %d classes match result, expected 1", match));
+
+            throw new IOException("Failed deserialization for AmountFormat: no match found");
         }
 
         /**
@@ -140,20 +120,20 @@ public class AmountFormat extends AbstractOpenApiSchema {
         }
     }
 
-    // store a list of schema names defined in oneOf
+    // store a list of schema names defined in anyOf
     public static final Map<String, GenericType<?>> schemas = new HashMap<>();
 
     public AmountFormat() {
-        super("oneOf", Boolean.FALSE);
+        super("anyOf", Boolean.FALSE);
     }
 
     public AmountFormat(AmountValue o) {
-        super("oneOf", Boolean.FALSE);
+        super("anyOf", Boolean.FALSE);
         setActualInstance(o);
     }
 
     public AmountFormat(AmountRaw o) {
-        super("oneOf", Boolean.FALSE);
+        super("anyOf", Boolean.FALSE);
         setActualInstance(o);
     }
 
@@ -171,12 +151,12 @@ public class AmountFormat extends AbstractOpenApiSchema {
     }
 
     /**
-     * Set the instance that matches the oneOf child schema, check
-     * the instance parameter is valid against the oneOf child schemas:
+     * Set the instance that matches the anyOf child schema, check
+     * the instance parameter is valid against the anyOf child schemas:
      * AmountRaw, AmountValue
      *
-     * It could be an instance of the 'oneOf' schemas.
-     * The oneOf child schemas may themselves be a composed schema (allOf, anyOf, oneOf).
+     * It could be an instance of the 'anyOf' schemas.
+     * The anyOf child schemas may themselves be a composed schema (allOf, anyOf, anyOf).
      */
     @Override
     public void setActualInstance(Object instance) {

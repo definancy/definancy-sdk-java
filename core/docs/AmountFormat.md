@@ -2,9 +2,9 @@
 
 # AmountFormat
 
-Precise representation of a amount combining a raw value with decimal precision information. This structure ensures accurate handling of token amounts across  different assets with varying decimal places.
+Precise representation of a amount combining a raw value with decimal precision information. This structure ensures accurate handling of token amounts across different assets with varying decimal places. Accepts value only, raw+decimals only, or both (validated for consistency).
 
-## oneOf schemas
+## anyOf schemas
 * [AmountRaw](AmountRaw.md)
 * [AmountValue](AmountValue.md)
 

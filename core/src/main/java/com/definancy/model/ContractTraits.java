@@ -16,8 +16,8 @@ package com.definancy.model;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
-import com.definancy.model.AcceptancePaymentTrait;
-import com.definancy.model.AcceptancePriceTrait;
+import com.definancy.model.PaymentAcceptancePayTrait;
+import com.definancy.model.PaymentAcceptancePriceTrait;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -32,69 +32,69 @@ import com.definancy.JSON;
  * ContractTraits
  */
 @JsonPropertyOrder({
-  ContractTraits.JSON_PROPERTY_ACCEPTANCE_PRICE_TRAIT,
-  ContractTraits.JSON_PROPERTY_ACCEPTANCE_PAYMENT_TRAIT
+  ContractTraits.JSON_PROPERTY_PAYMENT_ACCEPTANCE_PRICE_TRAIT,
+  ContractTraits.JSON_PROPERTY_PAYMENT_ACCEPTANCE_PAY_TRAIT
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0")
 public class ContractTraits {
-  public static final String JSON_PROPERTY_ACCEPTANCE_PRICE_TRAIT = "AcceptancePriceTrait";
+  public static final String JSON_PROPERTY_PAYMENT_ACCEPTANCE_PRICE_TRAIT = "payment-acceptance-price-trait";
   @javax.annotation.Nullable
-  private AcceptancePriceTrait acceptancePriceTrait;
+  private PaymentAcceptancePriceTrait paymentAcceptancePriceTrait;
 
-  public static final String JSON_PROPERTY_ACCEPTANCE_PAYMENT_TRAIT = "AcceptancePaymentTrait";
+  public static final String JSON_PROPERTY_PAYMENT_ACCEPTANCE_PAY_TRAIT = "payment-acceptance-pay-trait";
   @javax.annotation.Nullable
-  private AcceptancePaymentTrait acceptancePaymentTrait;
+  private PaymentAcceptancePayTrait paymentAcceptancePayTrait;
 
   public ContractTraits() { 
   }
 
-  public ContractTraits acceptancePriceTrait(@javax.annotation.Nullable AcceptancePriceTrait acceptancePriceTrait) {
-    this.acceptancePriceTrait = acceptancePriceTrait;
+  public ContractTraits paymentAcceptancePriceTrait(@javax.annotation.Nullable PaymentAcceptancePriceTrait paymentAcceptancePriceTrait) {
+    this.paymentAcceptancePriceTrait = paymentAcceptancePriceTrait;
     return this;
   }
 
   /**
-   * Get acceptancePriceTrait
-   * @return acceptancePriceTrait
+   * Get paymentAcceptancePriceTrait
+   * @return paymentAcceptancePriceTrait
    */
   @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_ACCEPTANCE_PRICE_TRAIT, required = false)
+  @JsonProperty(value = JSON_PROPERTY_PAYMENT_ACCEPTANCE_PRICE_TRAIT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public AcceptancePriceTrait getAcceptancePriceTrait() {
-    return acceptancePriceTrait;
+  public PaymentAcceptancePriceTrait getPaymentAcceptancePriceTrait() {
+    return paymentAcceptancePriceTrait;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_ACCEPTANCE_PRICE_TRAIT, required = false)
+  @JsonProperty(value = JSON_PROPERTY_PAYMENT_ACCEPTANCE_PRICE_TRAIT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAcceptancePriceTrait(@javax.annotation.Nullable AcceptancePriceTrait acceptancePriceTrait) {
-    this.acceptancePriceTrait = acceptancePriceTrait;
+  public void setPaymentAcceptancePriceTrait(@javax.annotation.Nullable PaymentAcceptancePriceTrait paymentAcceptancePriceTrait) {
+    this.paymentAcceptancePriceTrait = paymentAcceptancePriceTrait;
   }
 
 
-  public ContractTraits acceptancePaymentTrait(@javax.annotation.Nullable AcceptancePaymentTrait acceptancePaymentTrait) {
-    this.acceptancePaymentTrait = acceptancePaymentTrait;
+  public ContractTraits paymentAcceptancePayTrait(@javax.annotation.Nullable PaymentAcceptancePayTrait paymentAcceptancePayTrait) {
+    this.paymentAcceptancePayTrait = paymentAcceptancePayTrait;
     return this;
   }
 
   /**
-   * Get acceptancePaymentTrait
-   * @return acceptancePaymentTrait
+   * Get paymentAcceptancePayTrait
+   * @return paymentAcceptancePayTrait
    */
   @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_ACCEPTANCE_PAYMENT_TRAIT, required = false)
+  @JsonProperty(value = JSON_PROPERTY_PAYMENT_ACCEPTANCE_PAY_TRAIT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public AcceptancePaymentTrait getAcceptancePaymentTrait() {
-    return acceptancePaymentTrait;
+  public PaymentAcceptancePayTrait getPaymentAcceptancePayTrait() {
+    return paymentAcceptancePayTrait;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_ACCEPTANCE_PAYMENT_TRAIT, required = false)
+  @JsonProperty(value = JSON_PROPERTY_PAYMENT_ACCEPTANCE_PAY_TRAIT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAcceptancePaymentTrait(@javax.annotation.Nullable AcceptancePaymentTrait acceptancePaymentTrait) {
-    this.acceptancePaymentTrait = acceptancePaymentTrait;
+  public void setPaymentAcceptancePayTrait(@javax.annotation.Nullable PaymentAcceptancePayTrait paymentAcceptancePayTrait) {
+    this.paymentAcceptancePayTrait = paymentAcceptancePayTrait;
   }
 
 
@@ -110,21 +110,21 @@ public class ContractTraits {
       return false;
     }
     ContractTraits contractTraits = (ContractTraits) o;
-    return Objects.equals(this.acceptancePriceTrait, contractTraits.acceptancePriceTrait) &&
-        Objects.equals(this.acceptancePaymentTrait, contractTraits.acceptancePaymentTrait);
+    return Objects.equals(this.paymentAcceptancePriceTrait, contractTraits.paymentAcceptancePriceTrait) &&
+        Objects.equals(this.paymentAcceptancePayTrait, contractTraits.paymentAcceptancePayTrait);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(acceptancePriceTrait, acceptancePaymentTrait);
+    return Objects.hash(paymentAcceptancePriceTrait, paymentAcceptancePayTrait);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ContractTraits {\n");
-    sb.append("    acceptancePriceTrait: ").append(toIndentedString(acceptancePriceTrait)).append("\n");
-    sb.append("    acceptancePaymentTrait: ").append(toIndentedString(acceptancePaymentTrait)).append("\n");
+    sb.append("    paymentAcceptancePriceTrait: ").append(toIndentedString(paymentAcceptancePriceTrait)).append("\n");
+    sb.append("    paymentAcceptancePayTrait: ").append(toIndentedString(paymentAcceptancePayTrait)).append("\n");
     sb.append("}");
     return sb.toString();
   }
