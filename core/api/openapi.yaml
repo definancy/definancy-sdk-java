@@ -1,12 +1,15 @@
 openapi: 3.0.0
 info:
-  description: "REST API for managing asset, network and contract configurations,\
-    \ and vault-based financial operations.\nThis API provides a comprehensive set\
-    \ of endpoints for health monitoring, network management, asset \nconfiguration,\
-    \ contract management, vault lifecycle management, and QR-Code generation. It\
-    \ is designed\nto facilitate seamless integration with financial systems, ensuring\
-    \ secure and efficient payment \nprocessing while maintaining strict compliance\
-    \ standards."
+  contact:
+    email: support@definancy.com
+    name: Definancy
+    url: https://definancy.com
+  description: |-
+    REST API for managing asset, network and contract configurations, and vault-based financial operations.
+    This API provides a comprehensive set of endpoints for health monitoring, network management, asset
+    configuration, contract management, vault lifecycle management, and QR-Code generation. It is designed
+    to facilitate seamless integration with financial systems, ensuring secure and efficient payment
+    processing while maintaining strict compliance standards.
   title: Definancy API
   version: 0.0.1.wip.20250925
 servers:
@@ -69,6 +72,12 @@ tags:
     These endpoints enable you to estimate, create, retrieve, update, and archive payments,
     which are essential for executing payments and tracking their status.
   name: Vault - Payment
+- description: |-
+    Velocity limit configuration and enforcement for payment operations.
+    Velocity limits cap how much can be paid within a rolling time window
+    (per account or per vault). Setting `windowMinutes` to 0 means
+    "single-payment cap" — no time aggregation.
+  name: Velocity
 - description: |-
     QR-Code generator.
     This section includes endpoints for generating QR codes, which are used for facilitating
@@ -2619,6 +2628,9 @@ paths:
       - application/json
   /v1/vault/{vaultId}/velocity-limits:
     get:
+      description: |-
+        Returns all velocity limits configured at the vault scope, ordered
+        by window in ascending order.
       operationId: GetVaultVelocityLimits
       parameters:
       - description: |-
@@ -2686,6 +2698,9 @@ paths:
       x-accepts:
       - application/json
     post:
+      description: |-
+        Upserts a velocity limit at the vault scope, keyed by `windowMinutes`.
+        Setting `windowMinutes` to 0 means "single payment cap" — no time aggregation.
       operationId: SetVaultVelocityLimit
       parameters:
       - description: |-
@@ -2768,6 +2783,9 @@ paths:
       - application/json
   /v1/vault/{vaultId}/velocity-limits/{windowMinutes}:
     delete:
+      description: |-
+        Removes the vault velocity limit for the given window. Idempotent —
+        returns 204 even if the limit does not exist.
       operationId: DeleteVaultVelocityLimit
       parameters:
       - description: |-

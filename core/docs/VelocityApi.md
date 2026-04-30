@@ -100,6 +100,9 @@ null (empty response body)
 
 Delete Vault Velocity Limit
 
+Removes the vault velocity limit for the given window. Idempotent —
+returns 204 even if the limit does not exist.
+
 ### Example
 
 ```java
@@ -258,6 +261,9 @@ This endpoint does not need any parameter.
 > List&lt;VelocityLimitFormat&gt; getVaultVelocityLimits(vaultId)
 
 List Vault Velocity Limits
+
+Returns all velocity limits configured at the vault scope, ordered
+by window in ascending order.
 
 ### Example
 
@@ -421,6 +427,9 @@ public class Example {
 > VelocityLimitFormat setVaultVelocityLimit(vaultId, velocityLimitFormat)
 
 Create or Update Vault Velocity Limit
+
+Upserts a velocity limit at the vault scope, keyed by `windowMinutes`.
+Setting `windowMinutes` to 0 means "single payment cap" — no time aggregation.
 
 ### Example
 

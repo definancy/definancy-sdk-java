@@ -101,7 +101,7 @@ public class VelocityApi {
   }
   /**
    * Delete Vault Velocity Limit
-   * 
+   * Removes the vault velocity limit for the given window. Idempotent — returns 204 even if the limit does not exist.
    * @param vaultId Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. (required)
    * @param windowMinutes Rolling window length in minutes used as the unique key for a velocity limit within its scope. Use 0 for \&quot;single payment cap\&quot; (no time aggregation). (required)
    * @throws ApiException if fails to make API call
@@ -122,7 +122,7 @@ public class VelocityApi {
 
   /**
    * Delete Vault Velocity Limit
-   * 
+   * Removes the vault velocity limit for the given window. Idempotent — returns 204 even if the limit does not exist.
    * @param vaultId Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. (required)
    * @param windowMinutes Rolling window length in minutes used as the unique key for a velocity limit within its scope. Use 0 for \&quot;single payment cap\&quot; (no time aggregation). (required)
    * @return ApiResponse&lt;Void&gt;
@@ -204,7 +204,7 @@ public class VelocityApi {
   }
   /**
    * List Vault Velocity Limits
-   * 
+   * Returns all velocity limits configured at the vault scope, ordered by window in ascending order.
    * @param vaultId Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. (required)
    * @return List&lt;VelocityLimitFormat&gt;
    * @throws ApiException if fails to make API call
@@ -225,7 +225,7 @@ public class VelocityApi {
 
   /**
    * List Vault Velocity Limits
-   * 
+   * Returns all velocity limits configured at the vault scope, ordered by window in ascending order.
    * @param vaultId Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. (required)
    * @return ApiResponse&lt;List&lt;VelocityLimitFormat&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -312,7 +312,7 @@ public class VelocityApi {
   }
   /**
    * Create or Update Vault Velocity Limit
-   * 
+   * Upserts a velocity limit at the vault scope, keyed by &#x60;windowMinutes&#x60;. Setting &#x60;windowMinutes&#x60; to 0 means \&quot;single payment cap\&quot; — no time aggregation.
    * @param vaultId Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. (required)
    * @param velocityLimitFormat  (required)
    * @return VelocityLimitFormat
@@ -335,7 +335,7 @@ public class VelocityApi {
 
   /**
    * Create or Update Vault Velocity Limit
-   * 
+   * Upserts a velocity limit at the vault scope, keyed by &#x60;windowMinutes&#x60;. Setting &#x60;windowMinutes&#x60; to 0 means \&quot;single payment cap\&quot; — no time aggregation.
    * @param vaultId Unique identifier for a vault container that manages payment acceptance, documents, and contract subscriptions. Used across all vault-related operations including payment processing, document management, and configuration updates. (required)
    * @param velocityLimitFormat  (required)
    * @return ApiResponse&lt;VelocityLimitFormat&gt;
