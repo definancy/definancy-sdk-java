@@ -10,6 +10,7 @@ import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.Signature;
@@ -130,6 +131,44 @@ public class KeyPair implements Signer {
         byte[] sigBytes = Encoder.decodeFromBase64(signature);
 
         return verifier.verify(sigBytes);
+    }
+
+    /**
+     * Return the raw 32-byte Ed25519 private key bytes. Used internally
+     * by {@link #equals(Object)} for value comparison; not part of the
+     * public API surface.
+     */
+    private byte[] privateKeyBytes() {
+        byte[] x509enc = this.privateKeyPair.getPrivate().getEncoded();
+        PrivateKeyInfo pkinfo = PrivateKeyInfo.getInstance(x509enc);
+        try {
+            ASN1Encodable keyOcts = pkinfo.parsePrivateKey();
+            return ASN1OctetString.getInstance(keyOcts).getOctets();
+        } catch (Exception e) {
+            throw new RuntimeException("unexpected behavior", e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof KeyPair)) return false;
+        KeyPair other = (KeyPair) o;
+        // MessageDigest.isEqual is constant-time for byte[] comparison —
+        // avoids a timing side-channel that would leak how many leading
+        // bytes of the private key match.
+        return MessageDigest.isEqual(this.publicKey().getBytes(), other.publicKey().getBytes())
+            && MessageDigest.isEqual(this.privateKeyBytes(), other.privateKeyBytes());
+    }
+
+    @Override
+    public int hashCode() {
+        // Hash on public bytes only — exposing private-key bits via
+        // hashCode is an unnecessary side-channel risk. Two KeyPairs
+        // with same public but different private will hash equal but
+        // compare unequal — fine for HashMap/HashSet correctness
+        // (equals is the gate).
+        return Arrays.hashCode(this.publicKey().getBytes());
     }
 
     // Return a pre-set seed in response to nextBytes or generateSeed
