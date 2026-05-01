@@ -74,6 +74,30 @@ jobs:
           ' CHANGELOG.md > release-notes.md
           echo "wrote release-notes.md ($(wc -l < release-notes.md) lines)"
 
+      - name: Collect release artifacts
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          mkdir -p release-artifacts
+          # Primary jar + classified variants from core (mvn deploy already
+          # built them; we just collect them for the GitHub Release page).
+          # `|| true` on each individual cp lets the step succeed even if
+          # one classifier isn't produced (e.g., shaded plugin disabled).
+          for f in \
+            "core/target/definancy-sdk-java-core-${VERSION}.jar" \
+            "core/target/definancy-sdk-java-core-${VERSION}-shaded.jar" \
+            "core/target/definancy-sdk-java-core-${VERSION}-sources.jar" \
+            "core/target/definancy-sdk-java-core-${VERSION}-javadoc.jar" \
+            "demos/target/definancy-sdk-java-demos-${VERSION}.jar"; do
+            if [ -f "$f" ]; then
+              cp "$f" release-artifacts/
+              echo "  attached: $(basename "$f")"
+            else
+              echo "  missing (skipped): $(basename "$f")"
+            fi
+          done
+          ls -la release-artifacts/
+
       - name: Create GitHub Release
         env:
           VERSION: ${{ github.event.client_payload.version }}
@@ -81,4 +105,5 @@ jobs:
         run: |
           gh release create "v${VERSION}" \
             --title "v${VERSION}" \
-            --notes-file release-notes.md
+            --notes-file release-notes.md \
+            release-artifacts/*
