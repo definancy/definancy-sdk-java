@@ -22,9 +22,8 @@ public final class AmountMathTest {
 
     @Test
     public void valueToRaw_nullValue_throwsNPE() {
-        // Implementation does no explicit null check; it calls
-        // value.startsWith(...) first, which yields NullPointerException.
-        // Pin that contract — callers shouldn't expect IllegalArgumentException.
+        // Implementation has Objects.requireNonNull(value, ...) — the
+        // declared NullPointerException is the contract.
         assertThrows(NullPointerException.class, () -> AmountMath.valueToRaw(null, 6));
     }
 
@@ -201,19 +200,20 @@ public final class AmountMathTest {
     // -------------------------------------------------------------------------
 
     @Test
-    public void valueToRaw_emptyString_returnsZerosOfLength() {
-        // Empty string: not negative, no dot → intPart="", fracPart="".
-        // padEnd("", decimals=6, '0') → "000000".
-        // stripLeadingZeros("000000") → "0".
-        // So empty string → "0". Pin this Java-specific behavior.
-        assertEquals("0", AmountMath.valueToRaw("", 6));
+    public void valueToRaw_emptyString_throwsIAE() {
+        // Empty string is rejected explicitly — falling through padding
+        // logic to a valid zero would mask caller bugs.
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> AmountMath.valueToRaw("", 6));
+        assertEquals("value must not be empty", ex.getMessage());
     }
 
     @Test
     public void rawToValue_emptyString_returnsZero() {
-        // Empty string: padStart("", 7, '0') → "0000000",
+        // Empty raw: padStart("", 7, '0') → "0000000",
         // intPart=stripLeadingZeros("0") → "0", fracPart="000000" → "".
-        // → "0".
+        // → "0". rawToValue is unchanged in 0.1.0; only valueToRaw was
+        // tightened (defect #4 was scoped to valueToRaw).
         assertEquals("0", AmountMath.rawToValue("", 6));
     }
 }

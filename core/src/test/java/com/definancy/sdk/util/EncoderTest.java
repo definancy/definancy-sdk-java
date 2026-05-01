@@ -101,24 +101,31 @@ public final class EncoderTest {
     }
 
     // -------------------------------------------------------------------------
-    // Base32 — out-of-alphabet input behavior (commons-codec is LENIENT)
+    // Base32 — out-of-alphabet input is rejected strictly.
     //
-    // Apache commons-codec Base32 silently DROPS characters outside
-    // the RFC 4648 alphabet rather than throwing. Pin this — callers
-    // who expect strict validation must layer their own check on top.
+    // Apache commons-codec Base32 is internally lenient (silently drops
+    // chars outside the alphabet), so the Encoder pre-validates input
+    // against the RFC 4648 alphabet [A-Z2-7=] and throws
+    // IllegalArgumentException on any out-of-alphabet character.
     // -------------------------------------------------------------------------
 
     @Test
-    public void base32_decode_outOfAlphabetCharsAreDroppedSilently() {
+    public void base32_decode_outOfAlphabetChars_throwsIAE() {
         byte[] data = new byte[]{(byte) 0xab};
         String valid = Encoder.encodeToBase32(data);
         // Inject "!" into the middle — not in A-Z + 2-7.
         String corrupted = valid.charAt(0) + "!" + valid.charAt(1);
-        // Lenient decode: '!' silently dropped, decoded result equals
-        // the original valid bytes. NOT a thrown exception.
-        byte[] decoded = Encoder.decodeFromBase32(corrupted);
-        assertArrayEquals(data, decoded,
-                "current contract: out-of-alphabet chars are silently dropped");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> Encoder.decodeFromBase32(corrupted),
+                "out-of-alphabet chars must be rejected, not silently dropped");
+        assertNotNull(ex.getMessage());
+        assertTrue(ex.getMessage().contains("Base32"),
+                "rejection message should identify the encoding");
+    }
+
+    @Test
+    public void base32_decode_nullInput_throwsNPE() {
+        assertThrows(NullPointerException.class, () -> Encoder.decodeFromBase32(null));
     }
 
     // -------------------------------------------------------------------------
@@ -176,21 +183,30 @@ public final class EncoderTest {
     }
 
     // -------------------------------------------------------------------------
-    // Base64url — out-of-alphabet input behavior (commons-codec is LENIENT)
+    // Base64url — out-of-alphabet input is rejected strictly.
     //
-    // Same as Base32 — chars outside the alphabet are silently dropped.
-    // Pin so callers don't assume strict validation.
+    // Same hardening as Base32: the Encoder pre-validates input against
+    // the RFC 4648 §5 url-safe alphabet [A-Za-z0-9_=-] and throws
+    // IllegalArgumentException on any out-of-alphabet character.
     // -------------------------------------------------------------------------
 
     @Test
-    public void base64_decode_outOfAlphabetCharsAreDroppedSilently() {
+    public void base64_decode_outOfAlphabetChars_throwsIAE() {
         byte[] data = new byte[]{(byte) 0xab, (byte) 0xcd, (byte) 0xef};
         String valid = Encoder.encodeToBase64(data);
         // '!' is not in the base64url alphabet (which is A-Z + a-z + 0-9 + - + _).
         String corrupted = valid.charAt(0) + "!" + valid.substring(1);
-        byte[] decoded = Encoder.decodeFromBase64(corrupted);
-        assertArrayEquals(data, decoded,
-                "current contract: out-of-alphabet chars silently dropped");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> Encoder.decodeFromBase64(corrupted),
+                "out-of-alphabet chars must be rejected, not silently dropped");
+        assertNotNull(ex.getMessage());
+        assertTrue(ex.getMessage().contains("Base64"),
+                "rejection message should identify the encoding");
+    }
+
+    @Test
+    public void base64_decode_nullInput_throwsNPE() {
+        assertThrows(NullPointerException.class, () -> Encoder.decodeFromBase64(null));
     }
 
     // -------------------------------------------------------------------------

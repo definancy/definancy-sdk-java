@@ -192,22 +192,37 @@ public final class KeyPairTest {
     }
 
     // -------------------------------------------------------------------------
-    // Equality semantics — KeyPair does NOT override equals/hashCode.
-    // Pin this so a future change to value-equality (e.g. comparing
-    // private-key bytes) is a deliberate, visible decision rather than
-    // an accidental semantic shift.
+    // Equality semantics — KeyPair overrides equals/hashCode.
+    //
+    // equals compares public + private key bytes via constant-time
+    // MessageDigest.isEqual (avoids timing side-channels).
+    // hashCode hashes on public bytes only — exposing private-key bits
+    // via hashCode is an unnecessary side-channel risk.
     // -------------------------------------------------------------------------
 
     @Test
-    public void equals_isIdentityBased_notValueBased() throws Exception {
+    public void equals_isValueBased() throws Exception {
         String secret = Encoder.encodeToBase64(SEED_32);
         KeyPair a = KeyPair.generateKeyPairFromSecret(secret);
         KeyPair b = KeyPair.generateKeyPairFromSecret(secret);
         // Public keys are byte-identical (deterministic from same seed).
         assertArrayEquals(a.publicKey().getBytes(), b.publicKey().getBytes());
-        // But the KeyPair objects themselves are NOT equal — no override.
-        assertTrue(!a.equals(b),
-                "KeyPair has no equals() override; identity-based comparison");
+        // KeyPairs constructed from the same seed compare equal.
+        assertEquals(a, b,
+                "KeyPair overrides equals; same-seed KeyPairs are value-equal");
         assertEquals(a, a, "each instance equals itself");
+        // hashCode contract: equal objects must have equal hash codes.
+        assertEquals(a.hashCode(), b.hashCode(),
+                "equals/hashCode contract: equal KeyPairs must hash equal");
+    }
+
+    @Test
+    public void equals_differentSeeds_unequal() throws Exception {
+        byte[] otherSeed = new byte[32];
+        Arrays.fill(otherSeed, (byte) 0xff);
+        KeyPair a = KeyPair.generateKeyPairFromSecret(Encoder.encodeToBase64(SEED_32));
+        KeyPair b = KeyPair.generateKeyPairFromSecret(Encoder.encodeToBase64(otherSeed));
+        assertTrue(!a.equals(b),
+                "KeyPairs from different seeds must not be equal");
     }
 }

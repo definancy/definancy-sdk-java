@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Java-specific contract tests for {@link ID}.
@@ -80,19 +81,17 @@ public final class IDTest {
     // -------------------------------------------------------------------------
 
     @Test
-    public void constructor_nullBytes_silentlyAccepts() {
-        // Current contract: null bytes input → ID with the default-zero
-        // backing array (no exception). Pin this — callers that pass null
-        // intending an error get no error today; future change is breaking.
-        ID id = new ID((byte[]) null);
-        assertArrayEquals(new byte[32], id.toBytes());
+    public void constructor_nullBytes_throwsNPE() {
+        // Contract: null bytes input throws NullPointerException
+        // (Objects.requireNonNull). NPE is the Java convention for null
+        // arguments on reference parameters.
+        assertThrows(NullPointerException.class, () -> new ID((byte[]) null));
     }
 
     @Test
-    public void constructor_nullString_silentlyAccepts() {
-        // Same null-acceptance contract for the String overload.
-        ID id = new ID((String) null);
-        assertArrayEquals(new byte[32], id.toBytes());
+    public void constructor_nullString_throwsNPE() {
+        // Same null-rejection contract for the String overload.
+        assertThrows(NullPointerException.class, () -> new ID((String) null));
     }
 
     // -------------------------------------------------------------------------
@@ -177,49 +176,56 @@ public final class IDTest {
     }
 
     // -------------------------------------------------------------------------
-    // Equality / hashCode — current contract is identity-based
+    // Equality / hashCode — value-based
     //
-    // ID does NOT override Object.equals or hashCode. Two IDs constructed
-    // from the same input are NOT .equals(...) — they're only == to
-    // themselves. Pin this so a future change to value-equality is a
-    // visible breaking-change signal, not a silent semantic shift.
+    // ID overrides Object.equals and hashCode to compare on the 32-byte
+    // payload. Two IDs constructed from the same bytes ARE .equals(...)
+    // and hash to the same value. This is the contract HashMap/HashSet
+    // users rely on.
     // -------------------------------------------------------------------------
 
     @Test
-    public void equals_isIdentityBased_notValueBased() throws Exception {
+    public void equals_isValueBased() throws Exception {
         ID a = new ID(ZERO32);
         ID b = new ID(ZERO32);
-        // Same backing bytes — but different object identity.
+        // Same backing bytes — value-equal regardless of object identity.
         assertArrayEquals(a.toBytes(), b.toBytes(),
                 "precondition: bytes are equal");
-        assertNotEquals(a, b,
-                "ID does not override equals; current contract is identity-based");
-        // Each instance equals itself.
+        assertEquals(a, b,
+                "ID overrides equals; value-based comparison");
+        // Reflexive.
         assertEquals(a, a);
+        // hashCode contract: equal objects must have equal hash codes.
+        assertEquals(a.hashCode(), b.hashCode(),
+                "equals/hashCode contract: equal IDs must hash equal");
     }
 
     @Test
-    public void hashCode_isIdentityBased() {
+    public void equals_differentBytes_unequal() throws Exception {
+        byte[] other = new byte[32];
+        other[0] = (byte) 0x01;
+        assertNotEquals(new ID(ZERO32), new ID(other),
+                "IDs with different bytes must not be equal");
+    }
+
+    @Test
+    public void hashCode_isValueBased() {
         ID a = new ID(ZERO32);
-        // System.identityHashCode is what Object.hashCode delegates to
-        // by default. If hashCode were overridden to a value-hash, this
-        // would break — and that's the signal we want.
-        assertEquals(System.identityHashCode(a), a.hashCode());
+        ID b = new ID(ZERO32);
+        // Value-based hash: equal-content IDs hash to the same value.
+        assertEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
-    public void roundTripFromString_producesEqualBytes_notEqualObjects() throws Exception {
+    public void roundTripFromString_producesEqualBytesAndEqualObjects() throws Exception {
         String encoded = new ID(ZERO32).encodeAsString();
         ID parsed1 = new ID(encoded);
         ID parsed2 = new ID(encoded);
         assertTrue(Arrays.equals(parsed1.toBytes(), parsed2.toBytes()),
                 "byte equality holds across reparses");
-        assertNotEquals(parsed1, parsed2,
-                "object equality does NOT hold (no equals override)");
-    }
-
-    // tiny helper to keep imports clean
-    private static void assertTrue(boolean cond, String msg) {
-        org.junit.jupiter.api.Assertions.assertTrue(cond, msg);
+        assertEquals(parsed1, parsed2,
+                "value-equal IDs are .equals (equals is value-based)");
+        assertEquals(parsed1.hashCode(), parsed2.hashCode(),
+                "equals/hashCode contract holds");
     }
 }
