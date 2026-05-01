@@ -2,7 +2,7 @@
 
 Definancy API
 
-- API version: 0.0.1.wip.20250925
+- API version: 0.1.0
 
 - Generator version: 7.20.0
 

@@ -11,7 +11,7 @@ info:
     to facilitate seamless integration with financial systems, ensuring secure and efficient payment
     processing while maintaining strict compliance standards.
   title: Definancy API
-  version: 0.0.1.wip.20250925
+  version: 0.1.0
 servers:
 - description: Stub - Authentication is disabled
   url: https://stub.definancy.com
