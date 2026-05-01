@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2026-05-01
+
+### Added
+- `CLAUDE.md` documenting wrapper internals, multi-module layout, and
+  Java-specific design patterns (Jersey filter wiring, JDK 8 floor,
+  provided-scope discipline).
+- `SECURITY.md` with vulnerability reporting policy and supported-versions
+  matrix.
+
 ## [0.0.1] - 2026-05-01
 
 ### Added
