@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.Serializable;
 import java.security.PublicKey;
 import java.util.Arrays;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Ed25519PublicKey implements Serializable {
@@ -23,6 +24,7 @@ public class Ed25519PublicKey implements Serializable {
 
 	@JsonIgnore
 	public Ed25519PublicKey(PublicKey publicKey) {
+		Objects.requireNonNull(publicKey, "publicKey must not be null");
 		/*
 			Java uses DER-encoded ASN.1 format for signatures.
 			Definancy uses raw 64-byte signatures (R||S), as defined by the RFC 8032.
@@ -39,9 +41,7 @@ public class Ed25519PublicKey implements Serializable {
 
 	@JsonCreator
 	public Ed25519PublicKey(byte[] raw) {
-		if (raw == null) {
-			return;
-		}
+		Objects.requireNonNull(raw, "raw must not be null");
 
 		if (raw.length != KEY_LEN_BYTES) {
 			throw new IllegalArgumentException("ed25519 public key wrong length");
@@ -67,11 +67,16 @@ public class Ed25519PublicKey implements Serializable {
 
 	@JsonValue
 	public byte[] getBytes() {
-		return this.raw;
+		return this.raw.clone();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof Ed25519PublicKey && Arrays.equals(this.raw, ((Ed25519PublicKey) obj).raw);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(this.raw);
 	}
 }
