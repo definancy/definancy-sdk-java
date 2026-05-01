@@ -6,6 +6,7 @@ import com.definancy.sdk.util.Encoder;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 public class ID {
@@ -23,14 +24,13 @@ public class ID {
 	// signature algorithm for verifying signature
 
 	public ID(final Ed25519PublicKey publicKey) {
+		Objects.requireNonNull(publicKey, "publicKey must not be null");
 		byte[] bytes = publicKey.getBytes();
 		System.arraycopy(bytes, 0, this.bytes, 0, LEN_BYTES);
 	}
 
 	public ID(final byte[] idBytes) {
-		if (idBytes == null) {
-			return;
-		}
+		Objects.requireNonNull(idBytes, "idBytes must not be null");
 
 		if (idBytes.length != LEN_BYTES) {
 			throw new IllegalArgumentException(String.format("Given ID length is not %s", LEN_BYTES));
@@ -40,9 +40,7 @@ public class ID {
 	}
 
 	public ID(final String idStr) {
-		if (idStr == null) {
-			return;
-		}
+		Objects.requireNonNull(idStr, "idStr must not be null");
 
 		if (idStr.length() != EXPECTED_STR_ENCODED_LEN) {
 			throw new IllegalArgumentException(String.format("Given ID length is not %s", EXPECTED_STR_ENCODED_LEN));
@@ -103,5 +101,17 @@ public class ID {
 			// encoding should always succeed when provider properly set up
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ID)) return false;
+		return Arrays.equals(this.bytes, ((ID) o).bytes);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(this.bytes);
 	}
 }
