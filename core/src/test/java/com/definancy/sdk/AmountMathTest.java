@@ -209,11 +209,35 @@ public final class AmountMathTest {
     }
 
     @Test
-    public void rawToValue_emptyString_returnsZero() {
-        // Empty raw: padStart("", 7, '0') → "0000000",
-        // intPart=stripLeadingZeros("0") → "0", fracPart="000000" → "".
-        // → "0". rawToValue is unchanged in 0.1.0; only valueToRaw was
-        // tightened (defect #4 was scoped to valueToRaw).
-        assertEquals("0", AmountMath.rawToValue("", 6));
+    public void rawToValue_emptyString_throwsIAE() {
+        // 0.2.0 brought rawToValue in line with valueToRaw — empty input
+        // is rejected rather than silently producing "0".
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> AmountMath.rawToValue("", 6));
+        assertEquals("raw must not be empty", ex.getMessage());
+    }
+
+    // -------------------------------------------------------------------------
+    // Sign-only input (no digits after stripping the leading '-')
+    //
+    // 0.2.0: "-" and "-." used to fall through padding logic to "0" because
+    // intPart and fracPart both ended up empty. Now rejected at the digit
+    // check that runs after the optional leading '-' is stripped.
+    // -------------------------------------------------------------------------
+
+    @Test
+    public void valueToRaw_dashOnly_throwsIAE() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> AmountMath.valueToRaw("-", 6));
+        assertEquals("value \"-\" has no digits", ex.getMessage());
+    }
+
+    @Test
+    public void valueToRaw_dashWithDot_throwsIAE() {
+        // "-." after stripping the '-' leaves ".", which still has no
+        // digits — must be rejected the same way as "-".
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> AmountMath.valueToRaw("-.", 6));
+        assertEquals("value \"-.\" has no digits", ex.getMessage());
     }
 }
