@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-01
+
+Cleanup MINOR — fixes the 5 latent defects flagged by the 0.1.0 release.
+Same template: tighten throwing semantics on previously-silent-failure
+input shapes. Ships as MINOR per the strict SemVer policy
+("PATCH never breaks; MINOR may break").
+
+### Changed (BREAKING)
+- `Ed25519PublicKey(byte[] raw)` now throws `NullPointerException` on null
+  input. Previously silently constructed an instance with a null backing
+  array, with subsequent operations failing in surprising ways.
+- `Ed25519PublicKey.hashCode()` is now overridden (uses `Arrays.hashCode`
+  on the byte payload, consistent with the existing value-based `equals`).
+  Previously the equals/hashCode contract was violated — `HashMap` /
+  `HashSet` keyed by `Ed25519PublicKey` would not retrieve correctly when
+  the key was reconstructed from the same bytes.
+- `Ed25519PublicKey.getBytes()` now returns a defensive copy. Previously
+  returned the internal mutable array; callers that mutated it would
+  corrupt the instance.
+- `AmountMath.rawToValue(null)` now throws `NullPointerException`.
+- `AmountMath.rawToValue("")` now throws `IllegalArgumentException`.
+  Previously returned `"0"`. Brings `rawToValue` consistent with the
+  0.1.0 `valueToRaw` tightening.
+- `AmountMath.valueToRaw("-")` (and any input that has a sign but no
+  digits, e.g. `"-."`) now throws `IllegalArgumentException`. Previously
+  returned `"0"`. Same class of "empty fell through" bug fixed in 0.1.0,
+  applied to a different input shape.
+
+### Migration
+- Same shape as 0.1.0: catch `NullPointerException` / `IllegalArgumentException`
+  at any call site that was relying on the silent-failure behaviors above.
+
 ## [0.1.0] - 2026-05-01
 
 ### Changed (BREAKING)
