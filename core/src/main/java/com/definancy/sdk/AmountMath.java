@@ -46,6 +46,21 @@ public final class AmountMath {
         String abs = negative ? value.substring(1) : value;
 
         int dotIndex = abs.indexOf('.');
+        // After stripping the optional leading '-', we still need at least
+        // one digit. Catches "-", "-." and similar sign-only inputs that
+        // would otherwise pad through to "0".
+        boolean hasDigit = false;
+        for (int i = 0; i < abs.length(); i++) {
+            char c = abs.charAt(i);
+            if (c >= '0' && c <= '9') {
+                hasDigit = true;
+                break;
+            }
+        }
+        if (!hasDigit) {
+            throw new IllegalArgumentException(
+                    "value \"" + value + "\" has no digits");
+        }
         String intPart;
         String fracPart;
         if (dotIndex == -1) {
@@ -77,6 +92,10 @@ public final class AmountMath {
      * @throws IllegalArgumentException if {@code decimals} is negative.
      */
     public static String rawToValue(String raw, int decimals) {
+        Objects.requireNonNull(raw, "raw must not be null");
+        if (raw.isEmpty()) {
+            throw new IllegalArgumentException("raw must not be empty");
+        }
         if (decimals < 0) {
             throw new IllegalArgumentException(
                     "decimals must be non-negative, got " + decimals);
