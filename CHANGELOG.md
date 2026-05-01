@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-05-01
+
+### Added
+- JUnit 5 unit tests for `AmountMath`, `ID`, `crypto.KeyPair`, and
+  `util.Encoder` covering Java-specific edge cases (null handling,
+  BigDecimal scale, malformed inputs, equality semantics) that the
+  cross-language conformance Runner doesn't reach.
+
 ## [0.0.2] - 2026-05-01
 
 ### Added
