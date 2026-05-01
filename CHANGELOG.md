@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-02
+
+No code changes since 0.2.0. Version bumped in lockstep with the factory tag
+(`factory-v0.3.0`) per the release contract; the published artifact is
+byte-identical to 0.2.0. The 0.3.0 cycle is a docs-only release at the
+factory level (Session 5a — hosted docs site).
+
 ## [0.2.0] - 2026-05-01
 
 Cleanup MINOR — fixes the 5 latent defects flagged by the 0.1.0 release.
