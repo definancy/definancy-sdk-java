@@ -66,7 +66,8 @@ The `core/.openapi-generator-ignore` file lists hand-owned files protected from 
 - **Provided-scope dependencies.** Jersey, JAX-RS, HK2, BouncyCastle, Apache HttpClient — all NOT bundled in the shaded jar. Deployment platforms (BW5, WebSphere v9.5) ship them as shared libraries. See `../../../languages/java/OVERRIDES.md` "Provided-scope dependencies" for the version-pinned consumer install list.
 - **JDK 8 floor.** Production runtime is Java 8. The build also runs on JDK 11/17/21 — those auto-activate the `strict-java8-on-jdk9plus` profile that enforces the Java 8 API surface via `<release>8</release>`. Local JDK 8 builds use `<source>/<target>=1.8`.
 - **Jackson canonical JSON.** JWT payload canonicalization uses sorted-key Jackson serialization to byte-match the TS SDK's output for cross-language conformance.
-- **Conformance Runner** lives at `core/src/test/java/com/definancy/sdk/conformance/Runner.java`. Run via `task conformance:java` from the factory root, or `mvn test` from this repo (Runner is JUnit-discovered).
+- **Conformance Runner** lives at `core/src/test/java/com/definancy/sdk/conformance/Runner.java`. It has a `main(String[])` and is invoked via `java -cp ...` (NOT JUnit-discovered — it has no `@Test` annotations). Run via `task conformance:java` from the factory root.
+- **Unit tests** live alongside the Runner under `core/src/test/java/com/definancy/sdk/`. They use JUnit 5 and ARE discovered by Surefire — `mvn test` runs them. Wired into `task test:java` (and `task ci:java`) from the factory.
 
 ## TypeScript SDK Reference
 
