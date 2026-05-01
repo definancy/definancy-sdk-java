@@ -1,5 +1,7 @@
 package com.definancy.sdk;
 
+import java.util.Objects;
+
 /**
  * Pure-string conversion between human-readable decimal values and raw
  * integer strings (smallest-unit representation) for asset amounts.
@@ -32,6 +34,10 @@ public final class AmountMath {
      *         if the value carries more decimal places than {@code decimals}.
      */
     public static String valueToRaw(String value, int decimals) {
+        Objects.requireNonNull(value, "value must not be null");
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("value must not be empty");
+        }
         if (decimals < 0) {
             throw new IllegalArgumentException(
                     "decimals must be non-negative, got " + decimals);
