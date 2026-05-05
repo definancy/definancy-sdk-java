@@ -19,6 +19,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (the conformance suite consolidated into the spec submodule —
   `definancy-spec` repo).
 
+### Documentation
+- README upstream link updated `definancy-api` → `definancy-spec` (the
+  spec repo was renamed; the old URL still redirects).
+- README "Consumer install" section now lists provided-scope dependencies
+  inline and points at `core/pom.xml` instead of an upstream tooling file.
+- README "Regeneration" section no longer references upstream task
+  recipes — clarifies that this repo ships the generated artifacts
+  ready to build and that regeneration happens upstream.
+- `CLAUDE.md` rewritten for standalone-clone consumers — removed
+  references to upstream tooling and replaced relative cross-repo paths
+  with public GitHub URLs. Conformance section explains how to clone
+  `definancy-spec` as a sibling so the Runner can locate the vectors.
+
 ## [0.3.0] - 2026-05-02
 
 No code changes since 0.2.0. Version bumped in lockstep with the factory tag
