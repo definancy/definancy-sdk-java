@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **DPoP `htu` claim** now follows RFC 9449 §4.2 (scheme + authority + path,
+  no query, no fragment), replacing the previous audience-only value
+  (scheme + host + port) that diverged from spec. Servers strictly
+  validating `htu` against the request URI will now accept proofs that
+  previously would have been rejected.
+
+### Changed
+- **Conformance Runner** loads vectors from `spec/conformance/vectors/`
+  (the conformance suite consolidated into the spec submodule —
+  `definancy-spec` repo).
+
 ## [0.3.0] - 2026-05-02
 
 No code changes since 0.2.0. Version bumped in lockstep with the factory tag
