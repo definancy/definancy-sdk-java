@@ -54,7 +54,7 @@ The `core/.openapi-generator-ignore` file lists hand-owned files protected from 
     └── src/main/java/com/definancy/sdk/demo/
 ```
 
-**Layering principle:** generated wire layer at `api/` + `model/` (regenerable). Hand-written domain layer at `sdk/` (auth, crypto, identity, amount math) — must stay green against `conformance/vectors/*` from the factory.
+**Layering principle:** generated wire layer at `api/` + `model/` (regenerable). Hand-written domain layer at `sdk/` (auth, crypto, identity, amount math) — must stay green against `spec/conformance/vectors/*` (hosted in the spec submodule).
 
 ## Key Patterns
 

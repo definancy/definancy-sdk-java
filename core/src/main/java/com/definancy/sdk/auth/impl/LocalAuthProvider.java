@@ -31,6 +31,14 @@ public class LocalAuthProvider implements AuthProvider {
                                 .setPort(uri.getPort())
                                 .build();
 
+                // RFC 9449 §4.2: htu is the request URI without query and fragment.
+                URI htu = new URIBuilder()
+                                .setScheme(uri.getScheme())
+                                .setHost(uri.getHost())
+                                .setPort(uri.getPort())
+                                .setPath(uri.getPath())
+                                .build();
+
                 Jwk jwk = signer.jwk();
 
                 // Build and sign Authorization JWT (clock impurity stays at this boundary)
@@ -67,7 +75,7 @@ public class LocalAuthProvider implements AuthProvider {
                 DPoP dpop = new DPoP(
                                 id,
                                 requestContext.getMethod(),
-                                audience.toString(),
+                                htu.toString(),
                                 bodyBytes,
                                 jwk,
                                 dpopIat,

@@ -27,8 +27,8 @@ import java.util.Map;
 /**
  * Cross-language conformance runner — Java SDK.
  *
- * Loads YAML test vectors from the factory's `conformance/vectors/` tree
- * and asserts that the SDK produces byte-identical outputs to the
+ * Loads YAML test vectors from the spec submodule's `spec/conformance/vectors/`
+ * tree and asserts that the SDK produces byte-identical outputs to the
  * canonical reference values. Reports `name:label PASS|FAIL` per case
  * and exits non-zero on any failure.
  *
@@ -37,10 +37,10 @@ import java.util.Map;
  *   java -cp target/classes:target/test-classes:target/lib/* \
  *        com.definancy.sdk.conformance.Runner
  *
- * Vectors live at <factory>/conformance/vectors/<domain>/<scenario>.yaml.
+ * Vectors live at <factory>/spec/conformance/vectors/<domain>/<scenario>.yaml.
  * The runner walks up from this submodule's location to find them.
  *
- * See <factory>/conformance/README.md for the schema and runner contract.
+ * See <factory>/spec/conformance/README.md for the schema and runner contract.
  * Vectors encode CORRECT behavior; failing cases here are SDK bugs to
  * fix, not vectors to relax.
  */
@@ -125,26 +125,27 @@ public final class Runner {
 
     /**
      * Walk up from this submodule's location to find the factory's
-     * `conformance/vectors/` directory. Layout assumption matches
-     * `<factory>/languages/java/sdk/`.
+     * `spec/conformance/vectors/` directory (the spec submodule hosts the
+     * conformance suite — see `<factory>/spec/conformance/README.md`).
+     * Layout assumption matches `<factory>/languages/java/sdk/`.
      */
     private static Path locateVectorsRoot() {
         Path cwd = Paths.get("").toAbsolutePath();
         // Try cwd-relative first (common when running from the SDK root)
-        Path candidate = cwd.resolve("../../../conformance/vectors").normalize();
+        Path candidate = cwd.resolve("../../../spec/conformance/vectors").normalize();
         if (Files.isDirectory(candidate)) {
             return candidate;
         }
-        // Fall back to walking parents until we find conformance/vectors/
+        // Fall back to walking parents until we find spec/conformance/vectors/
         Path p = cwd;
         for (int i = 0; i < 8 && p != null; i++) {
-            Path c = p.resolve("conformance/vectors");
+            Path c = p.resolve("spec/conformance/vectors");
             if (Files.isDirectory(c)) {
                 return c;
             }
             p = p.getParent();
         }
-        throw new IllegalStateException("Cannot locate conformance/vectors/ from " + cwd);
+        throw new IllegalStateException("Cannot locate spec/conformance/vectors/ from " + cwd);
     }
 
     @SuppressWarnings("unchecked")
