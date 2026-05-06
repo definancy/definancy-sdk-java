@@ -1,23 +1,19 @@
 package com.definancy.sdk.demo;
 
-import com.definancy.ApiClient;
-import com.definancy.ApiException;
-import com.definancy.api.AuthApi;
 import com.definancy.sdk.DID;
+import com.definancy.sdk.DefinancyApiException;
+import com.definancy.sdk.DefinancyClient;
 
 public class APIRegisterDid {
     public static void main(String[] args) throws Exception {
-        ApiClient apiClient = Config.GetApiClient();
-        AuthApi api = new AuthApi(apiClient);
-
-        try {
+        try (DefinancyClient definancy = Config.newClient()) {
             DID did = Config.getDID();
-            api.registerAuth(did.getId().toString());
+            definancy.auth().register(did.getId().toString());
             System.out.println("DID registered successfully");
-        } catch (ApiException e) {
-            Utils.printException(e, "AuthApi", "registerAuth");
+        } catch (DefinancyApiException e) {
+            Utils.printException(e, "auth", "register");
         } catch (Exception e) {
-            Utils.printException(e, "AuthApi", "registerAuth");
+            Utils.printException(e, "auth", "register");
         }
     }
 }

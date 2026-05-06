@@ -5,15 +5,25 @@ import com.definancy.model.AmountFormat;
 import com.definancy.model.AmountValue;
 import com.definancy.model.ContractAmountFormat;
 import com.definancy.model.ContractId;
+import com.definancy.sdk.DefinancyApiException;
 
 public class Utils {
     public static void printException(Exception e, String api, String method) {
-        System.err.printf("[GENERIC] Exception when calling %s#%s\n", api, method);
+        System.err.printf("[GENERIC] Exception when calling %s#%s%n", api, method);
+        e.printStackTrace();
+    }
+
+    public static void printException(DefinancyApiException e, String api, String method) {
+        System.err.printf("[SDK] DefinancyApiException when calling %s#%s%n", api, method);
+        System.err.println("Status code: " + e.status());
+        System.err.println("Code: " + e.code());
+        System.err.println("Request ID: " + e.requestId());
+        System.err.println("Errors: " + e.errors());
         e.printStackTrace();
     }
 
     public static void printException(ApiException e, String api, String method) {
-        System.err.printf("[API] ApiException when calling %s#%s\n", api, method);
+        System.err.printf("[API] ApiException when calling %s#%s%n", api, method);
         System.err.println("Status code: " + e.getCode());
         System.err.println("Reason: " + e.getResponseBody());
         System.err.println("Response headers: " + e.getResponseHeaders());

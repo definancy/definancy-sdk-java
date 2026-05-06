@@ -1,8 +1,7 @@
 package com.definancy.sdk.demo;
 
-import com.definancy.ApiClient;
-import com.definancy.sdk.Client;
 import com.definancy.sdk.DID;
+import com.definancy.sdk.DefinancyClient;
 import com.definancy.sdk.auth.impl.LocalAuthProvider;
 import com.definancy.sdk.crypto.KeyPair;
 
@@ -25,18 +24,22 @@ public class Config {
         return getKeyPair().publicKey().computeDID(network);
     }
 
-    public static ApiClient GetApiClient() throws Exception {
+    public static DefinancyClient newClient() throws Exception {
         DID did = getDID();
         LocalAuthProvider signer = new LocalAuthProvider(did, getKeyPair());
 
         // Enable Jersey logging for the demo so the request/response signing
-        // is visible. Production code typically omits the third argument.
+        // is visible. Production code typically omits the .filter(...) call.
         LoggingFeature loggingFilter = new LoggingFeature(
                 Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME),
                 Level.INFO,
                 LoggingFeature.Verbosity.PAYLOAD_ANY,
                 1024);
 
-        return Client.create(audience, signer, loggingFilter);
+        return DefinancyClient.builder()
+                .audience(audience)
+                .auth(signer)
+                .filter(loggingFilter)
+                .build();
     }
 }

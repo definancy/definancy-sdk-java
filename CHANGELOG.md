@@ -7,17 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- **`com.definancy.sdk.Client`** — convenience builder that returns a
-  fully-configured `ApiClient` with the **Apache HttpClient connector**
-  pre-wired (Jersey's default `HttpURLConnection` connector rejects
-  `PATCH`, which every `config*` endpoint of the API uses). Removes a
-  recurring footgun for partner integrations that touched any
-  configuration endpoint. The helper also installs the `AuthRequestFilter`
-  for a supplied `AuthProvider` and accepts a third `Object` slot for
-  caller-supplied Jersey features (logging, metrics, custom interceptors).
-  Available as a thin layer-2 utility — not the eventual layer-3 facade
-  with resource-grouped accessors (still deferred).
+### Added — BREAKING
+- **Tier-3 facade — `com.definancy.sdk.DefinancyClient`.** Resource-grouped
+  public surface on top of the generated `*Api` classes. Eleven
+  accessors (`definancy.health()`, `definancy.auth()`,
+  `definancy.networks()`, `definancy.assets()`, `definancy.contracts()`,
+  `definancy.vaults()`, `definancy.paymentAcceptances()`,
+  `definancy.documents()`, `definancy.velocityLimits()`,
+  `definancy.qrCodes()`, `definancy.experimental()`) cover all 39 spec
+  operations. `velocityLimits` exposes nested `account()` / `vault()`
+  scopes. Cached accessors return reference-equal instances on every
+  call.
+- **`DefinancyClient.builder()`** — builder pattern with required
+  `audience(...)`, optional `auth(...)`, `retry(...)`,
+  `connectTimeout(...)`, `readTimeout(...)`, `filter(...)` /
+  `filters(...)`. Replaces the static `Client.create(...)` factory.
+- **`DefinancyClient implements AutoCloseable`** — closes the underlying
+  Jersey client (releases connection pool + worker threads). Use with
+  try-with-resources for clean shutdown.
+- **`definancy.raw()`** — escape hatch returning the underlying
+  generated `com.definancy.ApiClient`; partners can construct
+  per-tag `*Api` instances against it for endpoints not yet wrapped.
+- **Typed exception hierarchy** —
+  `com.definancy.sdk.DefinancyApiException` (extends `RuntimeException`)
+  is thrown by every facade call; subclasses
+  `AuthenticationException`, `NotFoundException`, `ValidationException`,
+  `RateLimitException`, `ServerException` enable type-narrowed catch
+  blocks. Carries `status()`, `code()`, `errors()`, `requestId()`;
+  `RateLimitException.retryAfter()` exposes the parsed `Retry-After`.
+- **Built-in retry** — `RetryPolicy.DEFAULT` (3 attempts, exponential
+  backoff + jitter, honours `Retry-After`) is applied to every facade
+  call. Configurable via `.retry(...)`.
+- **Last-response introspection** — `definancy.lastRequestId()` and
+  `definancy.lastRateLimit()` expose the most recent values parsed
+  from response headers.
+
+### Removed — BREAKING
+- **`com.definancy.sdk.Client`** (the layer-2 helper added at
+  factory-v0.4.0 prep). Superseded by `DefinancyClient.builder()`.
+  Migration: `Client.create(audience, signer)` →
+  `DefinancyClient.builder().audience(audience).auth(signer).build()`;
+  third-arg `extraFeature` →
+  `.filter(...)`. To preserve the previous bare-`ApiClient` shape,
+  call `.raw()` on the new client.
 
 ### Fixed
 - **DPoP `htu` claim** now follows RFC 9449 §4.2 (scheme + authority + path,
