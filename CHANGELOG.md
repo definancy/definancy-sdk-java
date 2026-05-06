@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-05-06
+
+First MINOR with a public-surface BREAKING change since 0.2.0 — the
+tier-3 facade lands and the layer-2 `com.definancy.sdk.Client` helper is
+retired. Per the SemVer policy ("PATCH never breaks; MINOR may break"),
+this is a MINOR. The rest of the entries below were accumulated under
+[Unreleased] across the 0.3.0 → 0.4.0 cycle.
+
 ### Added — BREAKING
 - **Tier-3 facade — `com.definancy.sdk.DefinancyClient`.** Resource-grouped
   public surface on top of the generated `*Api` classes. Eleven
