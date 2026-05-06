@@ -41,6 +41,7 @@ docs/DocumentStatusId.md
 docs/DocumentType.md
 docs/Error.md
 docs/ErrorList.md
+docs/ExperimentalApi.md
 docs/Expire.md
 docs/Media.md
 docs/MediaMap.md
@@ -118,6 +119,7 @@ src/main/java/com/definancy/StringUtil.java
 src/main/java/com/definancy/api/AssetApi.java
 src/main/java/com/definancy/api/AuthApi.java
 src/main/java/com/definancy/api/ContractApi.java
+src/main/java/com/definancy/api/ExperimentalApi.java
 src/main/java/com/definancy/api/NetworkApi.java
 src/main/java/com/definancy/api/ProbeApi.java
 src/main/java/com/definancy/api/QrCodeApi.java

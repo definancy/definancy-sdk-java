@@ -135,6 +135,32 @@ paths:
       - Probe
       x-accepts:
       - application/json
+  /v1/experimental/ping:
+    get:
+      description: |-
+        Connectivity probe for the Experimental tag surface. Returns OK when
+        the daemon's experimental endpoints are reachable. Reserved for
+        future development-environment endpoints (DPoP testing aids,
+        fixture seeding, etc.).
+      operationId: ExperimentalPing
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+          description: OK.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/CacheControlHeader"
+        default:
+          $ref: "#/components/responses/DefaultResponse"
+      security: []
+      summary: Experimental connectivity probe
+      tags:
+      - Experimental
+      x-accepts:
+      - application/json
   /v1/auth/{definancyId}:
     put:
       description: |-

@@ -165,6 +165,7 @@ Class | Method | HTTP request | Description
 *ContractApi* | [**configContract**](docs/ContractApi.md#configContract) | **PATCH** /v1/contract/{assetUnit}/{networkId} | Configure Contract
 *ContractApi* | [**getContract**](docs/ContractApi.md#getContract) | **GET** /v1/contract/{assetUnit}/{networkId} | Get Contract
 *ContractApi* | [**getContracts**](docs/ContractApi.md#getContracts) | **GET** /v1/contract | List Contracts
+*ExperimentalApi* | [**experimentalPing**](docs/ExperimentalApi.md#experimentalPing) | **GET** /v1/experimental/ping | Experimental connectivity probe
 *NetworkApi* | [**configNetwork**](docs/NetworkApi.md#configNetwork) | **PATCH** /v1/network/{networkId} | Configure Network
 *NetworkApi* | [**getNetwork**](docs/NetworkApi.md#getNetwork) | **GET** /v1/network/{networkId} | Get Network
 *NetworkApi* | [**getNetworkExplorer**](docs/NetworkApi.md#getNetworkExplorer) | **GET** /v1/network/{networkId}/explorer | Get Network Explorer
