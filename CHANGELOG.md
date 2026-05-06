@@ -7,12 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`com.definancy.sdk.Client`** — convenience builder that returns a
+  fully-configured `ApiClient` with the **Apache HttpClient connector**
+  pre-wired (Jersey's default `HttpURLConnection` connector rejects
+  `PATCH`, which every `config*` endpoint of the API uses). Removes a
+  recurring footgun for partner integrations that touched any
+  configuration endpoint. The helper also installs the `AuthRequestFilter`
+  for a supplied `AuthProvider` and accepts a third `Object` slot for
+  caller-supplied Jersey features (logging, metrics, custom interceptors).
+  Available as a thin layer-2 utility — not the eventual layer-3 facade
+  with resource-grouped accessors (still deferred).
+
 ### Fixed
 - **DPoP `htu` claim** now follows RFC 9449 §4.2 (scheme + authority + path,
   no query, no fragment), replacing the previous audience-only value
   (scheme + host + port) that diverged from spec. Servers strictly
   validating `htu` against the request URI will now accept proofs that
   previously would have been rejected.
+
+### Demos
+- **`Config.java`**: `network` default is now `"stub"` (matches the
+  deployed `stub.definancy.com` daemon's `Environment: stub`); switched to
+  `com.definancy.sdk.Client` for `ApiClient` construction so the demos
+  inherit the Apache connector.
+- **`APIRegisterDid`**: retargeted from the retired `ExperimentalApi.registerDid`
+  (`PUT /v1/did/{id}`, no longer in the spec) to `AuthApi.registerAuth`
+  (`PUT /v1/auth/{definancyId}`, the current `RegisterAuth` operation).
+- **`APISetVault`**: rewritten to mirror the gateway-demo bootstrap pattern
+  — discover all networks/assets/contracts, enable disabled ones, then
+  set the vault to include every available contract. Self-contained and
+  idempotent against the stub. Replaces the previous hardcoded contract
+  list whose network IDs (`bitcoin`, `ethereum`, `algorand`) had been
+  retired in favour of the chain-suffixed forms (`bitcoin-testnet4`,
+  `ethereum-11155111`, `algorand-testnet`, etc.).
 
 ### Changed
 - **Conformance Runner** loads vectors from `spec/conformance/vectors/`
